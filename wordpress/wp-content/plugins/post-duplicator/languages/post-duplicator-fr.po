@@ -1,0 +1,161 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Post Duplicator v2.16\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2016-03-11 12:47-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Textdomain-Support: yes\n"
+"Language: fr\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ post-duplicator
+#: includes/settings.php:71
+msgid "String that should be appended to the duplicate post's slug"
+msgstr "Chaîne qui doit être ajoutée au plug du double post"
+
+# @ post-duplicator
+#: includes/settings.php:70
+msgid "Duplicate Slug"
+msgstr "Plug en double"
+
+# @ post-duplicator
+#: includes/edit.php:22
+#, php-format
+msgid "Duplicate %1$s to %2$s"
+msgstr "Dupliquer %1$s %2$s"
+
+# @ post-duplicator
+#: includes/notices.php:20
+msgid "here"
+msgstr "ici"
+
+# @ post-duplicator
+#: includes/notices.php:21
+#, php-format
+msgid "Successfully Duplicated! You can edit your new %1$s %2$s."
+msgstr "Reproduit avec succès ! Vous pouvez modifier votre nouveau %1$s %2$s."
+
+# @ post-duplicator
+#: includes/settings.php:44
+msgid "Post Type"
+msgstr "Type de contenu"
+
+# @ post-duplicator
+#: includes/edit.php:16
+#, php-format
+msgid "Duplicate %s"
+msgstr "Dupliquer %s"
+
+# @ post-duplicator
+#: includes/settings.php:32
+msgid "Post Status"
+msgstr "Statut"
+
+# @ post-duplicator
+#: includes/helpers.php:10 includes/settings.php:35
+msgid "Same as original"
+msgstr "Identique à l’original"
+
+# @ post-duplicator
+#: includes/settings.php:36
+msgid "Draft"
+msgstr "Brouillon"
+
+# @ post-duplicator
+#: includes/settings.php:37
+msgid "Published"
+msgstr "Publié"
+
+# @ post-duplicator
+#: includes/settings.php:38
+msgid "Pending"
+msgstr "En attente"
+
+# @ post-duplicator
+#: includes/settings.php:51
+msgid "Post Date"
+msgstr "Date de l’article"
+
+# @ post-duplicator
+#: includes/settings.php:54
+msgid "Duplicate Timestamp"
+msgstr "Plug en double"
+
+# @ post-duplicator
+#: includes/settings.php:55
+msgid "Current Time"
+msgstr "Heure actuelle"
+
+# @ post-duplicator
+#: includes/settings.php:78
+msgid "Offset Date"
+msgstr "Décalage de date"
+
+# @ post-duplicator
+#: includes/settings.php:84
+msgid " days"
+msgstr "jours"
+
+# @ post-duplicator
+#: includes/settings.php:91
+msgid " hours"
+msgstr "heures"
+
+# @ post-duplicator
+#: includes/settings.php:98
+msgid " minutes"
+msgstr "minutes"
+
+# @ post-duplicator
+#: includes/settings.php:105
+msgid " seconds"
+msgstr "secondes"
+
+# @ post-duplicator
+#: includes/settings.php:112
+msgid "newer"
+msgstr "plus récent"
+
+# @ post-duplicator
+#: includes/settings.php:113
+msgid "older"
+msgstr "précédents"
+
+# @ post-duplicator
+#: includes/settings.php:159
+msgid "Post Duplicator Settings"
+msgstr "Paramètres"
+
+# @ post-duplicator
+#: includes/settings.php:183
+msgid "Customize the settings for duplicated posts."
+msgstr "Personnaliser les paramètres des messages dupliqués."
+
+# @ post-duplicator
+#: includes/functions.php:18 includes/settings.php:66
+msgid "Copy"
+msgstr "Exemplaire"
+
+# @ post-duplicator
+#: includes/settings.php:62
+msgid "Duplicate Title"
+msgstr "Titre en double"
+
+# @ post-duplicator
+#: includes/settings.php:63
+msgid "String that should be appended to the duplicate post's title"
+msgstr "Chaîne qui doit être ajoutée au titre de la double post"
+
+# @ post-duplicator
+#: includes/settings.php:12 includes/settings.php:13
+msgid "Post Duplicator"
+msgstr "Duplicateur de post"
