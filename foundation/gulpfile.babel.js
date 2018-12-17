@@ -46,7 +46,7 @@ function clean(done) {
 }
   // WordPress function - cleaning assets folder inside custom theme
   function cleanWP(done) {
-    rimraf(PATHS.wp, done);
+    rimraf(PATHS.wp + '/assets', done);
   }
 
 // Copy files out of the assets folder
@@ -220,7 +220,7 @@ function watch() {
   gulp.watch('src/{layouts,partials}/**/*.html').on('all', gulp.series(resetPages, pages, browser.reload));
   gulp.watch('src/data/**/*.{js,json,yml}').on('all', gulp.series(resetPages, pages, browser.reload));
   gulp.watch('src/helpers/**/*.js').on('all', gulp.series(resetPages, pages, browser.reload));
-  gulp.watch('src/assets/scss/**/*.scss').on('all', sass, sassWP);
+  gulp.watch('src/assets/scss/**/*.scss').on('all', gulp.series(sass, sassWP));
   gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, javascriptWP, browser.reload));
   gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, imagesWP, browser.reload));
   gulp.watch('src/styleguide/**').on('all', gulp.series(styleGuide, browser.reload));
