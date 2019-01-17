@@ -222,7 +222,7 @@ class Dropbox_Curl extends Dropbox_ConsumerAbstract
                         throw new Dropbox_UnsupportedMediaTypeException($message, 415);
                     case 401:
                     	//401 means oauth token is expired continue to manually handle the exception depending on the situation
-                    	continue;
+                    	break;
                     case 409:
                         //409 in API V2 every error will return with a 409 to find out what the error is the error description should be checked.                      
                         throw new Dropbox_Exception($message, $code);

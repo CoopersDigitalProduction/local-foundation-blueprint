@@ -77,7 +77,7 @@ abstract class UpdraftPlus_RemoteSend {
 		return $msg;
 	}
 
-	public function updraftplus_logline($line, $nonce, $level, $uniq_id) {
+	public function updraftplus_logline($line, $nonce, $level, $uniq_id) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		if ('notice' === $level && 'php_event' === $uniq_id) {
 			$this->php_events[] = $line;
 		}
@@ -209,7 +209,7 @@ abstract class UpdraftPlus_RemoteSend {
 	 *
 	 * @return array                 - the array response
 	 */
-	public function udrpc_command_upload_complete($response, $data, $name_indicator) {
+	public function udrpc_command_upload_complete($response, $data, $name_indicator) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		if (!preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches)) return $response;
 		
 		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
@@ -225,7 +225,7 @@ abstract class UpdraftPlus_RemoteSend {
 
 	public function updraftplus_initial_jobdata($initial_jobdata, $options, $split_every) {
 
-		if (is_array($options) && !empty($options['extradata']) && preg_match('#services=remotesend/(\d+)#', $options['extradata'], $matches)) {
+		if (is_array($options) && !empty($options['extradata']) && !empty($options['extradata']['services']) && preg_match('#remotesend/(\d+)#', $options['extradata']['services'], $matches)) {
 
 			// Load the option now - don't wait until send time
 			$site_id = $matches[1];
@@ -311,7 +311,7 @@ abstract class UpdraftPlus_RemoteSend {
 				}
 
 				// We got several support requests from people who didn't seem to be aware of other methods
-				$msg_try_other_method = '<p>'.__('If sending directly from site to site does not work for you, then there are three other methods - please try one of these instead.', 'updraftplus').'<a href="https://updraftplus.com/faqs/how-do-i-migrate-to-a-new-site-location/#importing">'.__('For longer help, including screenshots, follow this link.', 'updraftplus').'</a></p>';
+				$msg_try_other_method = '<p>'.__('If sending directly from site to site does not work for you, then there are three other methods - please try one of these instead.', 'updraftplus').'<a href="https://updraftplus.com/faqs/how-do-i-migrate-to-a-new-site-location/#importing" target="_blank">'.__('For longer help, including screenshots, follow this link.', 'updraftplus').'</a></p>';
 
 				$res['moreinfo'] = isset($res['moreinfo']) ? $res['moreinfo'].$msg_try_other_method : $msg_try_other_method;
 
@@ -393,7 +393,7 @@ abstract class UpdraftPlus_RemoteSend {
 	 *
 	 * @return string        - the RSA remote key
 	 */
-	public function updraft_migrate_key_create_return($string, $data) {
+	public function updraft_migrate_key_create_return($string, $data) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return $this->updraft_migrate_key_create($data);
 	}
 
@@ -441,6 +441,15 @@ abstract class UpdraftPlus_RemoteSend {
 			));
 			die;
 		}
+
+		if (extension_loaded('mbstring')) {
+			// phpcs:ignore  PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated -- Commented out as this flags as not compatible with PHP 5.2
+			if (ini_get('mbstring.func_overload') & 2) {
+				echo json_encode(array('e' => 1, 'r' => __('Error:', 'updraftplus').' '.sprintf(__('The setting %s is turned on in your PHP settings. It is deprecated, causes encryption to malfunction, and should be turned off.', 'updraftplus'), 'mbstring.func_overload')));
+				die;
+			}
+		}
+
 		echo json_encode(array('e' => 1));
 		die;
 	}

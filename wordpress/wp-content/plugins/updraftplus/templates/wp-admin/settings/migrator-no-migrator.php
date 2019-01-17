@@ -14,7 +14,7 @@
 		</p>
 
 		<p>
-			<a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/migrator/");?>"><?php _e('More information here.', 'updraftplus'); ?></a>
+			<a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/migrator/");?>" target="_blank"><?php _e('More information here.', 'updraftplus'); ?></a>
 		</p>
 	</div>
 

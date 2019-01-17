@@ -1427,10 +1427,12 @@ SQL
 		}
 		
 		if (empty($_POST['user_login'])) { return; }
-		$value = trim($_POST['user_login']);
-		$user  = get_user_by('login', $value);
+		$user_login = $_POST['user_login'];
+		if (is_array($user_login)) { $user_login = wfUtils::array_first($user_login); }
+		$user_login = trim($user_login);
+		$user  = get_user_by('login', $user_login);
 		if (!$user) {
-			$user = get_user_by('email', $value);
+			$user = get_user_by('email', $user_login);
 		}
 
 		if($user){
@@ -1784,6 +1786,10 @@ SQL
 										delete_transient('wfSyncGeoIPActive');
 									}
 								}
+							}
+							else {
+								wfConfig::remove('needsGeoIPSync');
+								delete_transient('wfSyncGeoIPActive');
 							}
 						}
 						catch (Exception $e) {
@@ -3037,6 +3043,8 @@ SQL
 			}
 		}
 		
+		if (is_array($username) || is_array($passwd)) { return; }
+		
 		//Intermediate stage of login
 		if(! $username){ return; }
 		$userDat = get_user_by('login', $username);
@@ -3070,6 +3078,8 @@ SQL
 				return;
 			}
 		}
+		
+		if (is_array($username) || is_array($passwd)) { return; }
 		
 		//Intermediate stage of login
 		if(! $username){ return; }

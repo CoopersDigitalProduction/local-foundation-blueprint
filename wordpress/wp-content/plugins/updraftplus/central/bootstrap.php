@@ -173,7 +173,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 	 * @param array $params which have action, subaction and nonce
 	 * @return array which contains log_contents. If error, Returns array which contains fatal_error flag and fatal_error_message
 	 */
-	public function get_log($params) {
+	public function get_log($params) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	
 		$udrpc_log = get_site_option('updraftcentral_client_log');
 		if (!is_array($udrpc_log)) $udrpc_log = array();

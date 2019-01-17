@@ -90,7 +90,7 @@ class UpdraftPlus_ftp_wrapper {
 		if (!$fh = fopen($local_file_path, 'rb')) return false;
 		if ($existing_size) fseek($fh, $existing_size);
 
-		$ret = ftp_nb_fput($this->conn_id, $remote_file_path, $fh, FTP_BINARY, $existing_size);
+		$ret = ftp_nb_fput($this->conn_id, $remote_file_path, $fh, $mode, $existing_size);
 
 		// $existing_size can now be re-purposed
 

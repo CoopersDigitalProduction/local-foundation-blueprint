@@ -16,6 +16,9 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 	private $callback_url;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->client_id = defined('UPDRAFTPLUS_GOOGLEDRIVE_CLIENT_ID') ? UPDRAFTPLUS_GOOGLEDRIVE_CLIENT_ID : '916618189494-u3ehb1fl7u3meb63nb2b4fqi0r9pcfe2.apps.googleusercontent.com';
 		$this->callback_url = defined('UPDRAFTPLUS_GOOGLEDRIVE_CALLBACK_URL') ? UPDRAFTPLUS_GOOGLEDRIVE_CALLBACK_URL : 'https://auth.updraftplus.com/auth/googledrive';
@@ -64,6 +67,11 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		return array('multi_options', 'config_templates', 'multi_storage');
 	}
 
+	/**
+	 * Retrieve default options for this remote storage module.
+	 *
+	 * @return Array - an array of options
+	 */
 	public function get_default_options() {
 		// parentid is deprecated since April 2014; it should not be in the default options (its presence is used to detect an upgraded-from-previous-SDK situation). For the same reason, 'folder' is also unset; which enables us to know whether new-style settings have ever been set.
 		return array(
@@ -877,7 +885,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		return $result;
 	}
 
-	public function delete($files, $data = null, $sizeinfo = array()) {
+	public function delete($files, $data = null, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		if (is_string($files)) $files = array($files);
 
@@ -1194,9 +1202,9 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 						// If we are not using the master app then show them the instructions for Client ID and Secret
 						?>
 						<p><a href="<?php echo apply_filters('updraftplus_com_link', 'https://updraftplus.com/support/configuring-google-drive-api-access-in-updraftplus/');
-?>"><strong><?php _e('For longer help, including screenshots, follow this link. The description below is sufficient for more expert users.', 'updraftplus');?></strong></a></p>
+?>" target="_blank"><strong><?php _e('For longer help, including screenshots, follow this link. The description below is sufficient for more expert users.', 'updraftplus');?></strong></a></p>
 
-						<p><a href="https://console.developers.google.com"><?php _e('Follow this link to your Google API Console, and there activate the Drive API and create a Client ID in the API Access section.', 'updraftplus');?></a> <?php _e("Select 'Web Application' as the application type.", 'updraftplus');?></p><p><?php echo htmlspecialchars(__('You must add the following as the authorised redirect URI (under "More Options") when asked', 'updraftplus'));?>: <kbd><?php echo UpdraftPlus_Options::admin_page_url().'?action=updraftmethod-googledrive-auth'; ?></kbd> <?php _e('N.B. If you install UpdraftPlus on several WordPress sites, then you cannot re-use your project; you must create a new one from your Google API console for each site.', 'updraftplus');?>
+						<p><a href="https://console.developers.google.com" target="_blank"><?php _e('Follow this link to your Google API Console, and there activate the Drive API and create a Client ID in the API Access section.', 'updraftplus');?></a> <?php _e("Select 'Web Application' as the application type.", 'updraftplus');?></p><p><?php echo htmlspecialchars(__('You must add the following as the authorised redirect URI (under "More Options") when asked', 'updraftplus'));?>: <kbd><?php echo UpdraftPlus_Options::admin_page_url().'?action=updraftmethod-googledrive-auth'; ?></kbd> <?php _e('N.B. If you install UpdraftPlus on several WordPress sites, then you cannot re-use your project; you must create a new one from your Google API console for each site.', 'updraftplus');?>
 						</p>
 						<?php
 					}
@@ -1254,7 +1262,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 				{{/if}}
 							<br>
 							<em>
-								<a href="<?php echo apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/updraftplus-premium/");?>">
+								<a href="<?php echo apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/updraftplus-premium/");?>" target="_blank">
 									<?php echo __('To be able to set a custom folder name, use UpdraftPlus Premium.', 'updraftplus');?>
 								</a>
 							</em>

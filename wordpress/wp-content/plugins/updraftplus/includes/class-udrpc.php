@@ -59,7 +59,7 @@ if (!class_exists('UpdraftPlus_Remote_Communications')) :
 class UpdraftPlus_Remote_Communications {
 
 	// Version numbers relate to versions of this PHP library only (i.e. it's not a protocol support number, and version numbers of other compatible libraries (e.g. JavaScript) are not comparable)
-	public $version = '1.4.15';
+	public $version = '1.4.16';
 
 	private $key_name_indicator;
 
@@ -106,7 +106,7 @@ class UpdraftPlus_Remote_Communications {
 	
 	private $require_message_to_be_understood = false;
 
-	public function __construct($key_name_indicator = 'default', $can_generate = false) {
+	public function __construct($key_name_indicator = 'default') {
 		$this->set_key_name_indicator($key_name_indicator);
 	}
 

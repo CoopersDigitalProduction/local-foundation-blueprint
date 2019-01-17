@@ -93,18 +93,6 @@ class WPSEO_Admin_Init {
 	}
 
 	/**
-	 * Helper to verify if the current user has already seen the about page for the current version
-	 *
-	 * @return bool
-	 */
-	private function seen_about() {
-		$seen_about_version = substr( get_user_meta( get_current_user_id(), 'wpseo_seen_about_version', true ), 0, 3 );
-		$last_minor_version = substr( WPSEO_VERSION, 0, 3 );
-
-		return version_compare( $seen_about_version, $last_minor_version, '>=' );
-	}
-
-	/**
 	 * Notify about the default tagline if the user hasn't changed it
 	 */
 	public function tagline_notice() {
@@ -624,7 +612,7 @@ class WPSEO_Admin_Init {
 		global $wp_filter;
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			return false;
+			return;
 		}
 
 		// WordPress hooks that have been deprecated since a Yoast SEO version.
@@ -669,6 +657,10 @@ class WPSEO_Admin_Init {
 				'version'     => '7.0',
 				'alternative' => null,
 			),
+			'wpseo_genesis_force_adjacent_rel_home' => array(
+				'version'     => '9.4',
+				'alternative' => null,
+			),
 		);
 
 		// Determine which filters have been registered.
@@ -686,17 +678,6 @@ class WPSEO_Admin_Init {
 				$deprecation_info['alternative']
 			);
 		}
-	}
-
-	/**
-	 * Check if there is a dismiss notice action.
-	 *
-	 * @param string $notice_name The name of the notice to dismiss.
-	 *
-	 * @return bool
-	 */
-	private function dismiss_notice( $notice_name ) {
-		return filter_input( INPUT_GET, $notice_name ) === '1' && wp_verify_nonce( filter_input( INPUT_GET, 'nonce' ), $notice_name );
 	}
 
 	/**
@@ -718,8 +699,8 @@ class WPSEO_Admin_Init {
 			$warning = esc_html__( 'WARNING:', 'wordpress-seo' );
 			/* translators: %1$s and %2$s expand to <i> items to emphasize the word in the middle. */
 			$message = esc_html__( 'Changing your permalinks settings can seriously impact your search engine visibility. It should almost %1$s never %2$s be done on a live website.', 'wordpress-seo' );
-			$link = esc_html__( 'Learn about why permalinks are important for SEO.', 'wordpress-seo' );
-			$url = WPSEO_Shortlinker::get( 'https://yoa.st/why-permalinks/' );
+			$link    = esc_html__( 'Learn about why permalinks are important for SEO.', 'wordpress-seo' );
+			$url     = WPSEO_Shortlinker::get( 'https://yoa.st/why-permalinks/' );
 
 			echo '<div class="notice notice-warning"><p><strong>' . $warning . '</strong><br>' . sprintf( $message, '<i>', '</i>' ) . '<br><a href="' . $url . '" target="_blank">' . $link . '</a></p></div>';
 		}

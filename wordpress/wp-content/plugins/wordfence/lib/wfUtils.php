@@ -1,6 +1,5 @@
 <?php
 require_once('wfConfig.php');
-require_once('wfCountryMap.php');
 class wfUtils {
 	private static $isWindows = false;
 	public static $scanLockFH = false;
@@ -1153,13 +1152,27 @@ class wfUtils {
 	}
 	public static function getScanFileError() {
 		$fileTime = wfConfig::get('scanFileProcessing');
-		if (! $fileTime) {
+		if (!$fileTime) {
 			return;
 		}
 		list($file, $time) =  unserialize($fileTime);
 		if ($time+10 < time()) {
-			$files = wfConfig::get('scan_exclude') . "\n" . $file;
-			wfConfig::set('scan_exclude', self::cleanupOneEntryPerLine($files));
+			$add = true;
+			$excludePatterns = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_USER);
+			if ($excludePatterns) {
+				foreach ($excludePatterns as $pattern) {
+					if (preg_match($pattern, $file)) {
+						$add = false;
+						break;
+					}
+				}
+			}
+			
+			if ($add) {
+				$files = wfConfig::get('scan_exclude') . "\n" . $file;
+				wfConfig::set('scan_exclude', self::cleanupOneEntryPerLine($files));
+			}
+			
 			self::endProcessingFile();
 		}
 	}
@@ -1369,8 +1382,9 @@ class wfUtils {
 		return $tooBig;
 	}
 	public static function countryCode2Name($code){
-		if(isset(wfCountryMap::$map[$code])){
-			return wfCountryMap::$map[$code];
+		require('wfBulkCountries.php'); /** @var array $wfBulkCountries */
+		if(isset($wfBulkCountries[$code])){
+			return $wfBulkCountries[$code];
 		} else {
 			return '';
 		}

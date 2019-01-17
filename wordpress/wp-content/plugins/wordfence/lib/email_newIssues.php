@@ -38,7 +38,7 @@
 		if (isset($i['tmplData']['vulnerable']) && $i['tmplData']['vulnerable']) {
 			echo '<p><strong>' . __('Plugin contains an unpatched security vulnerability.', 'wordfence') . '</strong>';
 			if (isset($i['tmplData']['vulnerabilityLink'])) {
-				echo ' <a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferer noopener">' . __('Vulnerability Information', 'wordfence') . '</a>';
+				echo ' <a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferrer noopener">' . __('Vulnerability Information', 'wordfence') . '</a>';
 			}
 			echo '</p>';
 		}
@@ -48,7 +48,7 @@
 		if (isset($i['tmplData']['vulnerable']) && $i['tmplData']['vulnerable']) {
 			echo '<strong>' . __('Update includes security-related fixes.', 'wordfence') . '</strong> ';
 			if (isset($i['tmplData']['vulnerabilityLink'])) {
-				echo '<a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferer noopener">' . __('Vulnerability Information', 'wordfence') . '</a> ';
+				echo '<a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferrer noopener">' . __('Vulnerability Information', 'wordfence') . '</a> ';
 			}
 		}
 		echo $i['tmplData']['wpURL'] . '/#developers</p>';
@@ -56,7 +56,7 @@
 	else if (isset($i['tmplData']['vulnerable']) && $i['tmplData']['vulnerable']) {
 		echo '<p><strong>' . __('Update includes security-related fixes.', 'wordfence') . '</strong>';
 		if (isset($i['tmplData']['vulnerabilityLink'])) {
-			echo ' <a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferer noopener">' . __('Vulnerability Information', 'wordfence') . '</a>';
+			echo ' <a href="' . $i['tmplData']['vulnerabilityLink'] . '" target="_blank" rel="nofollow noreferrer noopener">' . __('Vulnerability Information', 'wordfence') . '</a>';
 		}
 		echo '</p>';
 	}

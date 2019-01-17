@@ -84,7 +84,7 @@ foreach ($default_options as $k => $v) {
 		<th></th>
 		<td><div>
 		<?php
-			echo apply_filters('updraftplus_fixtime_ftinfo', '<p>'.__('To fix the time at which a backup should take place,', 'updraftplus').' ('.__('e.g. if your server is busy at day and you want to run overnight', 'updraftplus').'), '.__('or to configure more complex schedules', 'updraftplus').', <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'">'.htmlspecialchars(__('use UpdraftPlus Premium', 'updraftplus')).'</a></p>');
+			echo apply_filters('updraftplus_fixtime_ftinfo', '<p>'.__('To fix the time at which a backup should take place,', 'updraftplus').' ('.__('e.g. if your server is busy at day and you want to run overnight', 'updraftplus').'), '.__('to take incremental backups', 'updraftplus').', '.__('or to configure more complex schedules', 'updraftplus').', <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'" target="_blank">'.htmlspecialchars(__('use UpdraftPlus Premium', 'updraftplus')).'</a></p>');
 		?>
 		</div></td>
 	</tr>
@@ -122,7 +122,7 @@ foreach ($default_options as $k => $v) {
 		<?php
 			if (false === apply_filters('updraftplus_storage_printoptions', false, $active_service)) {
 				echo '</div>';
-				echo '<p><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/morestorage/").'">'.htmlspecialchars(__('You can send a backup to more than one destination with an add-on.', 'updraftplus')).'</a></p>';
+				echo '<p><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/morestorage/").'" target="_blank">'.htmlspecialchars(__('You can send a backup to more than one destination with an add-on.', 'updraftplus')).'</a></p>';
 			}
 		?>
 		
@@ -144,7 +144,7 @@ foreach ($default_options as $k => $v) {
 		<th><?php _e('Include in files backup', 'updraftplus');?>:</th>
 		<td>
 			<?php echo $updraftplus_admin->files_selector_widgetry('', true, true); ?>
-			<p><?php echo apply_filters('updraftplus_admin_directories_description', __('The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/").'">'.htmlspecialchars(__('See also the "More Files" add-on from our shop.', 'updraftplus')).'</a>'); ?></p>
+			<p><?php echo apply_filters('updraftplus_admin_directories_description', __('The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/").'" target="_blank">'.htmlspecialchars(__('See also the "More Files" add-on from our shop.', 'updraftplus')).'</a>'); ?></p>
 		</td>
 	</tr>
 </table>
@@ -158,7 +158,7 @@ foreach ($default_options as $k => $v) {
 
 		<td>
 		<?php
-			echo apply_filters('updraft_database_encryption_config', '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/updraftplus-premium").'">'.__("Don't want to be spied on? UpdraftPlus Premium can encrypt your database backup.", 'updraftplus').'</a> '.__('It can also backup external databases.', 'updraftplus'));
+			echo apply_filters('updraft_database_encryption_config', '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/updraftplus-premium").'" target="_blank">'.__("Don't want to be spied on? UpdraftPlus Premium can encrypt your database backup.", 'updraftplus').'</a> '.__('It can also backup external databases.', 'updraftplus'));
 		?>
 		</td>
 	</tr>
@@ -212,7 +212,7 @@ foreach ($default_options as $k => $v) {
 				}
 				
 				if (!$wp_optimize_file) {
-					?><br><a href="https://wordpress.org/plugins/wp-optimize/"><?php _e('Recommended: optimize your database with WP-Optimize.', 'updraftplus');?></a>
+					?><br><a href="https://wordpress.org/plugins/wp-optimize/" target="_blank"><?php _e('Recommended: optimize your database with WP-Optimize.', 'updraftplus');?></a>
 					<?php
 				}
 			?>
@@ -259,7 +259,7 @@ foreach ($default_options as $k => $v) {
 			?>
 			<label for="updraft_email" class="updraft_checkbox"><input type="checkbox" id="updraft_email" name="updraft_email" value="<?php esc_attr_e(get_bloginfo('admin_email')); ?>"<?php if (!empty($updraft_email)) echo ' checked="checked"';?> > <?php echo __("Check this box to have a basic report sent to", 'updraftplus').' <a href="'.admin_url('options-general.php').'">'.__("your site's admin address", 'updraftplus').'</a> ('.htmlspecialchars(get_bloginfo('admin_email')).")."; ?></label>
 			<?php
-				if (!class_exists('UpdraftPlus_Addon_Reporting')) echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/reporting/").'">'.__('For more reporting features, use the Reporting add-on.', 'updraftplus').'</a>';
+				if (!class_exists('UpdraftPlus_Addon_Reporting')) echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/reporting/").'" target="_blank">'.__('For more reporting features, use the Reporting add-on.', 'updraftplus').'</a>';
 			?>
 		</td>
 	</tr>
@@ -342,12 +342,12 @@ foreach ($default_options as $k => $v) {
 
 	<tr class="expertmode updraft-hidden" style="display:none;">
 		<th><?php _e('Disable SSL entirely where possible', 'updraftplus');?>:</th>
-		<td><input data-updraft_settings_test="nossl" type="checkbox" id="updraft_ssl_nossl" name="updraft_ssl_nossl" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_ssl_nossl')) echo 'checked="checked"'; ?>> <br><label for="updraft_ssl_nossl"><?php _e('Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect.', 'updraftplus');?> <a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/i-get-ssl-certificate-errors-when-backing-up-andor-restoring/");?>"><?php _e('See this FAQ also.', 'updraftplus');?></a></label></td>
+		<td><input data-updraft_settings_test="nossl" type="checkbox" id="updraft_ssl_nossl" name="updraft_ssl_nossl" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_ssl_nossl')) echo 'checked="checked"'; ?>> <br><label for="updraft_ssl_nossl"><?php _e('Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect.', 'updraftplus');?> <a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/i-get-ssl-certificate-errors-when-backing-up-andor-restoring/");?>" target="_blank"><?php _e('See this FAQ also.', 'updraftplus');?></a></label></td>
 	</tr>
 
 	<tr class="expertmode updraft-hidden" style="display:none;">
 		<th><?php _e('Automatic updates', 'updraftplus');?>:</th>
-		<td><label><input type="checkbox" id="updraft_auto_updates" data-updraft_settings_test="updraft_auto_updates" name="updraft_auto_updates" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_auto_updates')) echo 'checked="checked"'; ?>><br /><?php _e('Ask WordPress to automatically update UpdraftPlus when it finds an available update.', 'updraftplus');?></label><p><a href="https://wordpress.org/plugins/stops-core-theme-and-plugin-updates/"><?php _e('Read more about Easy Updates Manager', 'updraftplus'); ?></a></p></td>
+		<td><label><input type="checkbox" id="updraft_auto_updates" data-updraft_settings_test="updraft_auto_updates" name="updraft_auto_updates" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_auto_updates')) echo 'checked="checked"'; ?>><br /><?php _e('Ask WordPress to automatically update UpdraftPlus when it finds an available update.', 'updraftplus');?></label><p><a href="https://wordpress.org/plugins/stops-core-theme-and-plugin-updates/" target="_blank"><?php _e('Read more about Easy Updates Manager', 'updraftplus'); ?></a></p></td>
 	</tr>
 
 	<?php do_action('updraftplus_configprint_expertoptions'); ?>

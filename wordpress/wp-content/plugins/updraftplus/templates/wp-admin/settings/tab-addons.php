@@ -20,7 +20,7 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 						<li><a target="_blank" href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/ask-a-pre-sales-question/");?>"><?php _e('Ask a pre-sales question', 'updraftplus');?></a></li>
 						<li><a target="_blank" href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/support/");?>"><?php _e('Support', 'updraftplus');?></a></li>
 						<li><a href="#other-plugins"><?php _e('Other great plugins', 'updraftplus');?></a></li>
-						<li><a href="https://www.simbahosting.co.uk/s3/shop/"><?php _e('WooCommerce plugins', 'updraftplus');?></a></li>
+						<li><a target="_blank" href="https://www.simbahosting.co.uk/s3/shop/"><?php _e('WooCommerce plugins', 'updraftplus');?></a></li>
 					</ul>
 				</div>
 				<a target="_blank" class="button button-primary button-hero" href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/");?>"><?php _e('Get it here', 'updraftplus');?></a>
@@ -53,7 +53,7 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<span class="installed updraft-yes"><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span> <?php _e('Installed', 'updraftplus');?></span>
 				</td>
 				<td>
-					<a class="button button-primary" href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/'));?>"><?php _e('Upgrade now', 'updraftplus');?></a>
+					<a class="button button-primary" href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/'));?>" target="_blank"><?php _e('Upgrade now', 'updraftplus');?></a>
 				</td>
 			</tr>
 			<tr>
@@ -80,6 +80,22 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 				</td>
 				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="<?php echo UPDRAFTPLUS_URL . '/images/addons-images/incremental.png'; ?>" alt="<?php esc_attr_e('Incremental backups', 'updraftplus'); ?>" width="100" height="100" class="udp-premium-image">
+					<h4><?php _e('Incremental backups', 'updraftplus'); ?></h4>
+					<p>
+						<?php _e('Incremental backups are backups of just the changes since your last full backup. As a result, they are faster and need less space and resources to process.', 'updraftplus'); ?>
+					</p>
+					
+				</td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
+					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus'); ?>"></span></span></p>
+				</td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
+					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus'); ?>"></span></p>
 				</td>
 			</tr>
 			<tr>
@@ -244,7 +260,7 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('UpdraftVault storage', 'updraftplus');?></h4>
 					<p>
 						<?php _e('UpdraftPlus has its own embedded storage option, providing a zero-hassle way to download, store and manage all your backups from one place.', 'updraftplus');?>
-						<a href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/landing/updraftvault'));?>"><?php _e('Premium / Find out more', 'updraftplus');?></a>
+						<a href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/landing/updraftvault'));?>" target="_blank"><?php _e('Premium / Find out more', 'updraftplus');?></a>
 					</p>
 					
 				</td>
@@ -261,7 +277,7 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<span class="installed updraft-yes"><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span> <?php _e('Installed', 'updraftplus');?></span>
 				</td>
 				<td>
-					<p><a class="button button-primary" href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/'));?>"><?php _e('Upgrade now', 'updraftplus');?></a></p>
+					<p><a class="button button-primary" href="<?php esc_attr_e(apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/'));?>" target="_blank"><?php _e('Upgrade now', 'updraftplus');?></a></p>
 				</td>
 			</tr>
 			</tbody>

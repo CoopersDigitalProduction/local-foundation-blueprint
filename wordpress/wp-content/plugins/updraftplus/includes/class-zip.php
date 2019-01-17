@@ -48,6 +48,7 @@ class UpdraftPlus_PclZip {
 	 * @return null
 	 */
 	public function ud_include_mtime() {
+		if (empty($this->include_mtime)) $this->statindex = null;
 		$this->include_mtime = true;
 	}
 
@@ -59,10 +60,13 @@ class UpdraftPlus_PclZip {
 	 * @return Boolean|Null|Integer - the value, or null if an unknown variable, or false if something goes wrong
 	 */
 	public function __get($name) {
-		if ('numFiles' == $name || 'numAll' == $name) {
+
+		if ('numFiles' == $name) {
 
 			if (empty($this->pclzip)) return false;
 
+			if (!empty($this->statindex)) return count($this->statindex);
+			
 			$statindex = $this->pclzip->listContent();
 
 			if (empty($statindex)) {
@@ -72,22 +76,9 @@ class UpdraftPlus_PclZip {
 				return (0 === $statindex) ? false : 0;
 			}
 
-			if ('numFiles' == $name) {
-				
-				$result = array();
-				foreach ($statindex as $i => $file) {
-					if (!isset($statindex[$i]['folder']) || 0 == $statindex[$i]['folder']) {
-						$result[] = $file;
-					}
-					unset($statindex[$i]);
-				}
-
-				$this->statindex = $result;
-
-			} else {
-				$this->statindex = $statindex;
-			}
-
+			// We used to exclude folders in the case of numFiles (and implemented a private alternative, numAll, that included them), because we had no use for them (we ran a loop over $statindex to build a result that excluded the folders); but that is no longer the case (Dec 2018)
+			$this->statindex = $statindex;
+			
 			return count($this->statindex);
 		}
 
@@ -109,6 +100,49 @@ class UpdraftPlus_PclZip {
 		return $v;
 	}
 
+	/**
+	 * Returns the entry contents using its index
+	 *
+	 * @see https://php.net/manual/en/ziparchive.getfromindex.php
+	 *
+	 * @param Integer $index  - Index of the entry
+	 * @param Integer $length - The length to be read from the entry. If 0, then the entire entry is read.
+	 * @param Integer $flags  - The flags to use to open the archive.
+	 *
+	 * @return String|Boolean - Returns the contents of the entry on success or FALSE on failure.
+	 */
+	public function getFromIndex($index, $length = 0, $flags = 0) {
+		
+		$contents = $this->pclzip->extract(PCLZIP_OPT_BY_INDEX, array($index), PCLZIP_OPT_EXTRACT_AS_STRING);
+		
+		if (0 === $contents) {
+			$this->last_error = $this->pclzip->errorInfo(true);
+			return false;
+		}
+		
+		// This also prevents CI complaining about an unused parameter
+		if ($flags) {
+			error_log("A call to UpdraftPlus_PclZip::getFromIndex() set flags=$flags, but this is not implemented");
+		}
+		
+		if (!is_array($contents)) {
+			$this->last_error = 'PclZip::extract() did not return the expected information (1)';
+			return false;
+		}
+		
+		$content = array_pop($contents);
+		
+		if (!isset($content['content'])) {
+			$this->last_error = 'PclZip::extract() did not return the expected information (2)';
+			return false;
+		}
+
+		$results = $content['content'];
+		
+		return $length ? substr($results, 0, $length) : $results;
+		
+	}
+	
 	/**
 	 * Open a zip file
 	 *
@@ -157,6 +191,7 @@ class UpdraftPlus_PclZip {
 	 * @return boolean
 	 */
 	public function close() {
+
 		if (empty($this->pclzip)) {
 			$this->last_error = 'Zip file was not opened';
 			return false;
@@ -192,6 +227,7 @@ class UpdraftPlus_PclZip {
 		$this->adddirs = array();
 
 		clearstatcache();
+
 		if ($activity && filesize($this->path) < 50) {
 			$this->last_error = "Write failed - unknown cause (check your file permissions)";
 			return false;
@@ -222,6 +258,16 @@ class UpdraftPlus_PclZip {
 		$this->adddirs[] = $dir;
 	}
 
+	/**
+	 * Extract a path
+	 *
+	 * @param String $path_to_extract
+	 * @param String $path
+	 *
+	 * @see http://www.phpconcept.net/pclzip/user-guide/55
+	 *
+	 * @return Array|Integer - either an array with the extracted files or an error. N.B. "If one file extraction fail, the full extraction does not fail. The method does not return an error, but the file status is set with the error reason."
+	 */
 	public function extract($path_to_extract, $path) {
 		return $this->pclzip->extract(PCLZIP_OPT_PATH, $path_to_extract, PCLZIP_OPT_BY_NAME, $path);
 	}
@@ -347,13 +393,13 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 					// Logging all this really slows things down; use debug to mitigate
 					if ($w && $updraftplus_backup->debug) $updraftplus->log("Output from zip: ".trim($w), 'debug');
 					if (time() > $last_recorded_alive + 5) {
-						$updraftplus->record_still_alive();
+						UpdraftPlus_Job_Scheduler::record_still_alive();
 						$last_recorded_alive = time();
 					}
 					if (file_exists($this->path)) {
 						$new_size = @filesize($this->path);
 						if (!$something_useful_happened && $new_size > $orig_size + 20) {
-							$updraftplus->something_useful_happened();
+							UpdraftPlus_Job_Scheduler::something_useful_happened();
 							$something_useful_happened = true;
 						}
 						clearstatcache();

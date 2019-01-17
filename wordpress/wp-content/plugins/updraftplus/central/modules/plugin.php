@@ -19,7 +19,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
 	 */
-	public function _pre_action($command, $data, $extra_info) {
+	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// Here we assign the current blog_id to a variable $blog_id
 		$blog_id = get_current_blog_id();
 		if (!empty($data['site_id'])) $blog_id = $data['site_id'];
@@ -38,7 +38,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
 	 */
-	public function _post_action($command, $data, $extra_info) {
+	public function _post_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// Here, we're restoring to the current (default) blog before we switched
 		if ($this->switched) restore_current_blog();
 	}

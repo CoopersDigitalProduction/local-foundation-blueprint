@@ -418,8 +418,8 @@ class UpdraftPlus_Temporary_Clone_Status {
 	 * @return string - the clone content
 	 */
 	public function get_content() {
-		$content = '<p>'.__('Your UpdraftClone is still setting up.', 'updraftplus').' '.sprintf(__('You can check the progress here or in %s', 'updraftplus'), '<a href="https://updraftplus.com/my-account/clones/">'.__('your UpdraftPlus.com account', 'updraftplus')).'</a></p>';
-		$content .= '<p><a href="https://updraftplus.com/faq-category/updraftclone/">'.__('To read FAQs/documentation about UpdraftClone, go here.', 'updraftplus').'</a></p>';
+		$content = '<p>'.__('Your UpdraftClone is still setting up.', 'updraftplus').' '.sprintf(__('You can check the progress here or in %s', 'updraftplus'), '<a href="https://updraftplus.com/my-account/clones/" target="_blank">'.__('your UpdraftPlus.com account', 'updraftplus')).'</a></p>';
+		$content .= '<p><a href="https://updraftplus.com/faq-category/updraftclone/" target="_blank">'.__('To read FAQs/documentation about UpdraftClone, go here.', 'updraftplus').'</a></p>';
 		return $content;
 	}
 

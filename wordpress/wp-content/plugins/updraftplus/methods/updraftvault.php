@@ -76,20 +76,25 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 	/**
 	 * Gets the UpdraftVault configuration and credentials
 	 *
+	 * @param Boolean $force_refresh - if set, and if relevant, don't use cached credentials, but get them afresh
+	 *
 	 * @return array An array containing the Amazon S3 credentials (accesskey, secretkey, etc.)
 	 *				 along with some configuration values.
 	 */
-	public function get_config() {
+	public function get_config($force_refresh = false) {
 
 		global $updraftplus;
-		// Have we already done this?
-		if (!empty($this->vault_config)) return $this->vault_config;
+		
+		if (!$force_refresh) {
+			// Have we already done this?
+			if (!empty($this->vault_config)) return $this->vault_config;
 
-		// Stored in the job?
-		if ($job_config = $this->jobdata_get('config', null, 'updraftvault_config')) {
-			if (!empty($job_config) && is_array($job_config)) {
-				$this->vault_config = $job_config;
-				return $job_config;
+			// Stored in the job?
+			if ($job_config = $this->jobdata_get('config', null, 'updraftvault_config')) {
+				if (!empty($job_config) && is_array($job_config)) {
+					$this->vault_config = $job_config;
+					return $job_config;
+				}
 			}
 		}
 
@@ -465,7 +470,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 
 		$ret .= ' - <a href="'.esc_attr($this->get_url('get_more_quota')).'">'.__('Get more quota', 'updraftplus').'</a>';
 
-		$ret_dashboard = $ret . ' - <a href="'.UpdraftPlus::get_current_clean_url().'" id="updraftvault_recountquota">'.__('Refresh current status', 'updraftplus').'</a>';
+		$ret_dashboard = $ret . ' - <a href="#" id="updraftvault_recountquota">'.__('Refresh current status', 'updraftplus').'</a>';
 
 		set_transient('updraftvault_quota_text', $ret_dashboard, 86400*3);
 

@@ -23,7 +23,7 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 	
 	protected $use_v4 = false;
 
-	protected function set_region($obj, $region = '', $bucket_name = '') {
+	protected function set_region($obj, $region = '', $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		$config = $this->get_config();
 		$endpoint = ('' != $region && 'n/a' != $region) ? $region : $config['endpoint'];
 		global $updraftplus;
@@ -70,9 +70,11 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 	/**
 	 * Retrieve specific options for this remote storage module
 	 *
+	 * @param Boolean $force_refresh - if set, and if relevant, don't use cached credentials, but get them afresh
+	 *
 	 * @return Array - an array of options
 	 */
-	protected function get_config() {
+	protected function get_config($force_refresh = false) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		$opts = $this->get_options();
 		$opts['whoweare'] = 'DreamObjects';
 		$opts['whoweare_long'] = 'DreamObjects';
@@ -90,7 +92,7 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 	 * @return String - the template
 	 */
 	public function get_pre_configuration_template() {
-		$this->get_pre_configuration_template_engine('dreamobjects', 'DreamObjects', 'DreamObjects', 'DreamObjects', 'https://panel.dreamhost.com/index.cgi?tree=storage.dreamhostobjects', '<a href="https://dreamhost.com/cloud/dreamobjects/"><img alt="DreamObjects" src="'.UPDRAFTPLUS_URL.'/images/dreamobjects_logo-horiz-2013.png"></a>');
+		$this->get_pre_configuration_template_engine('dreamobjects', 'DreamObjects', 'DreamObjects', 'DreamObjects', 'https://panel.dreamhost.com/index.cgi?tree=storage.dreamhostobjects', '<a href="https://dreamhost.com/cloud/dreamobjects/" target="_blank"><img alt="DreamObjects" src="'.UPDRAFTPLUS_URL.'/images/dreamobjects_logo-horiz-2013.png"></a>');
 	}
 
 	/**
@@ -99,7 +101,7 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 	 * @return String - the template, ready for substitutions to be carried out
 	 */
 	public function get_configuration_template() {
-		return $this->get_configuration_template_engine('dreamobjects', 'DreamObjects', 'DreamObjects', 'DreamObjects', 'https://panel.dreamhost.com/index.cgi?tree=storage.dreamhostobjects', '<a href="https://dreamhost.com/cloud/dreamobjects/"><img alt="DreamObjects" src="'.UPDRAFTPLUS_URL.'/images/dreamobjects_logo-horiz-2013.png"></a>');
+		return $this->get_configuration_template_engine('dreamobjects', 'DreamObjects', 'DreamObjects', 'DreamObjects', 'https://panel.dreamhost.com/index.cgi?tree=storage.dreamhostobjects', '<a href="https://dreamhost.com/cloud/dreamobjects/" target="_blank"><img alt="DreamObjects" src="'.UPDRAFTPLUS_URL.'/images/dreamobjects_logo-horiz-2013.png"></a>');
 	}
 	
 	/**

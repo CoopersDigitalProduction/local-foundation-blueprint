@@ -167,7 +167,7 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		// This can be used to detect an UpdraftCentral context
 		if (!defined('UPDRAFTCENTRAL_COMMAND')) define('UPDRAFTCENTRAL_COMMAND', $command);
 		
-		$this->initialise_listener_error_handling($key_name_indicator);
+		$this->initialise_listener_error_handling();
 
 		$command_info = apply_filters('updraftcentral_get_command_info', false, $command);
 		if (!$command_info) return $response;
@@ -215,7 +215,7 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		return $this->current_udrpc;
 	}
 	
-	private function initialise_listener_error_handling($hash) {
+	private function initialise_listener_error_handling() {
 		$this->ud->error_reporting_stop_when_logged = true;
 		set_error_handler(array($this->ud, 'php_error'), E_ALL & ~E_STRICT);
 		$this->php_events = array();
@@ -224,7 +224,7 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		if (!UpdraftPlus_Options::get_updraft_option('updraft_debug_mode')) return;
 	}
 	
-	public function updraftplus_logline($line, $nonce, $level, $uniq_id) {
+	public function updraftplus_logline($line, $nonce, $level, $uniq_id) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		if ('notice' === $level && 'php_event' === $uniq_id) {
 			$this->php_events[] = $line;
 		}

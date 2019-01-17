@@ -1243,7 +1243,7 @@ HTML
 		) {
 			foreach ($this->whitelistedParams[$paramKey] as $urlRegex) {
 				if (is_array($urlRegex)) {
-					if (!in_array($ruleID, $urlRegex['rules'])) {
+					if (isset($urlRegex['rules']) && is_array($urlRegex['rules']) && !in_array($ruleID, $urlRegex['rules'])) {
 						continue;
 					}
 					if (isset($urlRegex['conditional']) && !$urlRegex['conditional']->evaluate()) {

@@ -141,7 +141,7 @@ class wordfenceScanner {
 	 * there is no pattern
 	 *
 	 * @param $whichPatterns int Bitmask indicating which patterns to include.
-	 * @return string|boolean
+	 * @return array|boolean
 	 */
 	public static function getExcludeFilePattern($whichPatterns = self::EXCLUSION_PATTERNS_USER) {
 		if (isset(self::$excludePatterns[$whichPatterns])) {
@@ -166,8 +166,13 @@ class wordfenceScanner {
 			}
 		}
 
+		$exParts = array_filter($exParts);
 		if (!empty($exParts)) {
-			self::$excludePatterns[$whichPatterns] = '/(?:' . implode('|', array_filter($exParts)) . ')$/i';
+			$chunks = array_chunk($exParts, 100);
+			self::$excludePatterns[$whichPatterns] = array();
+			foreach ($chunks as $parts) {
+				self::$excludePatterns[$whichPatterns][] = '/(?:' . implode('|', $parts) . ')$/i';
+			}
 		}
 		else {
 			self::$excludePatterns[$whichPatterns] = false;
@@ -210,7 +215,7 @@ class wordfenceScanner {
 		}
 		
 		$lastCount = 'whatever';
-		$excludePattern = self::getExcludeFilePattern(self::EXCLUSION_PATTERNS_USER | self::EXCLUSION_PATTERNS_MALWARE); 
+		$excludePatterns = self::getExcludeFilePattern(self::EXCLUSION_PATTERNS_USER | self::EXCLUSION_PATTERNS_MALWARE); 
 		while (true) {
 			$thisCount = wordfenceMalwareScanFile::countRemaining();
 			if ($thisCount == $lastCount) {
@@ -228,9 +233,13 @@ class wordfenceScanner {
 			
 			foreach ($files as $record) {
 				$file = $record->filename;
-				if ($excludePattern && preg_match($excludePattern, $file)) {
-					$record->markComplete();
-					continue;
+				if ($excludePatterns) {
+					foreach ($excludePatterns as $pattern) {
+						if (preg_match($pattern, $file)) {
+							$record->markComplete();
+							continue 2;
+						}
+					}
 				}
 				if (!file_exists($this->path . $file)) {
 					$record->markComplete();

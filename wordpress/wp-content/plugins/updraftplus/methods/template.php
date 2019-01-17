@@ -26,7 +26,7 @@ class UpdraftPlus_BackupModule_template extends UpdraftPlus_BackupModule {
 	 * @param  Array $backup_array Array of files (basenames) to sent to remote storage
 	 * @return Mixed - (boolean)false to indicate failure; otherwise, something to be passed back when deleting files
 	 */
-	public function backup($backup_array) {
+	public function backup($backup_array) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
 
@@ -48,7 +48,7 @@ class UpdraftPlus_BackupModule_template extends UpdraftPlus_BackupModule {
 	 *
 	 * @return Array - each file is represented by an array with entries 'name' and (optional) 'size'
 	 */
-	public function listfiles($match = 'backup_') {
+	public function listfiles($match = 'backup_') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// This function needs to return an array of arrays. The keys for the sub-arrays are name (a path-less filename, i.e. a basename), (optional)size, and should be a list of matching files from the storage backend. A WP_Error object can also be returned; and the error code should be no_settings if that is relevant.
 		return array();
 	}
@@ -61,7 +61,7 @@ class UpdraftPlus_BackupModule_template extends UpdraftPlus_BackupModule {
 	 * @param array  $sizeinfo Size information
 	 * @return Boolean - whether the operation succeeded or not
 	 */
-	public function delete($files, $data = false, $sizeinfo = array()) {
+	public function delete($files, $data = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
 
@@ -75,7 +75,7 @@ class UpdraftPlus_BackupModule_template extends UpdraftPlus_BackupModule {
 	 *
 	 * @param string $file The specific file to be downloaded from the Cloud Storage
 	 */
-	public function download($file) {
+	public function download($file) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
 

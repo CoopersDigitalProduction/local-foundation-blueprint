@@ -45,7 +45,7 @@ if (defined('UPDRAFTPLUS_TEMPORARY_CLONE') && !UPDRAFTPLUS_TEMPORARY_CLONE) retu
 					?>
 				</div>
 				<div class="updraft_migrate_widget_temporary_clone_stage0_box">
-					<iframe src="https://player.vimeo.com/video/299632775?color=df6926&title=0&byline=0&portrait=0" width="356" height="200" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+					<a href="https://player.vimeo.com/video/299632775?color=df6926&autoplay=1&title=0&byline=0&portrait=0" class="udp-replace-with-iframe--js"><img src="<?php echo trailingslashit(UPDRAFTPLUS_URL) . 'images/upraftplus-clone-screenshot.jpg'; ?>" style="max-height: 200px;" /></a>
 				</div>
 			</div>
 		</div>

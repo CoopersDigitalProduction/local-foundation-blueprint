@@ -34,7 +34,7 @@ class UpdraftPlus_BackupModule_insufficientphp extends UpdraftPlus_BackupModule 
 	 * @param  array $backup_array An array backups
 	 * @return array
 	 */
-	public function backup($backup_array) {
+	public function backup($backup_array) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return $this->log_error();
 	}
 
@@ -72,7 +72,7 @@ class UpdraftPlus_BackupModule_insufficientphp extends UpdraftPlus_BackupModule 
 	 * @param  string $match THis will specify which match is used for the SQL but by default it is set to 'backup_' unless specified
 	 * @return array
 	 */
-	public function listfiles($match = 'backup_') {
+	public function listfiles($match = 'backup_') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return new WP_Error('insufficient_php', $this->error_msg_trans);
 	}
 
@@ -84,7 +84,7 @@ class UpdraftPlus_BackupModule_insufficientphp extends UpdraftPlus_BackupModule 
 	 * @param  array   $sizeinfo This is the size info on the file.
 	 * @return array
 	 */
-	public function delete($files, $data = false, $sizeinfo = array()) {
+	public function delete($files, $data = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return $this->log_error();
 	}
 
@@ -95,7 +95,7 @@ class UpdraftPlus_BackupModule_insufficientphp extends UpdraftPlus_BackupModule 
 	 * @param  string $file List of files
 	 * @return array
 	 */
-	public function download($file) {
+	public function download($file) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return $this->log_error();
 	}
 

@@ -376,17 +376,17 @@ class UpdraftPlus_Manipulation_Functions {
 	/**
 	 * Given a set of times, find details about the maximum
 	 *
-	 * @param Array	  $time_passed
-	 * @param Integer $upto
-	 * @param Integer $first_run
+	 * @param Array	  $time_passed - a list of times passed, with numerical indexes
+	 * @param Integer $upto		   - last index to consider
+	 * @param Integer $first_run   - first index to consider
 	 *
-	 * @return Array
+	 * @return Array - a list with entries, in order: maximum time, list in string format, how many run times were found
 	 */
 	public static function max_time_passed($time_passed, $upto, $first_run) {
 		$max_time = 0;
 		$timings_string = "";
 		$run_times_known=0;
-		for ($i=$first_run; $i<=$upto; $i++) {
+		for ($i = $first_run; $i <= $upto; $i++) {
 			$timings_string .= "$i:";
 			if (isset($time_passed[$i])) {
 				$timings_string .= round($time_passed[$i], 1).' ';

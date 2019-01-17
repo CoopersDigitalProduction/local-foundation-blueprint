@@ -158,6 +158,22 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 	}
 
 	/**
+	 * Executes the clone checkin. Connects and sends request to UpdraftPlus and returns the response coming from the server
+	 *
+	 * @internal
+	 * @param array $data - The submitted form data
+	 * @return array      - The response from the request
+	 */
+	public function clone_checkin($data) {
+		$action = 'updraftplus_clone_checkin';
+		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
+
+		$response = $this->send_remote_request($data, $action);
+
+		return $this->parse_response($response);
+	}
+
+	/**
 	 * Executes the clone failed delete process. Connects and sends request to the UpdraftPlus clone and returns the response coming from the server
 	 *
 	 * @internal

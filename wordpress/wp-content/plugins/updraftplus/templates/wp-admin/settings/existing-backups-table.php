@@ -22,12 +22,9 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 	<tbody>
 		<?php
 
-		// Reverse date sort - i.e. most recent first
-		krsort($backup_history);
-
 		foreach ($backup_history as $key => $backup) {
 
-			$remote_sent = (!empty($backup['service']) && ((is_array($backup['service']) && in_array('remotesend', $backup['service'])) || 'remotesend' === $backup['service'])) ? true : false;
+			$remote_sent = !empty($backup['service']) && ((is_array($backup['service']) && in_array('remotesend', $backup['service'])) || 'remotesend' === $backup['service']);
 
 			// https://core.trac.wordpress.org/ticket/25331 explains why the following line is wrong
 			// $pretty_date = date_i18n('Y-m-d G:i',$key);
@@ -39,13 +36,14 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 			$entities = '';
 
 			$nonce = $backup['nonce'];
-			$rawbackup = $updraftplus_admin->raw_backup_info($backup_history, $key, $nonce);
 
-			$jobdata = $updraftplus->jobdata_getarray($nonce);
+			$jobdata = isset($backup['jobdata']) ? $backup['jobdata'] : $updraftplus->jobdata_getarray($nonce);
+
+			$rawbackup = $updraftplus_admin->raw_backup_info($backup_history, $key, $nonce, $jobdata);
 
 			$delete_button = $updraftplus_admin->delete_button($key, $nonce, $backup);
 
-			$upload_button = $updraftplus_admin->upload_button($key, $nonce, $backup);
+			$upload_button = $updraftplus_admin->upload_button($key, $nonce, $backup, $jobdata);
 
 			$date_label = $updraftplus_admin->date_label($pretty_date, $key, $backup, $jobdata, $nonce);
 

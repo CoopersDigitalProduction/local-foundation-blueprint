@@ -332,7 +332,7 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 		return true;
 	}
 
-	public function delete($files, $data = false, $sizeinfo = array()) {
+	public function delete($files, $data = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
 		if (is_string($files)) $files = array($files);

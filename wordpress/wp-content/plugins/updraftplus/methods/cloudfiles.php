@@ -266,7 +266,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 
 	}
 
-	public function delete($files, $cloudfilesarr = false, $sizeinfo = array()) {
+	public function delete($files, $cloudfilesarr = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
 		if (is_string($files)) $files =array($files);
@@ -443,7 +443,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 			?>
 
 			<?php
-				echo '<p>' . __('Get your API key <a href="https://mycloud.rackspace.com/">from your Rackspace Cloud console</a> (read instructions <a href="http://www.rackspace.com/knowledge_center/article/rackspace-cloud-essentials-1-generating-your-api-key">here</a>), then pick a container name to use for storage. This container will be created for you if it does not already exist.', 'updraftplus').' <a href="https://updraftplus.com/faqs/there-appear-to-be-lots-of-extra-files-in-my-rackspace-cloud-files-container/">'.__('Also, you should read this important FAQ.', 'updraftplus').'</a></p>';
+				echo '<p>' . __('Get your API key <a href="https://mycloud.rackspace.com/" target="_blank">from your Rackspace Cloud console</a> (read instructions <a href="http://www.rackspace.com/knowledge_center/article/rackspace-cloud-essentials-1-generating-your-api-key" target="_blank">here</a>), then pick a container name to use for storage. This container will be created for you if it does not already exist.', 'updraftplus').' <a href="https://updraftplus.com/faqs/there-appear-to-be-lots-of-extra-files-in-my-rackspace-cloud-files-container/" target="_blank">'.__('Also, you should read this important FAQ.', 'updraftplus').'</a></p>';
 			?>
 			</td>
 		</tr>

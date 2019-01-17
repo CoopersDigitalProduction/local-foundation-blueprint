@@ -10,6 +10,16 @@ class UpdraftPlus_Database_Utility {
 
 	private $dbhandle;
 
+	/**
+	 * Constructor
+	 */
+	/**
+	 * Constructor
+	 *
+	 * @param String $whichdb          - which database is being backed up
+	 * @param String $table_prefix_raw - the base table prefix
+	 * @param Object $dbhandle         - WPDB object
+	 */
 	public function __construct($whichdb, $table_prefix_raw, $dbhandle) {
 		$this->whichdb = $whichdb;
 		$this->table_prefix_raw = $table_prefix_raw;
@@ -19,9 +29,10 @@ class UpdraftPlus_Database_Utility {
 	/**
 	 * The purpose of this function is to make sure that the options table is put in the database first, then the users table, then the site + blogs tables (if present - multisite), then the usermeta table; and after that the core WP tables - so that when restoring we restore the core tables first
 	 *
-	 * @param  [array] $a_arr the first array
-	 * @param  [array] $b_arr the second array
-	 * @return [array] returns a sorted array
+	 * @param Array $a_arr the first array
+	 * @param Array $b_arr the second array
+	 *
+	 * @return Integer - the sort result, according to the rules of PHP custom sorting functions
 	 */
 	public function backup_db_sorttables($a_arr, $b_arr) {
 
@@ -58,7 +69,7 @@ class UpdraftPlus_Database_Utility {
 			$updraftplus->log($e->getMessage());
 		}
 		
-		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions');
+		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions', 'blogmeta');
 
 		$na = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $a);
 		$nb = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $b);
@@ -72,18 +83,16 @@ class UpdraftPlus_WPDB_OtherDB_Utility extends wpdb {
 	/**
 	 * This adjusted bail() does two things: 1) Never dies and 2) logs in the UD log
 	 *
-	 * @param  [string] $message    a string containing a message
-	 * @param  [string] $error_code a string containing an error code
-	 * @return [bool] returns false
+	 * @param String $message    a string containing a message
+	 * @param String $error_code a string containing an error code
+	 * @return Boolean returns false
 	 */
-	public function bail( $message, $error_code = '500' ) {
+	public function bail($message, $error_code = '500') {
 		global $updraftplus;
 		if ('db_connect_fail' == $error_code) $message = 'Connection failed: check your access details, that the database server is up, and that the network connection is not firewalled.';
 		$updraftplus->log("WPDB_OtherDB error: $message ($error_code)");
 		// Now do the things that would have been done anyway
-		if (class_exists('WP_Error'))
-			$this->error = new WP_Error($error_code, $message);
-		else $this->error = $message;
+		$this->error = class_exists('WP_Error') ? new WP_Error($error_code, $message) : $message;
 		return false;
 	}
 }

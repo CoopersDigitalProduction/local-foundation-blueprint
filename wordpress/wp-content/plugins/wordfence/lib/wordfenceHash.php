@@ -414,9 +414,13 @@ class wordfenceHash {
 	}
 	private function _shouldProcessPath($path) {
 		$file = substr($path, $this->striplen);
-		$exclude = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_USER);
-		if ($exclude && preg_match($exclude, $file)) {
-			return false;
+		$excludePatterns = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_USER);
+		if ($excludePatterns) {
+			foreach ($excludePatterns as $pattern) {
+				if (preg_match($pattern, $file)) {
+					return false;
+				}
+			}
 		}
 		
 		$realPath = realpath($path);
@@ -455,7 +459,11 @@ class wordfenceHash {
 			$knownFileExclude = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_KNOWN_FILES);
 			$allowKnownFileScan = true;
 			if ($knownFileExclude) {
-				$allowKnownFileScan = !preg_match($knownFileExclude, $realFile);
+				foreach ($knownFileExclude as $pattern) {
+					if (preg_match($pattern, $realFile)) {
+						$allowKnownFileScan = false;
+					}
+				}
 			}
 
 			if ($allowKnownFileScan) {
@@ -716,9 +724,13 @@ class wordfenceHash {
 		}
 		
 		//Excluded file, return false
-		$excludePattern = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_USER | wordfenceScanner::EXCLUSION_PATTERNS_MALWARE); 
-		if ($excludePattern && preg_match($excludePattern, $file)) {
-			return false;
+		$excludePatterns = wordfenceScanner::getExcludeFilePattern(wordfenceScanner::EXCLUSION_PATTERNS_USER | wordfenceScanner::EXCLUSION_PATTERNS_MALWARE); 
+		if ($excludePatterns) {
+			foreach ($excludePatterns as $pattern) {
+				if (preg_match($pattern, $file)) {
+					return false;
+				}
+			}
 		}
 		
 		//Unknown file in a core location

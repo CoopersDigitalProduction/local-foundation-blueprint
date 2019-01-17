@@ -66,7 +66,7 @@ class WPSEO_Admin_Asset_Manager {
 	public function register_script( WPSEO_Admin_Asset $script ) {
 		wp_register_script(
 			$this->prefix . $script->get_name(),
-			$this->asset_location->get_url( $script, WPSEO_Admin_Asset::TYPE_JS ),
+			$this->get_url( $script, WPSEO_Admin_Asset::TYPE_JS ),
 			$script->get_deps(),
 			$script->get_version(),
 			$script->is_in_footer()
@@ -81,7 +81,7 @@ class WPSEO_Admin_Asset_Manager {
 	public function register_style( WPSEO_Admin_Asset $style ) {
 		wp_register_style(
 			$this->prefix . $style->get_name(),
-			$this->asset_location->get_url( $style, WPSEO_Admin_Asset::TYPE_CSS ),
+			$this->get_url( $style, WPSEO_Admin_Asset::TYPE_CSS ),
 			$style->get_deps(),
 			$style->get_version(),
 			$style->get_media()
@@ -188,6 +188,8 @@ class WPSEO_Admin_Asset_Manager {
 
 		$flat_version = $this->flatten_version( WPSEO_VERSION );
 
+		wp_register_script( 'react', plugins_url( 'js/vendor/react.min.js', WPSEO_FILE ), array(), false, true );
+		wp_register_script( 'react-dom', plugins_url( 'js/vendor/react-dom.min.js', WPSEO_FILE ), array( 'react' ), false, true );
 		wp_register_script( 'lodash-base', plugins_url( 'js/vendor/lodash.min.js', WPSEO_FILE ), array(), false, true );
 		wp_register_script( 'lodash', plugins_url( 'js/vendor/lodash-noconflict.js', WPSEO_FILE ), array( 'lodash-base' ), false, true );
 		wp_register_script( 'wp-polyfill', plugins_url( 'js/dist/babel-polyfill-' . $flat_version . '.min.js', WPSEO_FILE ), array(), false, true );
@@ -195,7 +197,7 @@ class WPSEO_Admin_Asset_Manager {
 		wp_register_script(
 			'wp-element',
 			plugins_url( 'js/dist/wp-element-' . $flat_version . '.min.js', WPSEO_FILE ),
-			array( 'lodash', 'wp-polyfill' ),
+			array( 'lodash', 'wp-polyfill', 'react', 'react-dom' ),
 			false,
 			true
 		);
@@ -243,7 +245,7 @@ class WPSEO_Admin_Asset_Manager {
 		wp_register_script(
 			'wp-compose',
 			plugins_url( 'js/dist/wp-compose-' . $flat_version . '.min.js', WPSEO_FILE ),
-			array( 'wp-polyfill' ),
+			array( 'lodash', 'wp-polyfill' ),
 			false,
 			true
 		);
@@ -401,7 +403,6 @@ class WPSEO_Admin_Asset_Manager {
 				'deps' => array(
 					'wp-util',
 					'wp-api',
-					'wp-sanitize',
 					'wp-element',
 					'wp-i18n',
 					'wp-data',
@@ -419,7 +420,6 @@ class WPSEO_Admin_Asset_Manager {
 				'name' => 'term-scraper',
 				'src'  => 'wp-seo-term-scraper-' . $flat_version,
 				'deps' => array(
-					'wp-sanitize',
 					'wp-element',
 					'wp-i18n',
 					'wp-data',
@@ -589,6 +589,9 @@ class WPSEO_Admin_Asset_Manager {
 			array(
 				'name' => 'styled-components',
 				'src'  => 'styled-components-' . $flat_version,
+				'deps' => array(
+					'wp-element',
+				),
 			),
 		);
 	}
@@ -685,5 +688,22 @@ class WPSEO_Admin_Asset_Manager {
 				'deps' => array( 'wp-edit-blocks' ),
 			),
 		);
+	}
+
+	/**
+	 * Determines the URL of the asset.
+	 *
+	 * @param WPSEO_Admin_Asset $asset The asset to determine the URL for.
+	 * @param string            $type  The type of asset. Usually JS or CSS.
+	 *
+	 * @return string The URL of the asset.
+	 */
+	protected function get_url( WPSEO_Admin_Asset $asset, $type ) {
+		$scheme = wp_parse_url( $asset->get_src(), PHP_URL_SCHEME );
+		if ( in_array( $scheme, array( 'http', 'https' ), true ) ) {
+			return $asset->get_src();
+		}
+
+		return $this->asset_location->get_url( $asset, $type );
 	}
 }

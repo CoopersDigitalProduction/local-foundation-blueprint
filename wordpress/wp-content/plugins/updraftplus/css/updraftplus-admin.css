@@ -247,13 +247,13 @@ span.tokens-number {
 
 .updraft_migrate_widget_temporary_clone_stage0_box {
 	margin-right: 20px;
-	height: 100%;
 	width: 100%;
 	-ms-flex-preferred-size: 100%;
 	    flex-basis: 100%;
 }
 
-.updraft_migrate_widget_temporary_clone_stage0_box iframe {
+.updraft_migrate_widget_temporary_clone_stage0_box iframe,
+.updraft_migrate_widget_temporary_clone_stage0_box a.udp-replace-with-iframe--js {
 	float: none;
 }
 
@@ -271,7 +271,8 @@ span.tokens-number {
 		    flex-basis: 45%;
 	}
 
-	.updraft_migrate_widget_temporary_clone_stage0_box iframe {
+	.updraft_migrate_widget_temporary_clone_stage0_box iframe,
+	.updraft_migrate_widget_temporary_clone_stage0_box a.udp-replace-with-iframe--js {
 		float: right;
 	}
 
@@ -280,7 +281,6 @@ span.tokens-number {
 .updraft_migrate_widget_temporary_clone_show_stage0 .dashicons {
 	text-decoration: none;
 	font-size: 20px;
-	line-height: inherit;
 }
 
 .opened .button.updraft_migrate_widget_temporary_clone_show_stage0 {
@@ -536,12 +536,24 @@ jquery UI Accordion module
 .updraft_backup_btn_wrapper {
 	text-align: center;
 	border-left: 1px solid #F1F1F1;
-	display: -ms-flexbox;
-	display: flex;
 	-ms-flex-pack: center;
 	    justify-content: center;
 	-ms-flex-align: center;
 	    align-items: center;
+}
+
+.incremental-backups-only {
+	display: none;
+}
+
+.incremental-free-only {
+	display: none;
+}
+
+.incremental-free-only p {
+	padding: 5px;
+	background: rgba(255, 0, 0, 0.06);
+	border: 1px solid #BFBFBF;
 }
 
 #updraft-delete-waitwarning span.spinner {
@@ -818,7 +830,7 @@ span#updraft_lastlogcontainer {
 	clear: right;
 }
 
-.existing-backups-table .backup_date_label > div {
+.existing-backups-table .backup_date_label > div, .existing-backups-table .backup_date_label span > div {
 	font-weight: bold;
 }
 
@@ -2169,9 +2181,14 @@ small.ud_massactions-tip {
 /* Add-ons */
 /* Want to fix the WordPress icons so that they fit inline with the text, and don't push everything out of place. */
 
-.dashicons {
+#updraft-wrap .dashicons.dashicons-adapt-size {
 	line-height: inherit;
 	font-size: inherit;
+}
+
+#updraft-wrap .button span.dashicons:not(.dashicons-adapt-size) {
+	vertical-align: middle;
+	margin-top: -3px;
 }
 
 .addon-logo-150 {
@@ -2963,7 +2980,7 @@ div#updraft-wrap a {
 		min-width: 100%;
 	}*/
 
-	.existing-backups-table .backup_date_label > div {
+	.existing-backups-table .backup_date_label > div, .existing-backups-table .backup_date_label span > div {
 		font-weight: normal;
 	}
 

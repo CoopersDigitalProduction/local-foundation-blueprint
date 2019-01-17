@@ -5,7 +5,7 @@ Plugin Name: UpdraftPlus - Backup/Restore
 Plugin URI: https://updraftplus.com
 Description: Backup and restore: take backups locally, or backup to Amazon S3, Dropbox, Google Drive, Rackspace, (S)FTP, WebDAV & email, on automatic schedules.
 Author: UpdraftPlus.Com, DavidAnderson
-Version: 1.15.5
+Version: 1.16.4
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
 Text Domain: updraftplus
@@ -135,8 +135,8 @@ if (is_dir(UPDRAFTPLUS_DIR.'/addons') && $dir_handle = opendir(UPDRAFTPLUS_DIR.'
 		if (is_file(UPDRAFTPLUS_DIR.'/addons/'.$e) && preg_match('/\.php$/', $e)) {
 			// We used to have 1024 bytes here - but this meant that if someone's site was hacked and a lot of code added at the top, and if they were running a too-low PHP version, then they might just see the symptom rather than the cause - and raise the support request with us.
 			$header = file_get_contents(UPDRAFTPLUS_DIR.'/addons/'.$e, false, null, 0, 16384);
-			$phprequires = (preg_match("/RequiresPHP: (\d[\d\.]+)/", $header, $matches)) ? $matches[1] : false;
-			$phpinclude = (preg_match("/IncludePHP: (\S+)/", $header, $matches)) ? $matches[1] : false;
+			$phprequires = preg_match("/RequiresPHP: (\d[\d\.]+)/", $header, $matches) ? $matches[1] : false;
+			$phpinclude = preg_match("/IncludePHP: (\S+)/", $header, $matches) ? $matches[1] : false;
 			if (false === $phprequires || version_compare(PHP_VERSION, $phprequires, '>=')) {
 				$updraftplus_have_addons++;
 				if ($phpinclude) include_once(UPDRAFTPLUS_DIR.'/'.$phpinclude);
