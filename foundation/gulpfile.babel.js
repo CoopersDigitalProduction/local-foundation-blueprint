@@ -31,9 +31,8 @@ function loadConfig() {
 
 // Build the "dist" folder by running all of the below tasks
 // Sass must be run later so UnCSS can search for used classes in the others assets.
-// WordPress custom tasks
 gulp.task('build',
-  gulp.series(clean, gulp.parallel(pages, javascript, images, imagesWP, copy, copyWP), javascriptWP, sass, sassWP, styleGuide));
+  gulp.series(clean, cleanWP, gulp.parallel(pages, javascript, images, copy, copyWP), sass, styleGuide));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -44,10 +43,10 @@ gulp.task('default',
 function clean(done) {
   rimraf(PATHS.dist, done);
 }
-  // WordPress function - cleaning assets folder inside custom theme
+
   function cleanWP(done) {
-    rimraf(PATHS.wp + '/assets', done);
-  }
+    rimraf(PATHS.wp + '/assets', done);  // cleaning custom theme's folder
+}
 
 // Copy files out of the assets folder
 // This task skips over the "img", "js", and "scss" folders, which are parsed separately
@@ -55,10 +54,10 @@ function copy() {
   return gulp.src(PATHS.assets)
     .pipe(gulp.dest(PATHS.dist + '/assets'));
 }
-  // WordPress function - copying assets to custom theme's folder
+
   function copyWP() {
     return gulp.src(PATHS.assets)
-      .pipe(gulp.dest(PATHS.wp + '/assets'));
+      .pipe(gulp.dest(PATHS.wp + '/assets'));  // copying to the custom theme's folder
   }
 
 // Copy page templates into finished HTML files
@@ -110,31 +109,9 @@ function sass() {
     .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
     .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
     .pipe(gulp.dest(PATHS.dist + '/assets/css'))
+    .pipe(gulp.dest(PATHS.wp + '/assets/css')) // copying to the custom theme's folder
     .pipe(browser.reload({ stream: true }));
 }
-  // WordPress function - copying CSS files to custom theme's folder
-  function sassWP() {
-
-    const postCssPlugins = [
-      // Autoprefixer
-      autoprefixer({ browsers: COMPATIBILITY }),
-
-      // UnCSS - Uncomment to remove unused styles in production
-      // PRODUCTION && uncss.postcssPlugin(UNCSS_OPTIONS),
-    ].filter(Boolean);
-
-    return gulp.src('src/assets/scss/app.scss')
-      .pipe($.sourcemaps.init())
-      .pipe($.sass({
-        includePaths: PATHS.sass
-      })
-        .on('error', $.sass.logError))
-      .pipe($.postcss(postCssPlugins))
-      .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
-      .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
-      .pipe(gulp.dest(PATHS.wp + '/assets/css'))
-      .pipe(browser.reload({ stream: true }));
-  }
 
 let webpackConfig = {
   mode: (PRODUCTION ? 'production' : 'development'),
@@ -166,21 +143,10 @@ function javascript() {
       .on('error', e => { console.log(e); })
     ))
     .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
-    .pipe(gulp.dest(PATHS.dist + '/assets/js'));
+    .pipe(gulp.dest(PATHS.dist + '/assets/js'))
+    .pipe(gulp.dest(PATHS.wp + '/assets/js')); // copying to the custom theme's folder
 }
-  // WordPress function - copying JS files to custom theme's folder
-  function javascriptWP() {
-    return gulp.src(PATHS.entries)
-      .pipe(named())
-      .pipe($.sourcemaps.init())
-      .pipe(webpackStream(webpackConfig, webpack2))
-      .pipe($.if(PRODUCTION, $.uglify()
-        .on('error', e => { console.log(e); })
-      ))
-      .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
-      .pipe(gulp.dest(PATHS.wp + '/assets/js'));
-  }
-
+  
 // Copy images to the "dist" folder
 // In production, the images are compressed
 function images() {
@@ -188,16 +154,9 @@ function images() {
     .pipe($.if(PRODUCTION, $.imagemin([
       $.imagemin.jpegtran({ progressive: true }),
     ])))
-    .pipe(gulp.dest(PATHS.dist + '/assets/img'));
+    .pipe(gulp.dest(PATHS.dist + '/assets/img'))
+    .pipe(gulp.dest(PATHS.wp + '/assets/img')); // copying to the custom theme's folder
 }
-  // WordPress function - copying images to custom theme's folder
-  function imagesWP() {
-    return gulp.src('src/assets/img/**/*')
-      .pipe($.if(PRODUCTION, $.imagemin([
-        $.imagemin.jpegtran({ progressive: true }),
-      ])))
-      .pipe(gulp.dest(PATHS.wp + '/assets/img'));
-  }
 
 // Start a server with BrowserSync to preview the site in
 function server(done) {
@@ -213,15 +172,14 @@ function reload(done) {
 }
 
 // Watch for changes to static assets, pages, Sass, and JavaScript
-// WordPress tasks being executed
 function watch() {
-  gulp.watch(PATHS.assets, copy, copyWP);
+  gulp.watch(PATHS.assets, copy);
   gulp.watch('src/pages/**/*.html').on('all', gulp.series(pages, browser.reload));
   gulp.watch('src/{layouts,partials}/**/*.html').on('all', gulp.series(resetPages, pages, browser.reload));
   gulp.watch('src/data/**/*.{js,json,yml}').on('all', gulp.series(resetPages, pages, browser.reload));
   gulp.watch('src/helpers/**/*.js').on('all', gulp.series(resetPages, pages, browser.reload));
-  gulp.watch('src/assets/scss/**/*.scss').on('all', gulp.series(sass, sassWP));
-  gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, javascriptWP, browser.reload));
-  gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, imagesWP, browser.reload));
+  gulp.watch('src/assets/scss/**/*.scss').on('all', sass);
+  gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, browser.reload));
+  gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, browser.reload));
   gulp.watch('src/styleguide/**').on('all', gulp.series(styleGuide, browser.reload));
 }

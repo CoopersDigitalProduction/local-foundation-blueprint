@@ -90,7 +90,7 @@ wp-content/*
 !wp-content/plugins/
 !wp-content/themes/
 
-#ignore Foundation's assets
+# ignore Foundation's assets
 wp-content/themes/custom_theme/assets/
 
 

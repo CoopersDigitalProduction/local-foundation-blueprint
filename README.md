@@ -40,14 +40,18 @@ Faça a edição do caminho `app/public/wordpress`, para que a ferramenta possa 
 #### Importante
 O arquivo **.gitignore** versiona somente os arquivos relevantes para o desenvolvimento no WordPress (dentro da pasta `app/public/wordpress/wp-content`).
 
+Além disso, ajuste a linha abaixo (dentro do arquivo **.gitignore**) para que possamos ignorar a pasta `assets` dentro do tema:
+
+`wp-content/themes/custom_theme/assets/`
+
+
 ---
 
 ## Iniciando os trabalhos
 Para visualizar ou realizar alterações no front-end do site (HTML, CSS e JS), basta executar os seguintes comandos no terminal, dentro da pasta do front (`app/public/foundation`):
 
 ```
-npm install
-foundation watch
+$ npm install; foundation watch
 ```
 
 Executando estes comandos, o front-end em HTML poderá ser visualizado no navegador.
