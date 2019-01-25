@@ -1,0 +1,19 @@
+// margin-top
+@for $i from 1 through 4 {
+  .mt#{$i} { margin-top: #{$i}em; }
+}
+
+// margin-bottom
+@for $i from 1 through 4 {
+  .mb#{$i} { margin-bottom: #{$i}em; }
+}
+
+// padding-top
+@for $i from 1 through 4 {
+  .pt#{$i} { padding-top: #{$i}em; }
+}
+
+// padding-bottom
+@for $i from 1 through 4 {
+  .pb#{$i} { padding-bottom: #{$i}em; }
+}

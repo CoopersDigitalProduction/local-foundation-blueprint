@@ -62,3 +62,7 @@
 // Motion UI
 @include motion-ui-transitions;
 @include motion-ui-animations;
+
+// Custom - Global styles
+@import 'global/typography';
+@import 'global/helpers';
