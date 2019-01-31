@@ -5,9 +5,11 @@
 ## Estruturação
 
 ### Pastas
-- Front-end: `app/public/foundation`
-- Tema WordPress: `app/public/wordpress/wp-content/themes/custom_theme`
-  - **Importante:** editar o nome da pasta `custom_theme` no arquivo `app/public/foundation/config.yml` - linha 23: `../wordpress/wp-content/themes/custom_theme`
+- Front-end: `foundation`
+- Tema WordPress: `app/public/wp-content/themes/custom_theme`
+  - **Importante:** editar o nome da pasta `custom_theme` nos arquivos:
+    - `foundation/config.yml` - linha 23: `app/public/wp-content/themes/custom_theme`
+    - `.gitignore` - linha 101: `wp-content/themes/custom_theme/assets/`
 - Backups banco de dados e ACF: `Google Drive/Projetos/Pasta do Projeto/Backups`
 
 ### Configuração [Local by Flywheel](https://local.getflywheel.com/)
@@ -25,10 +27,7 @@ git checkout origin/master -ft
 ```
 
 #### Importante
-O arquivo **.gitignore** versiona somente os arquivos relevantes para o desenvolvimento no WordPress (dentro da pasta `app/public/wordpress/wp-content`).
-
-Além disso, ajuste a linha abaixo (dentro do arquivo **.gitignore**) para que possamos ignorar a pasta `assets` dentro do tema:
-`wp-content/themes/custom_theme/assets/`
+O arquivo **.gitignore** versiona somente os arquivos relevantes para o desenvolvimento no WordPress (dentro da pasta `app/public/wp-content`).
 
 ---
 
@@ -43,7 +42,7 @@ foundation watch
 Ao executar estes comandos, o front-end em HTML poderá ser visualizado no navegador e os assets serão copiados para o tema do WordPress.
 
 ### Workflow
-Ao executar `foundation watch` ou `foundation build` na pasta do front-end, os arquivos da pasta **foundation/src/assets** são copiados automaticamente para a pasta do tema em **app/public/wp-content/themes/australia-360-degree/assets**.
+Ao executar `foundation watch` ou `foundation build` na pasta do front-end, os arquivos da pasta **foundation/src/assets** são copiados automaticamente para a pasta do tema em **app/public/wp-content/themes/custom_theme/assets**.
 
 ## Dúvidas?
 Caso tenha alguma dúvida, é só falar com carlos@coopers.pro.
