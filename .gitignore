@@ -47,6 +47,15 @@ app/public/*
 # track this file .gitignore (i.e. do NOT ignore it)
 !.gitignore
 
+# track .babelrc file (i.e. do NOT ignore it)
+!.babelrc
+
+# track .bowerrc file (i.e. do NOT ignore it)
+!.bowerrc
+
+# track .browserslistrc file (i.e. do NOT ignore it)
+!.browserslistrc
+
 # track .editorconfig file (i.e. do NOT ignore it)
 !.editorconfig
 
