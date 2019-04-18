@@ -21,9 +21,9 @@ Para iniciar o projeto, basta criar um novo site no aplicativo, assim já teremo
 
 ```
 git init
-git remote add origin [url do repositório]
-git fetch
-git checkout origin/master -ft
+git remote add origin $url_do_repositorio
+git fetch origin
+git checkout -b master --track origin/master
 ```
 
 #### Importante
