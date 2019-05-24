@@ -14,6 +14,8 @@ import webpack2      from 'webpack';
 import named         from 'vinyl-named';
 import uncss         from 'uncss';
 import autoprefixer  from 'autoprefixer';
+import htmlmin       from 'gulp-htmlmin';
+import webp          from 'gulp-webp';
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -32,7 +34,7 @@ function loadConfig() {
 // Build the "dist" folder by running all of the below tasks
 // Sass must be run later so UnCSS can search for used classes in the others assets.
 gulp.task('build',
-  gulp.series(clean, cleanWP, gulp.parallel(pages, javascript, images, copy, copyWP), sass, styleGuide));
+  gulp.series(clean, cleanWP, gulp.parallel(pages, javascript, images, copy, copyWP), imageToWebp, sass, styleGuide, minifyHTML));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -157,6 +159,25 @@ function images() {
     .pipe(gulp.dest(PATHS.dist + '/assets/img'))
     .pipe(gulp.dest(PATHS.wp + '/assets/img')); // copying to the custom theme's folder
 }
+
+function imageToWebp() {
+  return gulp.src('src/assets/img/**/*.{jpg,png}')
+    .pipe(webp({
+      quality: 85
+    }))
+    .pipe(gulp.dest(PATHS.dist + '/assets/img'))
+    .pipe(gulp.dest(PATHS.wp + '/assets/img'));
+}
+
+// Minify HTML
+function minifyHTML() {
+  return gulp.src('dist/*.html')
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      processScripts: ['application/ld+json']
+    }))
+    .pipe(gulp.dest('dist'));
+};
 
 // Start a server with BrowserSync to preview the site in
 function server(done) {
