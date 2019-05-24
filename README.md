@@ -48,7 +48,8 @@ Ao executar `foundation watch` ou `foundation build` na pasta do front-end, os a
 Para melhorar nosso fluxo e performance dos projetos, adicionei dois plugins no Gulp:
 - gulp-htmlmin
 - gulp-webp (para mais informações sobre o uso de WEBP: [Essential Image Optimization](https://images.guide))
-**Ambos só são executados com a task _build**, ou seja, os HTMLs e imagens WEBP serão geradas quando executado o comando `foundation watch` pela primeira vez ou executado `foundation build`.
+
+**Ambos só são executados com a task _build_**, ou seja, os HTMLs e imagens WEBP serão geradas quando executado o comando `foundation watch` pela primeira vez ou executado `foundation build`.
 
 ## Dúvidas?
 Caso tenha alguma dúvida, é só falar com carlos@coopers.pro.
