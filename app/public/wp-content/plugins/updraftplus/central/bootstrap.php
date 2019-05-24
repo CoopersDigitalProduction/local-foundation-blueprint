@@ -255,7 +255,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 			if ('__updraftpluscom' != $where_send) {
 				$created['keys_guide'] .= '<div class="updraftcentral_wizard_success"><p>'.sprintf(__('You now need to copy the key below and enter it at your %s.', 'updraftplus'), '<a href="'.$where_send.'" target="_blank">UpdraftCentral dashboard</a>').'</p><p>'.__('At your UpdraftCentral dashboard you should press the "Add Site" button then paste the key in the input box.', 'updraftplus').'</p><p>'.sprintf(__('Detailed instructions for this can be found at %s', 'updraftplus'), '<a target="_blank" href="https://updraftplus.com/updraftcentral-how-to-add-a-site/">UpdraftPlus.com</a>').'</p></div>';
 			} else {
-				$created['keys_guide'] .= '<div class="updraftcentral_wizard_success"><p>'. sprintf(__('You can now control this site via your UpdraftCentral dashboard at %s.', 'updraftplus'), '<a target="_blank" href="http://updraftplus.com/my-account/remote-control/">UpdraftPlus.com</a>').'</p></div>';
+				$created['keys_guide'] .= '<div class="updraftcentral_wizard_success"><p>'. sprintf(__('You can now control this site via your UpdraftCentral dashboard at %s.', 'updraftplus'), '<a target="_blank" href="https://updraftplus.com/my-account/updraftcentral-remote-control/">UpdraftPlus.com</a>').'</p></div>';
 			}
 		}
 		
@@ -337,7 +337,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 				// This option allows the key to be sent to the other side via a known-secure channel (e.g. http over SSL), rather than potentially allowing it to travel over an unencrypted channel (e.g. http back to the user's browser). As such, if specified, it is compulsory for it to work.
 				
 				$updraftplus->register_wp_http_option_hooks();
-				
+
 				$sent_key = wp_remote_post(
 					$post_it,
 					$post_options

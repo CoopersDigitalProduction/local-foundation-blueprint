@@ -5,11 +5,11 @@
  * @package Yoast\YoastSEO\Models
  */
 
-namespace Yoast\YoastSEO\Models;
+namespace Yoast\WP\Free\Models;
 
-use Yoast\YoastSEO\Exceptions\No_Indexable_Found;
-use Yoast\YoastSEO\Loggers\Logger;
-use Yoast\YoastSEO\Yoast_Model;
+use Yoast\WP\Free\Exceptions\No_Indexable_Found;
+use Yoast\WP\Free\Loggers\Logger;
+use Yoast\WP\Free\Yoast_Model;
 
 /**
  * Indexable table definition.
@@ -58,7 +58,7 @@ class Indexable extends Yoast_Model {
 	/**
 	 * Retrieves an indexable by its ID and type.
 	 *
-	 * @param int    $object_id   The indexable object id.
+	 * @param int    $object_id   The indexable object ID.
 	 * @param string $object_type The indexable object type.
 	 * @param bool   $auto_create Optional. Create the indexable if it does not exist.
 	 *
@@ -80,13 +80,13 @@ class Indexable extends Yoast_Model {
 	/**
 	 * Creates an indexable by its ID and type.
 	 *
-	 * @param int    $object_id   The indexable object id.
+	 * @param int    $object_id   The indexable object ID.
 	 * @param string $object_type The indexable object type.
 	 *
 	 * @return bool|Indexable Instance of indexable.
 	 */
 	public static function create_for_id_and_type( $object_id, $object_type ) {
-		/**
+		/*
 		 * Indexable instance.
 		 *
 		 * @var Indexable $indexable

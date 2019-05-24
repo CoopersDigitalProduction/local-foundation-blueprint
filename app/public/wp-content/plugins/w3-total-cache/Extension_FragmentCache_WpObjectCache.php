@@ -114,12 +114,10 @@ class Extension_FragmentCache_WpObjectCache {
 	 * PHP5 style constructor
 	 */
 	function __construct() {
-		global $_wp_using_ext_object_cache;
-
 		$this->_config = Dispatcher::config();
 		$this->_lifetime = $this->_config->get_integer( array( 'fragmentcache', 'lifetime' ) );
 		$this->_debug = $this->_config->get_boolean( array( 'fragmentcache', 'debug' ) );
-		$this->_caching = $_wp_using_ext_object_cache = $this->_can_cache();
+		$this->_caching = $this->_can_cache();
 
 		$this->_blog_id = Util_Environment::blog_id();
 		$this->_core = Dispatcher::component( 'Extension_FragmentCache_Core' );
@@ -303,9 +301,7 @@ class Extension_FragmentCache_WpObjectCache {
 	 * @return boolean
 	 */
 	function reset() {
-		global $_wp_using_ext_object_cache;
-
-		$_wp_using_ext_object_cache = $this->_caching;
+		$this->cache = array();
 
 		return true;
 	}

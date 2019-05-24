@@ -135,7 +135,7 @@ foreach ($default_options as $k => $v) {
 	</tr>
 </table>
 
-<hr class="updraft_separator width-900">
+<hr class="updraft_separator">
 
 <h2 class="updraft_settings_sectionheading"><?php _e('File Options', 'updraftplus');?></h2>
 
@@ -306,7 +306,7 @@ foreach ($default_options as $k => $v) {
 
 	<tr class="expertmode updraft-hidden" style="display:none;">
 		<th><?php _e('Split archives every:', 'updraftplus');?></th>
-		<td><input type="text" name="updraft_split_every" class="updraft_split_every" value="<?php echo $split_every_mb; ?>" size="5" /> MB<br><?php echo sprintf(__('UpdraftPlus will split up backup archives when they exceed this file size. The default value is %s megabytes. Be careful to leave some margin if your web-server has a hard size limit (e.g. the 2 GB / 2048 MB limit on some 32-bit servers/file systems).', 'updraftplus'), 400); ?></td>
+		<td><input type="text" name="updraft_split_every" class="updraft_split_every" value="<?php echo $split_every_mb; ?>" size="5" /> MB<br><?php echo sprintf(__('UpdraftPlus will split up backup archives when they exceed this file size. The default value is %s megabytes. Be careful to leave some margin if your web-server has a hard size limit (e.g. the 2 GB / 2048 MB limit on some 32-bit servers/file systems).', 'updraftplus'), 400).' '.__('The higher the value, the more server resources are required to create the archive.', 'updraftplus'); ?></td>
 	</tr>
 
 	<tr class="deletelocal expertmode updraft-hidden" style="display:none;">

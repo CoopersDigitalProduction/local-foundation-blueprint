@@ -102,6 +102,10 @@ class wordfenceScanner {
 			$wafCommonStringIndexes = array();
 			foreach ($sigData['rules'] as $key => $signatureRow) {
 				list(, , $pattern) = $signatureRow;
+				if (empty($pattern)) {
+					throw new Exception(__('Wordfence received malformed attack signature patterns from the scanning server.', 'wordfence'));
+				}
+				
 				$logOnly = (isset($signatureRow[5]) && !empty($signatureRow[5])) ? $signatureRow[5] : false;
 				$commonStringIndexes = (isset($signatureRow[8]) && is_array($signatureRow[8])) ? $signatureRow[8] : array(); 
 				if (@preg_match('/' . $pattern . '/iS', null) === false) {
@@ -342,7 +346,7 @@ class wordfenceScanner {
 						if ($treatAsBinary && wfUtils::strpos($data, '$allowed'.'Sites') !== false && wfUtils::strpos($data, "define ('VER"."SION', '1.") !== false && wfUtils::strpos($data, "TimThum"."b script created by") !== false) {
 							$this->addResult(array(
 								'type' => 'file',
-								'severity' => 1,
+								'severity' => wfIssues::SEVERITY_CRITICAL,
 								'ignoreP' => $this->path . $file,
 								'ignoreC' => $fileSum,
 								'shortMsg' => __('File is an old version of TimThumb which is vulnerable.', 'wordfence'),
@@ -404,7 +408,7 @@ class wordfenceScanner {
 									if (!$logOnly) {
 										$this->addResult(array(
 											'type' => 'file',
-											'severity' => 1,
+											'severity' => wfIssues::SEVERITY_CRITICAL,
 											'ignoreP' => $this->path . $file,
 											'ignoreC' => $fileSum,
 											'shortMsg' => __('File appears to be malicious: ', 'wordfence') . esc_html($file),
@@ -445,7 +449,7 @@ class wordfenceScanner {
 							if ($badStringFound) {
 								$this->addResult(array(
 									'type' => 'file',
-									'severity' => 1,
+									'severity' => wfIssues::SEVERITY_CRITICAL,
 									'ignoreP' => $this->path . $file,
 									'ignoreC' => $fileSum,
 									'shortMsg' => __('This file may contain malicious executable code: ', 'wordfence') . esc_html($file),
@@ -509,7 +513,7 @@ class wordfenceScanner {
 					if ($result['badList'] == 'goog-malware-shavar') {
 						$this->addResult(array(
 							'type' => 'file',
-							'severity' => 1,
+							'severity' => wfIssues::SEVERITY_CRITICAL,
 							'ignoreP' => $this->path . $file,
 							'ignoreC' => md5_file($this->path . $file),
 							'shortMsg' => __('File contains suspected malware URL: ', 'wordfence') . esc_html($file),
@@ -527,7 +531,7 @@ class wordfenceScanner {
 					else if ($result['badList'] == 'googpub-phish-shavar') {
 						$this->addResult(array(
 							'type' => 'file',
-							'severity' => 1,
+							'severity' => wfIssues::SEVERITY_CRITICAL,
 							'ignoreP' => $this->path . $file,
 							'ignoreC' => md5_file($this->path . $file),
 							'shortMsg' => __('File contains suspected phishing URL: ', 'wordfence') . esc_html($file),
@@ -545,7 +549,7 @@ class wordfenceScanner {
 					else if ($result['badList'] == 'wordfence-dbl') {
 						$this->addResult(array(
 							'type' => 'file',
-							'severity' => 1,
+							'severity' => wfIssues::SEVERITY_CRITICAL,
 							'ignoreP' => $this->path . $file,
 							'ignoreC' => md5_file($this->path . $file),
 							'shortMsg' => __('File contains suspected malware URL: ', 'wordfence') . esc_html($file),

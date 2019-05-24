@@ -83,11 +83,16 @@ class UpdraftPlus_Dropbox_API {
 
     /**
      * Retrieves information about the user's quota
+     * @param array $options - valid keys are 'timeout'
      * @return object stdClass
      */
-    public function quotaInfo() {
+    public function quotaInfo($options = array()) {
         $call = '2/users/get_space_usage';
-        $params = array('api_v2' => true);
+        // Cases have been seen (Apr 2019) where a response came back (HTTP/2.0 response header - suspected outgoing web hosting proxy, as everyone else seems to get HTTP/1.0 and I'm not aware that current Curl versions would do HTTP/2.0 without specifically being told to) after 180 seconds; a valid response, but took a long time.
+        $params = array(
+            'api_v2' => true,
+            'timeout' => isset($options['timeout']) ? $options['timeout'] : 20
+        );
         $response = $this->fetch('POST', self::API_URL_V2, $call, $params);
         return $response;
     }

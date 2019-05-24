@@ -118,12 +118,10 @@ class ObjectCache_WpObjectCache_Regular {
 	 * PHP5 style constructor
 	 */
 	function __construct() {
-		global $_wp_using_ext_object_cache;
-
 		$this->_config = Dispatcher::config();
 		$this->_lifetime = $this->_config->get_integer( 'objectcache.lifetime' );
 		$this->_debug = $this->_config->get_boolean( 'objectcache.debug' );
-		$this->_caching = $_wp_using_ext_object_cache = $this->_can_cache();
+		$this->_caching = $this->_can_cache();
 		$this->global_groups = $this->_config->get_array( 'objectcache.groups.global' );
 		$this->nonpersistent_groups = $this->_config->get_array(
 			'objectcache.groups.nonpersistent' );
@@ -385,9 +383,7 @@ class ObjectCache_WpObjectCache_Regular {
 	 * @return boolean
 	 */
 	function reset() {
-		global $_wp_using_ext_object_cache;
-
-		$_wp_using_ext_object_cache = $this->_caching;
+		$this->cache = array();
 
 		return true;
 	}

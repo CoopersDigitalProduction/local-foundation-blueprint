@@ -175,10 +175,13 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			),
 			'autobackup' => array(
 				'prefix' => '',
-				'title' => __('Be safe with an automatic backup', 'updraftplus'),
-				'text' => __('UpdraftPlus Premium can automatically backup your plugins/themes/database before you update, without you needing to remember.', 'updraftplus'),
+				'title' => __('Make updates easy with UpdraftPlus', 'updraftplus'),
+				'text' => __('Be safe', 'updraftplus') . ' - ' . $this->url_start(true, 'updraftplus.com/shop/updraftplus-premium/') . 'UpdraftPlus Premium' . $this->url_end(true, 'updraftplus.com/shop/updraftplus-premium/') . ' ' . __('backs up automatically when you update plugins, themes or core', 'updraftplus'),
+				'text2' => __('Save time', 'updraftplus') . ' - ' . $this->url_start(true, 'wordpress.org/plugins/stops-core-theme-and-plugin-updates/') . 'Easy Updates Manager' . $this->url_end(true, 'wordpress.org/plugins/stops-core-theme-and-plugin-updates/') . ' ' . __('handles updates automatically as you want them', 'updraftplus'),
+				'text3' => __('Many sites?', 'updraftplus') . ' - ' . $this->url_start(true, 'updraftplus.com/updraftcentral/') . 'UpdraftCentral' . $this->url_end(true, 'updraftplus.com/updraftcentral/') . ' ' . __('manages all your WordPress sites at once from one place', 'updraftplus'),
 				'image' => 'addons-images/autobackup.png',
 				'button_link' => 'https://updraftplus.com/landing/updraftplus-premium',
+				'campaign' => 'autobackup',
 				'button_meta' => 'updraftplus',
 				'dismiss_time' => 'dismissautobackup',
 				'supported_positions' => $this->autobackup_bottom_or_report,
@@ -412,6 +415,8 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			$template_file = 'report.php';
 		} elseif ('report-plain' == $position) {
 			$template_file = 'report-plain.php';
+		} elseif ('autobackup' == $position) {
+			$template_file = 'autobackup-notice.php';
 		} else {
 			$template_file = 'horizontal-notice.php';
 		}
@@ -422,7 +427,7 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 	
 		if (!has_filter('updraftplus_com_link') && isset($advert_information['button_link']) && false !== strpos($advert_information['button_link'], '//updraftplus.com')) {
 			$advert_information['button_link'] = trailingslashit($advert_information['button_link']).'?afref='.$this->self_affiliate_id;
-			if (isset($advert_information['campaign'])) $advert_information['button_link'] .= '?utm_source=updraftplus&utm_medium=banner&utm_campaign='.$advert_information['campaign'].'&utm_term=New&utm_content='.$advert_information['campaign'];
+			if (isset($advert_information['campaign'])) $advert_information['button_link'] .= '&utm_source=updraftplus&utm_medium=banner&utm_campaign='.$advert_information['campaign'];
 		}
 
 		include_once(UPDRAFTPLUS_DIR.'/admin.php');

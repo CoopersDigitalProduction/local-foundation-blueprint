@@ -8,6 +8,55 @@
 // Admin header.
 Yoast_Form::get_instance()->admin_header( false, 'wpseo-gsc', false, 'yoast_wpseo_gsc_options' );
 
+// GSC Error notification.
+$gsc_profile = WPSEO_GSC_Settings::get_profile();
+$gsc_url     = 'https://search.google.com/search-console/index';
+if ( $gsc_profile !== '' ) {
+	$gsc_url .= '?resource_id=' . rawurlencode( $gsc_profile );
+}
+$gsc_post_url            = 'https://yoa.st/google-search-console-deprecated';
+$gsc_style_alert         = '
+	display: flex;
+	align-items: baseline;
+	position: relative;
+	padding: 16px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.5;
+	margin: 16px 0;
+	color: #450c11;
+	background: #f8d7da;
+';
+$gsc_style_alert_icon    = 'display: block; margin-right: 8px;';
+$gsc_style_alert_content = 'max-width: 600px;';
+$gsc_style_alert_link    = 'color: #004973;';
+$gsc_notification        = sprintf(
+/* Translators: %1$s: expands to opening anchor tag, %2$s expands to closing anchor tag. */
+	__( 'Google has discontinued its Crawl Errors API. Therefore, any possible crawl errors you might have cannot be displayed here anymore. %1$sRead our statement on this for further information%2$s.', 'wordpress-seo' ),
+	'<a style="' . $gsc_style_alert_link . '" href="' . WPSEO_Shortlinker::get( $gsc_post_url ) . '" target="_blank" rel="noopener">',
+	'</a>'
+);
+$gsc_notification        .= '<br/><br/>';
+$gsc_notification        .= sprintf(
+/* Translators: %1$s: expands to opening anchor tag, %2$s expands to closing anchor tag. */
+	__( 'To view your current crawl errors, %1$splease visit Google Search Console%2$s.', 'wordpress-seo' ),
+	'<a style="' . $gsc_style_alert_link . '" href="' . $gsc_url . '" target="_blank" rel="noopener noreferrer">',
+	'</a>'
+);
+?>
+	<div style="<?php echo $gsc_style_alert; ?>">
+	<span style="<?php echo $gsc_style_alert_icon; ?>">
+		<svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" role="img" aria-hidden="true"
+		     focusable="false" fill="#450c11">
+			<path
+				d="M6 1q1.6 0 3 .8T11.2 4t.8 3-.8 3T9 12.2 6 13t-3-.8T.8 10 0 7t.8-3T3 1.8 6 1zm1 9.7V9.3 9L6.7 9H5l-.1.3V10.9l.3.1h1.6l.1-.3zm0-2.6L7 3.2v-.1L6.8 3H5 5l-.1.2.1 4.9.3.2h1.4l.2-.1Q7 8 6.9 8z"></path>
+		</svg>
+	</span>
+		<span style="<?php echo $gsc_style_alert_content; ?>"><?php echo $gsc_notification; ?></span>
+	</div>
+<?php
+
 $platform_tabs = new WPSEO_GSC_Platform_Tabs();
 
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG && WPSEO_GSC_Settings::get_profile() !== '' ) { ?>
@@ -84,7 +133,7 @@ switch ( $platform_tabs->current_tab() ) {
 				$profiles = $this->service->get_sites();
 				if ( ! empty( $profiles ) ) {
 					$show_save = true;
-					echo Yoast_Form::get_instance()->select( 'profile', __( 'Profile', 'wordpress-seo' ), $profiles );
+					Yoast_Form::get_instance()->select( 'profile', esc_html__( 'Profile', 'wordpress-seo' ), $profiles );
 				}
 				else {
 					$show_save = false;
@@ -95,7 +144,7 @@ switch ( $platform_tabs->current_tab() ) {
 				echo '<p>';
 
 				if ( $show_save ) {
-					echo '<input type="submit" name="submit" id="submit" class="button button-primary wpseo-gsc-save-profile" value="' . esc_attr__( 'Save Profile', 'wordpress-seo' ) . '" /> ' . __( 'or', 'wordpress-seo' ) , ' ';
+					echo '<input type="submit" name="submit" id="submit" class="button button-primary wpseo-gsc-save-profile" value="' . esc_attr__( 'Save Profile', 'wordpress-seo' ) . '" /> ' . esc_html__( 'or', 'wordpress-seo' ) . ' ';
 				}
 				echo $reset_button;
 				echo '</p>';
@@ -107,12 +156,13 @@ switch ( $platform_tabs->current_tab() ) {
 	default:
 		$form_action_url = add_query_arg( 'page', esc_attr( filter_input( INPUT_GET, 'page' ) ) );
 
-		get_current_screen()->set_screen_reader_content( array(
+		$screen_reader_content = array(
 			// There are no views links in this screen, so no need for the views heading.
 			'heading_views'      => null,
 			'heading_pagination' => __( 'Crawl issues list navigation', 'wordpress-seo' ),
 			'heading_list'       => __( 'Crawl issues list', 'wordpress-seo' ),
-		) );
+		);
+		get_current_screen()->set_screen_reader_content( $screen_reader_content );
 
 		// Open <form>.
 		echo "<form id='wpseo-crawl-issues-table-form' action='" . esc_url( $form_action_url ) . "' method='post'>\n";
@@ -124,6 +174,10 @@ switch ( $platform_tabs->current_tab() ) {
 
 		// Close <form>.
 		echo "</form>\n";
+
+		if ( ! WPSEO_Utils::is_yoast_seo_premium() ) {
+			echo '<div id="yoast-google-search-console-modal"></div>';
+		}
 
 		break;
 }

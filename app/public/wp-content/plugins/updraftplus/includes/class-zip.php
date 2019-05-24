@@ -66,7 +66,7 @@ class UpdraftPlus_PclZip {
 			if (empty($this->pclzip)) return false;
 
 			if (!empty($this->statindex)) return count($this->statindex);
-			
+
 			$statindex = $this->pclzip->listContent();
 
 			if (empty($statindex)) {
@@ -100,6 +100,46 @@ class UpdraftPlus_PclZip {
 		return $v;
 	}
 
+	/**
+	 * Returns the entry contents using its index. This is used only in PclZip, to get better performance (i.e. no such method exists on other zip objects, so don't call it on them). The caller must be careful not to request more than will fit into available memory.
+	 *
+	 * @see https://php.net/manual/en/ziparchive.getfromindex.php
+	 *
+	 * @param Array $indexes - List of indexes for entries
+	 *
+	 * @return Boolean|Array - Returns a keyed list (keys matching $indexes) of contents of the entry on success or FALSE on failure.
+	 */
+	public function updraftplus_getFromIndexBulk($indexes) {
+	
+		$results = array();
+	
+		// This is just for crazy people with mbstring.func_overload enabled (deprecated from PHP 7.2)
+		mbstring_binary_safe_encoding();
+		
+		$contents = $this->pclzip->extract(PCLZIP_OPT_BY_INDEX, $indexes, PCLZIP_OPT_EXTRACT_AS_STRING);
+
+		reset_mbstring_encoding();
+		
+		if (0 === $contents) {
+			$this->last_error = $this->pclzip->errorInfo(true);
+			return false;
+		}
+		
+		if (!is_array($contents)) {
+			$this->last_error = 'PclZip::extract() did not return the expected information (1)';
+			return false;
+		}
+		
+		foreach ($contents as $item) {
+			$index = $item['index'];
+			$content = isset($item['content']) ? $item['content'] : '';
+			$results[$index] = $content;
+		}
+		
+		return $results;
+	
+	}
+	
 	/**
 	 * Returns the entry contents using its index
 	 *

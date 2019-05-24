@@ -204,6 +204,10 @@ class wfScanEngine {
 			}
 			
 			wfScanEngine::refreshScanNotification($this->i);
+
+			if (wfCentral::isConnected()) {
+				wfCentral::updateScanStatus();
+			}
 		}
 		catch (wfScanEngineDurationLimitException $e) {
 			wfConfig::set('lastScanCompleted', $e->getMessage());
@@ -269,7 +273,7 @@ class wfScanEngine {
 		
 		if ((time() - $this->startTime) > $timeLimit){
 			$error = 'The scan time limit of ' . wfUtils::makeDuration($timeLimit) . ' has been exceeded and the scan will be terminated. This limit can be customized on the options page. <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_TIME_LIMIT) . '" target="_blank" rel="noopener noreferrer">Get More Information</a>';
-			$this->addIssue('timelimit', 1, md5($this->startTime), md5($this->startTime), 'Scan Time Limit Exceeded', $error, array());
+			$this->addIssue('timelimit', wfIssues::SEVERITY_HIGH, md5($this->startTime), md5($this->startTime), 'Scan Time Limit Exceeded', $error, array());
 			
 			$this->status(1, 'info', '-------------------');
 			$this->status(1, 'info', "Scan interrupted. Scanned " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_FILES, 0) . " files, " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_PLUGINS, 0) . " plugins, " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_THEMES, 0) . " themes, " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_POSTS, 0) . " posts, " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_COMMENTS, 0) . " comments and " . $this->scanController->getSummaryItem(wfScanner::SUMMARY_SCANNED_URLS, 0) . " URLs in " . wfUtils::makeDuration(time() - $this->startTime, true) . ".");
@@ -397,7 +401,7 @@ class wfScanEngine {
 			$haveIssues = wfIssues::STATUS_SECURE;
 			if(!empty($result['haveIssues']) && is_array($result['issues']) ){
 				foreach($result['issues'] as $issue){
-					$added = $this->addIssue($issue['type'], $issue['level'], $issue['ignoreP'], $issue['ignoreC'], $issue['shortMsg'], $issue['longMsg'], $issue['data']);
+					$added = $this->addIssue($issue['type'], wfIssues::SEVERITY_HIGH, $issue['ignoreP'], $issue['ignoreC'], $issue['shortMsg'], $issue['longMsg'], $issue['data']);
 					if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 					else if ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC) { $haveIssues = wfIssues::STATUS_IGNORED; }
 				}
@@ -533,7 +537,7 @@ class wfScanEngine {
 							$data['gsb'] = 'unknown';
 						}
 						
-						$added = $this->addIssue('checkGSB', 1, 'checkGSB', 'checkGSB' . $url, $shortMsg, $longMsg, $data);
+						$added = $this->addIssue('checkGSB', wfIssues::SEVERITY_CRITICAL, 'checkGSB', 'checkGSB' . $url, $shortMsg, $longMsg, $data);
 						if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 						else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
 					}
@@ -572,7 +576,7 @@ class wfScanEngine {
 			$haveIssues = wfIssues::STATUS_FAILED;
 		}
 		else if ($recommendation == 'UNKNOWN') {
-			$added = $this->addIssue('checkHowGetIPs', 2, 'checkHowGetIPs', 'checkHowGetIPs' . $recommendation . WORDFENCE_VERSION, "Unable to accurately detect IPs", 'Wordfence was unable to validate a test request to your website. This can happen if your website is behind a proxy that does not use one of the standard ways to convey the IP of the request or it is unreachable publicly. IP blocking and live traffic information may not be accurate. <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS) . '" target="_blank" rel="noopener noreferrer">Get More Information</a>', array());
+			$added = $this->addIssue('checkHowGetIPs', wfIssues::SEVERITY_HIGH, 'checkHowGetIPs', 'checkHowGetIPs' . $recommendation . WORDFENCE_VERSION, "Unable to accurately detect IPs", 'Wordfence was unable to validate a test request to your website. This can happen if your website is behind a proxy that does not use one of the standard ways to convey the IP of the request or it is unreachable publicly. IP blocking and live traffic information may not be accurate. <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS) . '" target="_blank" rel="noopener noreferrer">Get More Information</a>', array());
 			if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 			else if ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC) { $haveIssues = wfIssues::STATUS_IGNORED; }
 		}
@@ -591,7 +595,7 @@ class wfScanEngine {
 				$extraMsg = ' This site appears to be behind Cloudflare, so using the Cloudflare "CF-Connecting-IP" HTTP header will resolve to the correct IPs.';
 			}
 			
-			$added = $this->addIssue('checkHowGetIPs', 2, 'checkHowGetIPs', 'checkHowGetIPs' . $recommendation . WORDFENCE_VERSION, "'How does Wordfence get IPs' is misconfigured", 'A test request to this website was detected on a different value for this setting. IP blocking and live traffic information may not be accurate. <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS) . '" target="_blank" rel="noopener noreferrer">Get More Information</a>' . $extraMsg, array('recommendation' => $recommendation));
+			$added = $this->addIssue('checkHowGetIPs', wfIssues::SEVERITY_HIGH, 'checkHowGetIPs', 'checkHowGetIPs' . $recommendation . WORDFENCE_VERSION, "'How does Wordfence get IPs' is misconfigured", 'A test request to this website was detected on a different value for this setting. IP blocking and live traffic information may not be accurate. <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS) . '" target="_blank" rel="noopener noreferrer">Get More Information</a>' . $extraMsg, array('recommendation' => $recommendation));
 			if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 			else if ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC) { $haveIssues = wfIssues::STATUS_IGNORED; }
 		}
@@ -613,6 +617,7 @@ class wfScanEngine {
 			wfCommonBackupFileTest::createFromRootPath('.user.ini'),
 //			wfCommonBackupFileTest::createFromRootPath('.htaccess'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.bak'),
+			wfCommonBackupFileTest::createFromRootPath('wp-config.php.bak.a2'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.swo'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.save'),
 			new wfCommonBackupFileTest(home_url('%23wp-config.php%23'), ABSPATH . '#wp-config.php#'),
@@ -651,7 +656,7 @@ class wfScanEngine {
 				$key = "configReadable" . bin2hex($test->getUrl());
 				$added = $this->addIssue(
 					'configReadable',
-					1,
+					wfIssues::SEVERITY_CRITICAL,
 					$key,
 					$key,
 					'Publicly accessible config, backup, or log file found: ' . esc_html($pathFromRoot),
@@ -685,7 +690,7 @@ class wfScanEngine {
 			$key  = 'wpscan_fullPathDisclosure' . $testPage;
 			$added = $this->addIssue(
 				'wpscan_fullPathDisclosure',
-				2,
+				wfIssues::SEVERITY_HIGH,
 				$key,
 				$key,
 				'Web server exposes the document root',
@@ -711,7 +716,7 @@ class wfScanEngine {
 		if ($enabled) {
 			$added = $this->addIssue(
 				'wpscan_directoryListingEnabled',
-				2,
+				wfIssues::SEVERITY_HIGH,
 				'wpscan_directoryListingEnabled',
 				'wpscan_directoryListingEnabled',
 				"Directory listing is enabled",
@@ -736,7 +741,7 @@ class wfScanEngine {
 			$haveIssues = wfIssues::STATUS_SECURE;
 			if($result['haveIssues'] && is_array($result['issues']) ){
 				foreach($result['issues'] as $issue){
-					$added = $this->addIssue($issue['type'], $issue['level'], $issue['ignoreP'], $issue['ignoreC'], $issue['shortMsg'], $issue['longMsg'], $issue['data']);
+					$added = $this->addIssue($issue['type'], wfIssues::SEVERITY_CRITICAL, $issue['ignoreP'], $issue['ignoreC'], $issue['shortMsg'], $issue['longMsg'], $issue['data']);
 					if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 					else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
 				}
@@ -871,7 +876,7 @@ class wfScanEngine {
 					$key = "publiclyAccessible" . bin2hex($test->getUrl());
 					$added = $this->addIssue(
 						'publiclyAccessible',
-						2,
+						wfIssues::SEVERITY_HIGH,
 						$key,
 						$key,
 						'Publicly accessible quarantined file found: ' . esc_html($file),
@@ -933,7 +938,7 @@ class wfScanEngine {
 			$found = $this->hoover->hoover($blogID . '-' . $row['ID'], $row['post_title'] . ' ' . $row['post_content'], wordfenceURLHoover::standardExcludedHosts());
 			$this->scanController->incrementSummaryItem(wfScanner::SUMMARY_SCANNED_URLS, $found);
 			if (preg_match('/(?:<[\s\n\r\t]*script[\r\s\n\t]+.*>|<[\s\n\r\t]*meta.*refresh)/i', $row['post_title'])) {
-				$this->addIssue('postBadTitle', 1, $row['ID'], md5($row['post_title']), "Post title contains suspicious code", "This post contains code that is suspicious. Please check the title of the post and confirm that the code in the title is not malicious.", array(
+				$this->addIssue('postBadTitle', wfIssues::SEVERITY_HIGH, $row['ID'], md5($row['post_title']), "Post title contains suspicious code", "This post contains code that is suspicious. Please check the title of the post and confirm that the code in the title is not malicious.", array(
 					'postID' => $postID,
 					'postTitle' => $row['post_title'],
 					'permalink' => get_permalink($postID),
@@ -1011,7 +1016,7 @@ class wfScanEngine {
 				}
 				$ignoreP = $idString;
 				$ignoreC = $idString . $contentMD5;
-				$added = $this->addIssue('postBadURL', 1, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
+				$added = $this->addIssue('postBadURL', wfIssues::SEVERITY_HIGH, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
 					'postID' => $postID,
 					'badURL' => $result['URL'],
 					'postTitle' => $title,
@@ -1129,7 +1134,7 @@ class wfScanEngine {
 				
 				$ignoreP = $idString;
 				$ignoreC = $idString . '-' . $contentMD5;
-				$added = $this->addIssue('commentBadURL', 1, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
+				$added = $this->addIssue('commentBadURL', wfIssues::SEVERITY_LOW, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
 					'commentID' => $commentID,
 					'badURL' => $result['URL'],
 					'author' => $author,
@@ -1306,12 +1311,12 @@ class wfScanEngine {
 		if($this->isEditor($userDat->wp_capabilities)){ 
 			$shortMsg = "User \"" . esc_html($userDat->user_login) . "\" with \"" . esc_html($highCap) . "\" access has an easy password.";
 			$longMsg = "A user with the a role of '" . esc_html($highCap) . "' has a password that is easy to guess. Please change this password yourself or ask the user to change it.";
-			$level = 1;
+			$level = wfIssues::SEVERITY_CRITICAL;
 			$words = $this->dictWords;
 		} else {
 			$shortMsg = "User \"" . esc_html($userDat->user_login) . "\" with 'subscriber' access has a very easy password.";
 			$longMsg = "A user with 'subscriber' access has a password that is very easy to guess. Please either change it or ask the user to change their password.";
-			$level = 2;
+			$level = wfIssues::SEVERITY_HIGH;
 			$words = array($userDat->user_login);
 		}
 		$haveIssues = wfIssues::STATUS_SECURE;
@@ -1381,10 +1386,10 @@ class wfScanEngine {
 		$freeMegs = round($free / 1024 / 1024, 2);
 		$this->status(2, 'info', sprintf(__('The disk has %s MB available', 'wordfence'), $freeMegs));
 		if ($freeMegs < 5) {
-			$level = 1;
+			$level = wfIssues::SEVERITY_CRITICAL;
 		}
 		else if ($freeMegs < 20) {
-			$level = 2;
+			$level = wfIssues::SEVERITY_HIGH;
 		}
 		else {
 			wfIssues::statusEnd($this->statusIDX['diskSpace'], wfIssues::STATUS_SECURE);
@@ -1403,6 +1408,29 @@ class wfScanEngine {
 		if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 		else if ($haveIssues != wfIssues::STATUS_SECURE && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
 		wfIssues::statusEnd($this->statusIDX['diskSpace'], $haveIssues);
+		$this->scanController->completeStage(wfScanner::STAGE_SERVER_STATE, $haveIssues);
+	}
+	private function scan_wafStatus() {
+		$this->statusIDX['wafStatus'] = wfIssues::statusStart(__('Checking Web Application Firewall status', 'wordfence'));
+		$this->scanController->startStage(wfScanner::STAGE_SERVER_STATE);
+		
+		$haveIssues = wfIssues::STATUS_SECURE;
+		$added = false;
+		$firewall = new wfFirewall();
+		if (wfConfig::get('waf_status') !== $firewall->firewallMode() && $firewall->firewallMode() == wfFirewall::FIREWALL_MODE_DISABLED) {
+			$added = $this->addIssue('wafStatus',
+				wfIssues::SEVERITY_CRITICAL,
+				'wafStatus',
+				'wafStatus' . $firewall->firewallMode(),
+				__('Web Application Firewall is disabled', 'wordfence'),
+				sprintf(__('Wordfence\'s Web Application Firewall has been unexpectedly disabled. If you see a notice at the top of the Wordfence admin pages that says "The Wordfence Web Application Firewall cannot run," click the link in that message to rebuild the configuration. If this does not work, you may need to fix file permissions. <a href="%s" target="_blank" rel="noopener noreferrer">More Details</a>', 'wordfence'), wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_RESULT_WAF_DISABLED)),
+				array('wafStatus' => $firewall->firewallMode(), 'wafStatusDisplay' => $firewall->displayText())
+			);
+		}
+		
+		if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
+		else if ($haveIssues != wfIssues::STATUS_SECURE && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
+		wfIssues::statusEnd($this->statusIDX['wafStatus'], $haveIssues);
 		$this->scanController->completeStage(wfScanner::STAGE_SERVER_STATE, $haveIssues);
 	}
 	private function scan_dns(){
@@ -1439,7 +1467,7 @@ class wfScanEngine {
 			$dnsLogged = wfConfig::get('wf_dnsLogged', false);
 			$msg = "A change in your DNS records may indicate that a hacker has hacked into your DNS administration system and has pointed your email or website to their own server for malicious purposes. It could also indicate that your domain has expired. If you made this change yourself you can mark it 'resolved' and safely ignore it.";
 			if($dnsLogged && $loggedCNAME != $currentCNAME){
-				$added = $this->addIssue('dnsChange', 2, 'dnsChanges', 'dnsChanges' . $currentCNAME, "Your DNS records have changed", "We have detected a change in the CNAME records of your DNS configuration for the domain $host. A CNAME record is an alias that is used to point a domain name to another domain name. For example foo.example.com can point to bar.example.com which then points to an IP address of 10.1.1.1. $msg", array(
+				$added = $this->addIssue('dnsChange', wfIssues::SEVERITY_HIGH, 'dnsChanges', 'dnsChanges' . $currentCNAME, "Your DNS records have changed", "We have detected a change in the CNAME records of your DNS configuration for the domain $host. A CNAME record is an alias that is used to point a domain name to another domain name. For example foo.example.com can point to bar.example.com which then points to an IP address of 10.1.1.1. $msg", array(
 					'type' => 'CNAME',
 					'host' => $host,
 					'oldDNS' => $loggedCNAME,
@@ -1467,7 +1495,7 @@ class wfScanEngine {
 			$loggedA = wfConfig::get('wf_dnsA');
 			$dnsLogged = wfConfig::get('wf_dnsLogged', false);
 			if($dnsLogged && $loggedA != $currentA){
-				$added = $this->addIssue('dnsChange', 2, 'dnsChanges', 'dnsChanges' . $currentA, "Your DNS records have changed", "We have detected a change in the A records of your DNS configuration that may affect the domain $host. An A record is a record in DNS that points a domain name to an IP address. $msg", array(
+				$added = $this->addIssue('dnsChange', wfIssues::SEVERITY_HIGH, 'dnsChanges', 'dnsChanges' . $currentA, "Your DNS records have changed", "We have detected a change in the A records of your DNS configuration that may affect the domain $host. An A record is a record in DNS that points a domain name to an IP address. $msg", array(
 					'type' => 'A',
 					'host' => $host,
 					'oldDNS' => $loggedA,
@@ -1496,7 +1524,7 @@ class wfScanEngine {
 			$currentMX = implode(', ', $mxArr);
 			$loggedMX = wfConfig::get('wf_dnsMX');
 			if($dnsLogged && $loggedMX != $currentMX){
-				$added = $this->addIssue('dnsChange', 2, 'dnsChanges', 'dnsChanges' . $currentMX, "Your DNS records have changed", "We have detected a change in the email server (MX) records of your DNS configuration for the domain $host. $msg", array( 
+				$added = $this->addIssue('dnsChange', wfIssues::SEVERITY_HIGH, 'dnsChanges', 'dnsChanges' . $currentMX, "Your DNS records have changed", "We have detected a change in the email server (MX) records of your DNS configuration for the domain $host. $msg", array(
 					'type' => 'MX',
 					'host' => $host,
 					'oldDNS' => $loggedMX,
@@ -1596,7 +1624,7 @@ class wfScanEngine {
 
 		// WordPress core updates needed
 		if ($this->updateCheck->needsCoreUpdate()) {
-			$added = $this->addIssue('wfUpgrade', 1, 'wfUpgrade' . $this->updateCheck->getCoreUpdateVersion(), 'wfUpgrade' . $this->updateCheck->getCoreUpdateVersion(), "Your WordPress version is out of date", "WordPress version " . esc_html($this->updateCheck->getCoreUpdateVersion()) . " is now available. Please upgrade immediately to get the latest security updates from WordPress.", array(
+			$added = $this->addIssue('wfUpgrade', wfIssues::SEVERITY_HIGH, 'wfUpgrade' . $this->updateCheck->getCoreUpdateVersion(), 'wfUpgrade' . $this->updateCheck->getCoreUpdateVersion(), "Your WordPress version is out of date", "WordPress version " . esc_html($this->updateCheck->getCoreUpdateVersion()) . " is now available. Please upgrade immediately to get the latest security updates from WordPress.", array(
 				'currentVersion' => $this->wp_version,
 				'newVersion'     => $this->updateCheck->getCoreUpdateVersion(),
 			));
@@ -1609,10 +1637,10 @@ class wfScanEngine {
 		// Plugin updates needed
 		if (count($this->updateCheck->getPluginUpdates()) > 0) {
 			foreach ($this->updateCheck->getPluginUpdates() as $plugin) {
-				$severity = 1; //Critical
+				$severity = wfIssues::SEVERITY_CRITICAL;
 				if (isset($plugin['vulnerable'])) {
 					if (!$plugin['vulnerable']) {
-						$severity = 2; //Warning
+						$severity = wfIssues::SEVERITY_MEDIUM;
 					}
 				}
 				$key = 'wfPluginUpgrade' . ' ' . $plugin['pluginFile'] . ' ' . $plugin['newVersion'] . ' ' . $plugin['Version'];
@@ -1630,10 +1658,10 @@ class wfScanEngine {
 		// Theme updates needed
 		if (count($this->updateCheck->getThemeUpdates()) > 0) {
 			foreach ($this->updateCheck->getThemeUpdates() as $theme) {
-				$severity = 1; //Critical
+				$severity = wfIssues::SEVERITY_CRITICAL;
 				if (isset($theme['vulnerable'])) {
 					if (!$theme['vulnerable']) {
-						$severity = 2; //Warning
+						$severity = wfIssues::SEVERITY_MEDIUM;
 					}
 				}
 				$key = 'wfThemeUpgrade' . ' ' . $theme['Name'] . ' ' . $theme['version'] . ' ' . $theme['newVersion'];
@@ -1652,12 +1680,12 @@ class wfScanEngine {
 					$lastUpdateTimestamp = strtotime($statusArray['last_updated']);
 					if ($lastUpdateTimestamp > 0 && (time() - $lastUpdateTimestamp) > 63072000 /* ~2 years */) {
 						$statusArray['dateUpdated'] = wfUtils::formatLocalTime(get_option('date_format'), $lastUpdateTimestamp);
-						$severity = 2; //Warning
+						$severity = wfIssues::SEVERITY_MEDIUM;
 						$statusArray['abandoned'] = true;
 						$statusArray['vulnerable'] = false;
 						$vulnerable = $this->updateCheck->isPluginVulnerable($slug, $statusArray['version']);
 						if ($vulnerable) {
-							$severity = 1; //Critical 
+							$severity = wfIssues::SEVERITY_CRITICAL;
 							$statusArray['vulnerable'] = true;
 							if (is_string($vulnerable)) {
 								$statusArray['vulnerabilityLink'] = $vulnerable;
@@ -1719,7 +1747,7 @@ class wfScanEngine {
 								$longMsg = 'It may have compatibility problems with the current version of WordPress or unknown security issues.';
 							}
 							$longMsg .= ' <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_RESULT_PLUGIN_REMOVED) . '" target="_blank" rel="noopener noreferrer">Get more information.</a>';
-							$added = $this->addIssue('wfPluginRemoved', 1, $key, $key, $shortMsg, $longMsg, $pluginData);
+							$added = $this->addIssue('wfPluginRemoved', wfIssues::SEVERITY_CRITICAL, $key, $key, $shortMsg, $longMsg, $pluginData);
 							if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 							else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
 							
@@ -1769,7 +1797,7 @@ class wfScanEngine {
 				$this->scanController->incrementSummaryItem(wfScanner::SUMMARY_SCANNED_USERS);
 				$user = new WP_User($userID);
 				$key = 'suspiciousAdminUsers' . $userID;
-				$added = $this->addIssue('suspiciousAdminUsers', 1, $key, $key,
+				$added = $this->addIssue('suspiciousAdminUsers', wfIssues::SEVERITY_HIGH, $key, $key,
 					"An admin user with the username " . esc_html($user->user_login) . " was created outside of WordPress.",
 					"An admin user with the username " . esc_html($user->user_login) . " was created outside of WordPress. It's
 				possible a plugin could have created the account, but if you do not recognize the user, we suggest you remove
@@ -1873,7 +1901,7 @@ class wfScanEngine {
 				
 				$ignoreP = $idString;
 				$ignoreC = $idString . md5(serialize(get_option($optionKey, '')));
-				$added = $this->addIssue('optionBadURL', 1, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
+				$added = $this->addIssue('optionBadURL', wfIssues::SEVERITY_HIGH, $ignoreP, $ignoreC, $shortMsg, $longMsg, array(
 					'optionKey' => $optionKey,
 					'badURL' => $result['URL'],
 					'isMultisite' => $blog['isMultisite'],
@@ -1908,7 +1936,7 @@ class wfScanEngine {
 			
 			$ignoreP = 'geoIPPHPDiscontinuing';
 			$ignoreC = $ignoreP;
-			$added = $this->addIssue('geoipSupport', 1, $ignoreP, $ignoreC, $shortMsg, $longMsg, array());
+			$added = $this->addIssue('geoipSupport', wfIssues::SEVERITY_MEDIUM, $ignoreP, $ignoreC, $shortMsg, $longMsg, array());
 			if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
 			else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
 		}
@@ -1996,6 +2024,9 @@ class wfScanEngine {
 					'sslverify' => false,
 					'headers' => $headers 
 					));
+				if (wfCentral::isConnected()) {
+					wfCentral::updateScanStatus();
+				}
 			}
 			catch (Exception $e) {
 				wfConfig::set('lastScanCompleted', $e->getMessage());
@@ -2026,6 +2057,9 @@ class wfScanEngine {
 					'sslverify' => false,
 					'headers' => $headers 
 					));
+				if (wfCentral::isConnected()) {
+					wfCentral::updateScanStatus();
+				}
 			}
 			catch (Exception $e) {
 				wfConfig::set('lastScanCompleted', $e->getMessage());

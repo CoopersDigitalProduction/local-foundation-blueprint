@@ -273,7 +273,7 @@ abstract class UpdraftPlus_RemoteStorage_Addons_Base_v2 extends UpdraftPlus_Back
 	 *
 	 * @return Boolean
 	 */
-	protected function options_exist($opts) {
+	public function options_exist($opts) {
 		if (is_array($opts) && !empty($opts)) return true;
 		return false;
 	}

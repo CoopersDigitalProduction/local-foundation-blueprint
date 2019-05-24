@@ -43,6 +43,7 @@
 		<form id="updraft_restore_form" method="post">
 			<fieldset>
 				<input type="hidden" name="action" value="updraft_restore">
+				<input type="hidden" name="updraftplus_ajax_restore" value="start_ajax_restore">
 				<input type="hidden" name="backup_timestamp" value="0" id="updraft_restore_timestamp">
 				<input type="hidden" name="meta_foreign" value="0" id="updraft_restore_meta_foreign">
 				<input type="hidden" name="updraft_restorer_backup_info" value="" id="updraft_restorer_backup_info">

@@ -23,7 +23,7 @@ input.labelauty + label
 {
 	display: inline-block;
 	font-size: 13px;
-	padding: 3px;
+	padding: 10px;
 	background-color: #efefef;
 	color: black;
 	cursor: pointer;
@@ -53,9 +53,8 @@ input.labelauty + label > span.labelauty-unchecked,
 input.labelauty + label > span.labelauty-checked
 {
 	display: inline-block;
-	line-height: 12px;
-	margin-bottom: 10px;
-	/* vertical-align: bottom; */
+	line-height: 1.1;
+	vertical-align: middle;
 }
 
 /* Stylish icons inside label */
@@ -64,11 +63,12 @@ input.labelauty + label > span.labelauty-unchecked-image,
 input.labelauty + label > span.labelauty-checked-image
 {
 	display: inline-block;
-	width: 40px;
-	height: 40px;
-	vertical-align: bottom;
+	width: 30px;
+	height: 30px;
+	vertical-align: middle;
 	background-repeat: no-repeat;
 	background-position: left center;
+	background-size: contain;
 
 	transition: background-image 0.5s linear;
 	-moz-transition: background-image 0.5s linear;

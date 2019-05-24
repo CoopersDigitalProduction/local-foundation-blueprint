@@ -12,16 +12,32 @@
  */
 class WPSEO_Sitemaps_Cache {
 
-	/** @var array $cache_clear Holds the options that, when updated, should cause the cache to clear. */
+	/**
+	 * Holds the options that, when updated, should cause the cache to clear.
+	 *
+	 * @var array
+	 */
 	protected static $cache_clear = array();
 
-	/** @var bool $is_enabled Mirror of enabled status for static calls. */
+	/**
+	 * Mirror of enabled status for static calls.
+	 *
+	 * @var bool
+	 */
 	protected static $is_enabled = false;
 
-	/** @var bool $clear_all Holds the flag to clear all cache. */
+	/**
+	 * Holds the flag to clear all cache.
+	 *
+	 * @var bool
+	 */
 	protected static $clear_all = false;
 
-	/** @var array $clear_types Holds the array of types to clear. */
+	/**
+	 * Holds the array of types to clear.
+	 *
+	 * @var array
+	 */
 	protected static $clear_types = array();
 
 	/**
@@ -65,7 +81,7 @@ class WPSEO_Sitemaps_Cache {
 		/**
 		 * Filter if XML sitemap transient cache is enabled.
 		 *
-		 * @param bool $unsigned Enable cache or not, defaults to true
+		 * @param bool $unsigned Enable cache or not, defaults to true.
 		 */
 		return apply_filters( 'wpseo_enable_xml_sitemap_transient_caching', false );
 	}
@@ -91,7 +107,7 @@ class WPSEO_Sitemaps_Cache {
 	}
 
 	/**
-	 * Get the sitemap that is cached
+	 * Get the sitemap that is cached.
 	 *
 	 * @param string $type Sitemap type.
 	 * @param int    $page Page number to retrieve.
@@ -292,7 +308,7 @@ class WPSEO_Sitemaps_Cache {
 	}
 
 	/**
-	 * Adds a hook that when given option is updated, the cache is cleared
+	 * Adds a hook that when given option is updated, the cache is cleared.
 	 *
 	 * @since 3.2
 	 *
@@ -305,7 +321,7 @@ class WPSEO_Sitemaps_Cache {
 	}
 
 	/**
-	 * Clears the transient cache when a given option is updated, if that option has been registered before
+	 * Clears the transient cache when a given option is updated, if that option has been registered before.
 	 *
 	 * @since 3.2
 	 *

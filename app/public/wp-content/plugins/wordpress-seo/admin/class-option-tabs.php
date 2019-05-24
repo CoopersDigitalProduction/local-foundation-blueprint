@@ -6,17 +6,29 @@
  */
 
 /**
- * Class WPSEO_Option_Tabs
+ * Class WPSEO_Option_Tabs.
  */
 class WPSEO_Option_Tabs {
 
-	/** @var string Tabs base */
+	/**
+	 * Tabs base.
+	 *
+	 * @var string
+	 */
 	private $base;
 
-	/** @var array The tabs in this group */
+	/**
+	 * The tabs in this group.
+	 *
+	 * @var array
+	 */
 	private $tabs = array();
 
-	/** @var string Name of the active tab */
+	/**
+	 * Name of the active tab.
+	 *
+	 * @var string
+	 */
 	private $active_tab = '';
 
 	/**
@@ -35,7 +47,7 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Get the base
+	 * Get the base.
 	 *
 	 * @return string
 	 */
@@ -44,7 +56,7 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Add a tab
+	 * Add a tab.
 	 *
 	 * @param WPSEO_Option_Tab $tab Tab to add.
 	 *
@@ -57,7 +69,7 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Get active tab
+	 * Get active tab.
 	 *
 	 * @return null|WPSEO_Option_Tab Get the active tab.
 	 */
@@ -78,7 +90,7 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Is the tab the active tab
+	 * Is the tab the active tab.
 	 *
 	 * @param WPSEO_Option_Tab $tab Tab to check for active tab.
 	 *
@@ -89,7 +101,7 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Get all tabs
+	 * Get all tabs.
 	 *
 	 * @return WPSEO_Option_Tab[]
 	 */
@@ -98,9 +110,9 @@ class WPSEO_Option_Tabs {
 	}
 
 	/**
-	 * Display the tabs
+	 * Display the tabs.
 	 *
-	 * @param Yoast_Form $yform   Yoast Form needed in the views.
+	 * @param Yoast_Form $yform Yoast Form needed in the views.
 	 */
 	public function display( Yoast_Form $yform ) {
 		$formatter = new WPSEO_Option_Tabs_Formatter();

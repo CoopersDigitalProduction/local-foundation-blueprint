@@ -22,7 +22,7 @@ class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 			$obj->setPort($port);
 		}
 		global $updraftplus;
-		if ($updraftplus->backup_time) $updraftplus->log($log_message);
+		if ($updraftplus->backup_time) $this->log($log_message);
 		$obj->setEndpoint($endpoint);
 	}
 
@@ -94,6 +94,17 @@ class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 	 */
 	public function transform_options_for_template($opts) {
 		return $opts;
+	}
+	
+	/**
+	 * Check whether options have been set up by the user, or not
+	 *
+	 * @param Array $opts - the potential options
+	 *
+	 * @return Boolean
+	 */
+	public function options_exist($opts) {
+		return (parent::options_exist($opts) && !empty($opts['endpoint']));
 	}
 	
 	/**

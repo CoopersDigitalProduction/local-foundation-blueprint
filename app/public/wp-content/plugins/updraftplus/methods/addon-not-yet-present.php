@@ -23,9 +23,9 @@ class UpdraftPlus_BackupModule_AddonNotYetPresent extends UpdraftPlus_BackupModu
 
 		global $updraftplus;
 
-		$updraftplus->log("You do not have the UpdraftPlus ".$this->method.' add-on installed - get it from '.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'');
+		$this->log("You do not have the UpdraftPlus ".$this->method.' add-on installed - get it from '.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'');
 		
-		$updraftplus->log(sprintf(__('You do not have the UpdraftPlus %s add-on installed - get it from %s', 'updraftplus'), $this->description, ''.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").''), 'error', 'missingaddon-'.$this->method);
+		$this->log(sprintf(__('You do not have the UpdraftPlus %s add-on installed - get it from %s', 'updraftplus'), $this->description, ''.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").''), 'error', 'missingaddon-'.$this->method);
 		
 		return false;
 
@@ -63,9 +63,9 @@ class UpdraftPlus_BackupModule_AddonNotYetPresent extends UpdraftPlus_BackupModu
 
 		global $updraftplus;
 
-		$updraftplus->log('You do not have the UpdraftPlus '.$this->method.' add-on installed - get it from '.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'');
+		$this->log('You do not have the UpdraftPlus '.$this->method.' add-on installed - get it from '.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'');
 		
-		$updraftplus->log(sprintf(__('You do not have the UpdraftPlus %s add-on installed - get it from %s', 'updraftplus'), $this->description, ''.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").''), 'error', 'missingaddon-'.$this->method);
+		$this->log(sprintf(__('You do not have the UpdraftPlus %s add-on installed - get it from %s', 'updraftplus'), $this->description, ''.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").''), 'error', 'missingaddon-'.$this->method);
 
 		return false;
 

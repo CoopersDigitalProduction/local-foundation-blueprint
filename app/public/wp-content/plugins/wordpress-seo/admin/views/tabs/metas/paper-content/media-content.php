@@ -4,7 +4,7 @@
  *
  * @package WPSEO\Admin\Views\Media
  *
- * @var Yoast_Form $yform
+ * @uses Yoast_Form $yform Form object.
  */
 
 $wpseo_post_type              = get_post_type_object( 'attachment' );
@@ -15,12 +15,13 @@ $view_utils                   = new Yoast_View_Utils();
 <p><strong><?php esc_html_e( 'We recommend you set this to Yes.', 'wordpress-seo' ); ?></strong></p>
 <?php
 
+$yoast_free_disable_attachments_texts = array(
+	'on'  => __( 'Yes', 'wordpress-seo' ),
+	'off' => __( 'No', 'wordpress-seo' ),
+);
 $yform->toggle_switch(
 	'disable-attachment',
-	array(
-		'on'  => __( 'Yes', 'wordpress-seo' ),
-		'off' => __( 'No', 'wordpress-seo' ),
-	),
+	$yoast_free_disable_attachments_texts,
 	__( 'Redirect attachment URLs to the attachment itself?', 'wordpress-seo' )
 );
 

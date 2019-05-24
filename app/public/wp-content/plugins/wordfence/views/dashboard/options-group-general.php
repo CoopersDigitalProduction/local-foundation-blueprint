@@ -51,7 +51,7 @@ if (!isset($collapseable)) {
 						<?php
 						echo wfView::create('options/option-text', array(
 							'textOptionName' => 'alertEmails',
-							'textValue' => wfConfig::get('alertEmails'),
+							'textValue' => implode(',', wfConfig::getAlertEmails()),
 							'title' => __('Where to email alerts', 'wordfence'),
 							'placeholder' => __('Separate multiple addresses with commas', 'wordfence'),
 							'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_DASHBOARD_OPTION_ALERT_EMAILS),

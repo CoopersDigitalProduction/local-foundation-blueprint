@@ -49,6 +49,11 @@ class UpdraftPlus_UpdraftCentral_Cloud extends UpdraftPlus_Login {
 					if (is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
 						$response['keys_table'] = $updraftplus_updraftcentral_main->get_keys_table();
 					}
+
+					if (!empty($data['addons_options_connect']) && class_exists('UpdraftPlus_Options')) {
+						UpdraftPlus_Options::update_updraft_option('updraftplus_com_and_udc_connection_success', 1, false);
+					}
+
 				} else {
 					if ('error' === $response['status']) {
 						$response = array(

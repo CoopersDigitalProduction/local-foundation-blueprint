@@ -178,18 +178,7 @@ if (!isset($sendingDiagnosticEmail)) {
 		<?php
 		$howGet = wfConfig::get('howGetIPs', false);
 		list($currentIP, $currentServerVarForIP) = wfUtils::getIPAndServerVariable();
-		$howGetHasErrors = false;
-		foreach (array(
-			         'REMOTE_ADDR'           => 'REMOTE_ADDR',
-			         'HTTP_CF_CONNECTING_IP' => 'CF-Connecting-IP',
-			         'HTTP_X_REAL_IP'        => 'X-Real-IP',
-			         'HTTP_X_FORWARDED_FOR'  => 'X-Forwarded-For',
-		         ) as $variable => $label) {
-			if (!($currentServerVarForIP && $currentServerVarForIP === $variable) && $howGet === $variable) {
-				$howGetHasErrors = true;
-				break;
-			}
-		}
+		$howGetHasErrors = $howGet && (! $currentServerVarForIP || $howGet !== $currentServerVarForIP);
 		?>
 		<div class="wf-block<?php echo ($howGetHasErrors ? ' wf-diagnostic-fail' : '') . (wfPersistenceController::shared()->isActive('wf-diagnostics-client-ip') ? ' wf-active' : '') ?>" data-persistence-key="<?php echo esc_attr('wf-diagnostics-client-ip') ?>">
 			<div class="wf-block-header">
@@ -215,50 +204,25 @@ if (!isset($sendingDiagnosticEmail)) {
 					</tbody>
 					<tbody>
 					<?php
-					$howGet = wfConfig::get('howGetIPs', false);
-					list($currentIP, $currentServerVarForIP) = wfUtils::getIPAndServerVariable();
-					foreach (array(
-						         'REMOTE_ADDR'           => 'REMOTE_ADDR',
-						         'HTTP_CF_CONNECTING_IP' => 'CF-Connecting-IP',
-						         'HTTP_X_REAL_IP'        => 'X-Real-IP',
-						         'HTTP_X_FORWARDED_FOR'  => 'X-Forwarded-For',
-					         ) as $variable => $label): ?>
+					$serverVariables = array(
+						'REMOTE_ADDR'           => 'REMOTE_ADDR',
+						'HTTP_CF_CONNECTING_IP' => 'CF-Connecting-IP',
+						'HTTP_X_REAL_IP'        => 'X-Real-IP',
+						'HTTP_X_FORWARDED_FOR'  => 'X-Forwarded-For',
+					);
+					foreach (wfUtils::getAllServerVariableIPs() as $variable => $ip): ?>
 						<tr>
-							<td><?php echo $label ?></td>
+							<td><?php echo isset($serverVariables[$variable]) ? $serverVariables[$variable] : $variable ?></td>
 							<td><?php
-								if (!array_key_exists($variable, $_SERVER)) {
+								if (! $ip) {
 									_e('(not set)', 'wordfence');
+								} elseif (is_array($ip)) {
+									$output = array_map('esc_html', $ip);
+									echo str_replace($currentIP, "<strong>{$currentIP}</strong>", implode(', ', $output));
 								} else {
-									if (strpos($_SERVER[$variable], ',') !== false) {
-										$trustedProxies = explode("\n", wfConfig::get('howGetIPs_trusted_proxies', ''));
-										$items = preg_replace('/[\s,]/', '', explode(',', $_SERVER[$variable]));
-										$items = array_reverse($items);
-										$output = '';
-										$markedSelectedAddress = false;
-										foreach ($items as $index => $i) {
-											foreach ($trustedProxies as $proxy) {
-												if (!empty($proxy)) {
-													if (wfUtils::subnetContainsIP($proxy, $i) && $index < count($items) - 1) {
-														$output = esc_html($i) . ', ' . $output;
-														continue 2;
-													}
-												}
-											}
-
-											if (!$markedSelectedAddress) {
-												$output = '<strong>' . esc_html($i) . '</strong>, ' . $output;
-												$markedSelectedAddress = true;
-											} else {
-												$output = esc_html($i) . ', ' . $output;
-											}
-										}
-
-										echo substr($output, 0, -2);
-									} else {
-										echo esc_html($_SERVER[$variable]);
-									}
+									echo esc_html($ip);
 								}
-								?></td>
+							?></td>
 							<?php if ($currentServerVarForIP && $currentServerVarForIP === $variable): ?>
 								<td class="wf-result-success"><?php _e('In use', 'wordfence'); ?></td>
 							<?php elseif ($howGet === $variable): ?>

@@ -5,10 +5,10 @@
  * @package Yoast\YoastSEO\Formatters
  */
 
-namespace Yoast\YoastSEO\Formatters;
+namespace Yoast\WP\Free\Formatters;
 
-use Yoast\YoastSEO\Models\Indexable;
-use Yoast\YoastSEO\Models\SEO_Meta;
+use Yoast\WP\Free\Models\Indexable;
+use Yoast\WP\Free\Models\SEO_Meta;
 
 /**
  * Formats the post meta to indexable format.
@@ -16,7 +16,7 @@ use Yoast\YoastSEO\Models\SEO_Meta;
 class Indexable_Post_Formatter {
 
 	/**
-	 * The current post id.
+	 * The current post ID.
 	 *
 	 * @var int
 	 */
@@ -27,7 +27,7 @@ class Indexable_Post_Formatter {
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @param int $post_id The post id to use.
+	 * @param int $post_id The post ID to use.
 	 */
 	public function __construct( $post_id ) {
 		$this->post_id = $post_id;

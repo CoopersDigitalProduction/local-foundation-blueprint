@@ -1,10 +1,10 @@
 === Wordfence Security - Firewall & Malware Scan ===
 Contributors: mmaunder 
-Tags: security, firewall, malware scanner, web application firewall, antivirus, block hackers, country blocking, clean hacked site, blacklist, waf, login security
+Tags: security, firewall, malware scanner, web application firewall, two factor authentication, block hackers, country blocking, clean hacked site, blacklist, waf, login security
 Requires at least: 3.9
 Requires PHP: 5.3
-Tested up to: 5.0.3
-Stable tag: 7.1.20
+Tested up to: 5.2
+Stable tag: 7.3.2
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -12,7 +12,7 @@ Secure your website with the most comprehensive WordPress security plugin. Firew
 
 ### THE MOST POPULAR WORDPRESS FIREWALL & SECURITY SCANNER
 
-Wordfence includes an endpoint firewall and malware scanner that were built from the ground up to protect WordPress. Our Threat Defense Feed arms Wordfence with the newest firewall rules, malware signatures and malicious IP addresses it needs to keep your website safe. Rounded out by a suite of additional features, Wordfence is the most comprehensive WordPress security solution available.
+Wordfence includes an endpoint firewall and malware scanner that were built from the ground up to protect WordPress. Our Threat Defense Feed arms Wordfence with the newest firewall rules, malware signatures and malicious IP addresses it needs to keep your website safe. Rounded out by 2FA and a suite of additional features, Wordfence is the most comprehensive WordPress security solution available.
 
 #### WORDPRESS FIREWALL
 * Web Application Firewall identifies and blocks malicious traffic. Built and maintained by a large team focused 100% on WordPress security.
@@ -20,7 +20,7 @@ Wordfence includes an endpoint firewall and malware scanner that were built from
 * [Premium] Real-time IP Blacklist blocks all requests from the most malicious IPs, protecting your site while reducing load.
 * Protects your site at the endpoint, enabling deep integration with WordPress. Unlike cloud alternatives does not break encryption, cannot be bypassed and cannot leak data.
 * Integrated malware scanner blocks requests that include malicious code or content.
-* Protection from brute force attacks by limiting login attempts, enforcing strong passwords and other login security measures.
+* Protection from brute force attacks by limiting login attempts.
 
 #### WORDPRESS SECURITY SCANNER
 * Malware scanner checks core files, themes and plugins for malware, bad URLs, backdoors, SEO spam, malicious redirects and code injections.
@@ -31,10 +31,22 @@ Wordfence includes an endpoint firewall and malware scanner that were built from
 * Checks your content safety by scanning file contents, posts and comments for dangerous URLs and suspicious content.
 * [Premium] Checks to see if your site or IP have been blacklisted for malicious activity, generating spam or other security issue.
 
+#### LOGIN SECURITY
+* Two-factor authentication (2FA), one of the most secure forms of remote system authentication available via any TOTP-based authenticator app or service.
+* Login Page CAPTCHA stops bots from logging in.
+* Disable or add 2FA to XML-RPC.
+* Block logins for administrators using known compromised passwords.
+
+#### WORDFENCE CENTRAL
+* Wordfence Central is a powerful and efficient way to manage the security for multiple sites in one place.
+* Efficiently assess the security status of all your websites in one view. View detailed security findings without leaving Wordfence Central.
+* Powerful templates make configuring Wordfence a breeze.
+* Free to use for unlimited sites.
+
 #### SECURITY TOOLS
 * With Live Traffic, monitor visits and hack attempts not shown in other analytics packages in real time; including origin, their IP address, the time of day and time spent on your site.
-* [Premium] Stop brute force attacks permanently by using two factor authentication, one of the most secure forms of remote system authentication available.
-* Block attackers by IP or build advanced rules based on IP Range, Hostname, User Agent and Referrer. [Premium] Country blocking available with Wordfence Premium.
+* Block attackers by IP or build advanced rules based on IP Range, Hostname, User Agent and Referrer. 
+* Country blocking available with Wordfence Premium.
 
 == Installation ==
 
@@ -64,11 +76,11 @@ To install the Wordfence on WordPress Multi-Site installations:
 
 = How does Wordfence Security protect sites from attackers? =
 
-The WordPress security plugin provides the best protection available for your website. Powered by the constantly updated Threat Defense Feed, WordFence Firewall stops you from getting hacked. Wordfence Scan leverages the same proprietary feed, alerting you quickly about security issues or if your site is compromised. The Live Traffic view gives you real-time visibility into traffic and hack attempts on your website. A deep set of additional tools round out the most comprehensive WordPress security solution available.
+The WordPress security plugin provides the best protection available for your website. Powered by the constantly updated Threat Defense Feed, Wordfence Firewall stops you from getting hacked. Wordfence Scan leverages the same proprietary feed, alerting you quickly about security issues or if your site is compromised. The Live Traffic view gives you real-time visibility into traffic and hack attempts on your website. A deep set of additional tools round out the most comprehensive WordPress security solution available.
 
 = What features does Wordfence Premium enable? =
 
-We offer a Premium API key that gives you real-time updates to the Threat Defense Feed which includes a real-time IP blacklist, firewall rules and malware signatures. Premium support, country blocking, more frequent scans, two-factor authentication and spam and spamvertising checks are also included. [Click here to sign-up for Wordfence Premium now](http://www.wordfence.com/) or simply install Wordfence free and start protecting your website.
+We offer a Premium API key that gives you real-time updates to the Threat Defense Feed which includes a real-time IP blacklist, firewall rules, and malware signatures. Premium support, country blocking, more frequent scans, and spam and spamvertising checks are also included. [Click here to sign-up for Wordfence Premium now](http://www.wordfence.com/) or simply install Wordfence free and start protecting your website.
 
 = How does the Wordfence WordPress Firewall protect websites? =
 
@@ -166,10 +178,72 @@ Secure your website with Wordfence.
 5. Brute Force Protection features protect you from password guessing attacks.
 6. Block attackers by IP, Country, IP range, Hostname, Browser or Referrer.
 7. The Wordfence Live Traffic view shows you real-time activity on your site including bot traffic and exploit attempts.
-8. Take login security to the next level with Two Factor Authentication.
-
+8. Take login security to the next level with Two-Factor Authentication.
+9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.3.2 - May 16, 2019 =
+* Improvement: Updated sodium_compat to address an incompatibility that may occur with the pending WordPress 5.2.1 update.
+* Improvement: Clarified text around the reCAPTCHA setting to indicate v3 keys must be used.
+* Improvement: Added detection for Jetpack and a notice when XML-RPC authentication is disabled.
+* Fix: Suppressed error messages on the NTP time check to compensate for hosts with UDP connections disabled.
+
+= 7.3.1 - May 14, 2019 =
+* Improvement: Two-factor authentication is new and improved, now available on all Premium and Free installations.
+* Improvement: Added Google reCAPTCHA v3 support to the login and registration forms.
+* Improvement: XML-RPC authentication may now be disabled or forced to require 2FA.
+* Improvement: Reduced size of SVG assets.
+* Improvement: Clarified text on "Maximum execution time for each scan stage" option.
+* Improvement: Added detection for an additional config file that may be created and publicly visible on some hosts.
+* Improvement: Improved detection for malformed malware scanning signatures.
+* Change: Long-deprecated database tables will be removed.
+* Change: Removed old performance logging code that's no longer used.
+* Fix: Addressed a log notice when using the See Recent Traffic feature in Live Traffic.
+* Fix: WAF attack data now correctly includes JSON payloads when appropriate.
+* Fix: Fixed the text for Live Traffic entries that include a redirection message.
+* Fix: Fixed an issue with synchronizing scan issues to Wordfence Central that prevented stale issues from being cleared.
+
+= 7.2.5 - April 18, 2019 =
+* Improvement: Added additional data breach records to the breached password check.
+* Improvement: Added the Accept-Encoding compression header to WAF-related requests for better performance during rule updates.
+* Improvement: Updated to the current GeoIP database.
+* Improvement: Added additional controls to the Wordfence Central connection page to better reflect the current connection state.
+* Change: Updated the text on the option to alert for scan results of a certain severity.
+
+= 7.2.4 - March 26, 2019 =
+* Improvement: Updated vulnerability database integration.
+* Improvement: Better messaging when a WAF rule update fails to better indicate the cause.
+* Fix: Removed a double slash that could occur in an image path.
+* Fix: Adjusted timeouts to improve reliability of WAF rule updates on slower servers.
+* Fix: Improved connection process with Wordfence Central for better reliability on servers with non-standard paths.
+* Fix: Switched to autoloader with fastMult enabled on sodum_compat to minimize connection issues.
+
+= 7.2.3 - February 28, 2019 =
+* Improvement: Country names are now shown instead of two letter codes where appropriate.
+* Improvement: Updated the service whitelist to reflect additions to the Facebook IP ranges.
+* Improvement: Added alerting for when the WAF is disabled for any reason.
+* Improvement: Additional alerting and troubleshooting steps for WAF configuration issues.
+* Change: Live Traffic human/bot status will additionally be based on the browscap record in security-only mode.
+* Change: Added dismissible prompt to switch Live Traffic to security-only mode.
+* Fix: The scan issues alerting option is now set correctly for new installations.
+* Fix: Fixed a transparency issue with flags for Switzerland and Nepal.
+* Fix: Fixed the malware link image rendering in scan issue emails and switched to always use https.
+* Fix: WAF-related scheduled tasks are now more resilient to connection timeouts or memory issues.
+* Fix: Fixed Wordfence Central connection flow within the first time experience.
+
+= 7.2.2 - February 14, 2019 =
+* Improvement: Updated GeoIP database.
+* Fix: Syncing requests from Wordfence Central no longer appear in Live Traffic.
+* Fix: Addressed some display issues with the Wordfence Central panel on the Wordfence Dashboard.
+
+= 7.2.1 - February 5, 2019 =
+* Improvement: Integrated Wordfence with Wordfence Central, a new service allowing you to manage multiple Wordfence installations from a single interface.
+* Improvement: Added a help link to the mode display when a host disabling Live Traffic is active.
+* Improvement: Added an option for whitelisting ManageWP in "Whitelisted Services".
+* Fix: Enqueued fonts used in admin notices on all admin pages.
+* Fix: Change false positive user-reports link to use https.
+* Fix: Fix reference to non-existent function when registering menus.
 
 = 7.1.20 - January 8, 2019 =
 * Fix: Fixed a commit error with 7.1.19

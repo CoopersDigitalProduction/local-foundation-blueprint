@@ -206,4 +206,16 @@ class UpdraftPlus_BackupModule_openstack extends UpdraftPlus_BackupModule_openst
 
 		$this->credentials_test_go($opts, $posted_settings['path'], $posted_settings['useservercerts'], $posted_settings['disableverify']);
 	}
+
+	/**
+	 * Check whether options have been set up by the user, or not
+	 *
+	 * @param Array $opts - the potential options
+	 *
+	 * @return Boolean
+	 */
+	public function options_exist($opts) {
+		if (is_array($opts) && $opts['user'] && '' !== $opts['user'] && !empty($opts['authurl'])) return true;
+		return false;
+	}
 }

@@ -5,12 +5,12 @@
  * @package Yoast\YoastSEO\Watchers
  */
 
-namespace Yoast\YoastSEO\Watchers;
+namespace Yoast\WP\Free\Watchers;
 
-use Yoast\YoastSEO\Exceptions\No_Indexable_Found;
-use Yoast\YoastSEO\Formatters\Indexable_Post_Formatter;
-use Yoast\YoastSEO\WordPress\Integration;
-use Yoast\YoastSEO\Models\Indexable;
+use Yoast\WP\Free\Exceptions\No_Indexable_Found;
+use Yoast\WP\Free\Formatters\Indexable_Post_Formatter;
+use Yoast\WP\Free\WordPress\Integration;
+use Yoast\WP\Free\Models\Indexable;
 
 /**
  * Fills the Indexable according to Post data.
@@ -92,7 +92,7 @@ class Indexable_Post_Watcher implements Integration {
 	}
 
 	/**
-	 * Determines if the post can be indexed
+	 * Determines if the post can be indexed.
 	 *
 	 * @codeCoverageIgnore
 	 *
@@ -130,7 +130,7 @@ class Indexable_Post_Watcher implements Integration {
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $post_id The post ID.
 	 *
 	 * @return Indexable_Post_Formatter Instance.
 	 */

@@ -103,7 +103,7 @@ $tabs = array(
 
 		<?php
 		/**
-		 * Allow adding a custom import tab header
+		 * Allow adding a custom import tab header.
 		 */
 		do_action( 'wpseo_import_tab_header' );
 		?>
@@ -117,8 +117,11 @@ foreach ( $tabs as $identifier => $tab ) {
 	if ( ! empty( $tab['screencast_video_url'] ) ) {
 		$tab_video_url = $tab['screencast_video_url'];
 
-		$helpcenter_tab = new WPSEO_Option_Tab( $identifier, $tab['label'],
-			array( 'video_url' => $tab['screencast_video_url'] ) );
+		$helpcenter_tab = new WPSEO_Option_Tab(
+			$identifier,
+			$tab['label'],
+			array( 'video_url' => $tab['screencast_video_url'] )
+		);
 	}
 
 	$helpcenter_tabs->add_tab( $helpcenter_tab );
@@ -135,6 +138,6 @@ foreach ( $tabs as $identifier => $tab ) {
 }
 
 /**
- * Allow adding a custom import tab
+ * Allow adding a custom import tab.
  */
 do_action( 'wpseo_import_tab_content' );

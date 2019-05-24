@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-10-24 06:12:59+0000\n"
+"PO-Revision-Date: 2019-02-06 22:33:35+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,53 +13,53 @@ msgstr ""
 
 #: src/admin.php:5374
 msgid "Clone region:"
-msgstr ""
+msgstr "Klon region:"
 
 #: src/udaddons/updraftplus-addons.php:268,
 #: src/udaddons/updraftplus-addons.php:280
 msgid "go here"
-msgstr ""
+msgstr "gå hertil"
 
 #: src/udaddons/updraftplus-addons.php:268,
 #: src/udaddons/updraftplus-addons.php:280
 msgid "If you have already renewed, then you need to allocate a licence to this site - %s"
-msgstr ""
+msgstr "Hvis du allerede har fornyet, skal du tilknytte en licens til dette websted - %s"
 
 #: src/addons/onedrive.php:864
 msgid "Authentication"
-msgstr ""
+msgstr "Godkendelse"
 
 #: src/admin.php:926
 msgid "You must select at least one remote storage destination to upload this backup set to."
-msgstr ""
+msgstr "Du skal vælge mindst ét fjernlager at uploade denne backup til."
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Read more about Easy Updates Manager"
-msgstr ""
+msgstr "Læs mere om Easy Updates Manager"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:68
 msgid "You can find out more about clone keys here."
-msgstr ""
+msgstr "Du kan finde ud af mere om klonetaster her."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:57
 msgid "Or, use an UpdraftClone key"
-msgstr ""
+msgstr "Eller, brug en UpdraftClone nøgle"
 
 #: src/restorer.php:2493
 msgid "Found SET NAMES %s, but changing to %s as suggested by WPDB::determine_charset()."
-msgstr ""
+msgstr "Fundet SET NAMES %s, men skifter til %s som foreslået af WPDB::determine_charset()."
 
 #: src/admin.php:953
 msgid "UpdraftClone key is required."
-msgstr ""
+msgstr "UpdraftClone-nøgle er påkrævet."
 
 #: src/admin.php:944
 msgid "The preparation of the clone data has been aborted."
-msgstr ""
+msgstr "Udarbejdelsen af klondataene er blevet afbrudt."
 
 #: src/addons/azure.php:646
 msgid "Azure Government"
-msgstr ""
+msgstr "Azure regering"
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Ask WordPress to automatically update UpdraftPlus when it finds an available update."
@@ -79,7 +79,7 @@ msgstr "Bed WordPress om at opdatere UpdraftPlus automatisk, når en opdatering 
 
 #: src/addons/googlecloud.php:997
 msgid "You must add the following as the authorized redirect URI (under \"More Options\") when asked"
-msgstr ""
+msgstr "Du skal tilføje følgende som autoriseret omdirigerings-URI (under \"Flere indstillinger\"), når du bliver spurgt"
 
 #: src/addons/googlecloud.php:991
 msgid "%s does not allow authorization of sites hosted on direct IP addresses. You will need to change your site's address (%s) before you can use %s for storage."

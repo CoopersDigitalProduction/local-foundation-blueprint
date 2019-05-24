@@ -36,7 +36,7 @@ class WPSEO_Add_Keyword_Modal {
 				__( 'Get %s', 'wordpress-seo' ),
 				'Yoast SEO Premium'
 			),
-			'small'                    => __( '1 year free updates and upgrades included!', 'wordpress-seo' ),
+			'small'                    => __( '1 year free support and updates included!', 'wordpress-seo' ),
 			'a11yNotice.opensInNewTab' => __( '(Opens in a new browser tab)', 'wordpress-seo' ),
 		);
 	}
@@ -49,7 +49,7 @@ class WPSEO_Add_Keyword_Modal {
 	public function get_translations_for_js() {
 		$translations = $this->get_translations();
 		return array(
-			'locale' => WPSEO_Utils::get_user_locale(),
+			'locale' => WPSEO_Language_Utils::get_user_locale(),
 			'intl'   => $translations,
 		);
 	}

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-12-15 11:42:30+0000\n"
+"PO-Revision-Date: 2019-02-27 16:20:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -519,7 +519,7 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:134, src/includes/updraftplus-tour.php:138
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: src/includes/updraftplus-tour.php:131
 msgid "Look through the other settings here, making any changes you’d like."
@@ -615,7 +615,7 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:86
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: src/includes/class-commands.php:893
 msgid "You can buy more temporary clone tokens here."
@@ -667,7 +667,7 @@ msgstr ""
 
 #: src/admin.php:663
 msgid "Backup"
-msgstr ""
+msgstr "バックアップ"
 
 #: src/addons/wp-cli.php:408
 msgid "Latest full backup found; identifier:"
@@ -795,7 +795,7 @@ msgstr ""
 
 #: src/addons/incremental.php:236, src/updraftplus.php:99
 msgid "Every hour"
-msgstr ""
+msgstr "毎時間"
 
 #: src/includes/class-commands.php:900
 msgid "Create clone"
@@ -810,15 +810,15 @@ msgstr ""
 #: src/templates/wp-admin/settings/temporary-clone.php:83,
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:71
 msgid "Processing"
-msgstr ""
+msgstr "処理中"
 
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:70
 msgid "Connect to UpdraftCentral Cloud"
-msgstr ""
+msgstr "UpdraftCentral クラウドに接続"
 
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:68
 msgid "UpdraftPlus.Com account terms and policies"
-msgstr ""
+msgstr "UpdraftPlus.Comアカウントの利用規約とポリシー"
 
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:68
 msgid "I consent to %s"
@@ -989,7 +989,7 @@ msgstr ""
 
 #: src/admin.php:846, src/admin.php:4248
 msgid "Upload"
-msgstr ""
+msgstr "アップロード"
 
 #: src/addons/reporting.php:529, src/admin.php:796
 msgid "Only email the database backup"
@@ -1299,7 +1299,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:527, src/includes/updraftplus-tour.php:85
 msgid "Next"
-msgstr "次"
+msgstr "次へ"
 
 #: src/central/bootstrap.php:513
 msgid "an account"
@@ -1609,7 +1609,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:11
 msgid "UpdraftPlus Tour"
-msgstr ""
+msgstr "UpdraftPlus ツアー"
 
 #: src/templates/wp-admin/settings/tab-addons.php:232
 msgid "Lock access to UpdraftPlus via a password so you choose which admin users can access backups."
@@ -1750,7 +1750,7 @@ msgstr "推奨: WP-Optimize でデータベースを最適化してください�
 #: src/templates/wp-admin/notices/report-plain.php:33,
 #: src/templates/wp-admin/notices/report.php:30
 msgid "Read more"
-msgstr "もっと読み込む"
+msgstr "続きを読む"
 
 #: src/includes/updraftplus-notices.php:182
 msgid "After you've backed up your database, we recommend you install our WP-Optimize plugin to streamline it for better website performance."
@@ -1775,7 +1775,7 @@ msgstr ""
 #: src/addons/morefiles.php:297, src/addons/morefiles.php:317,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Edit"
-msgstr ""
+msgstr "編集"
 
 #: src/addons/morefiles.php:280
 msgid "If using it, select a path from the directory tree below and then press confirm selection."
@@ -2336,7 +2336,7 @@ msgstr "ユーザーとしてこのサイトにアクセス:"
 
 #: src/central/bootstrap.php:477
 msgid "Details"
-msgstr "説明"
+msgstr "詳細"
 
 #: src/central/bootstrap.php:476
 msgid "Key description"
@@ -2479,7 +2479,7 @@ msgstr "新しいサイトとしてインポートされます。"
 #: src/admin.php:2842, src/templates/wp-admin/notices/horizontal-notice.php:16,
 #: src/templates/wp-admin/notices/horizontal-notice.php:18
 msgid "Dismiss"
-msgstr "非表示にする"
+msgstr "非表示"
 
 #: src/admin.php:891
 msgid "Please fill in the required information."
@@ -2641,7 +2641,7 @@ msgstr "あなたは、バックアップファイルに選択しましたが、
 
 #: src/admin.php:695
 msgid "Extensions"
-msgstr "追加機能"
+msgstr "拡張機能"
 
 #: src/admin.php:687, src/admin.php:2801
 msgid "Advanced Tools"
@@ -4590,7 +4590,7 @@ msgstr "未知のソース（%s）によって作成されたバックアップ 
 
 #: src/restorer.php:1259, src/restorer.php:1307
 msgid "The WordPress content folder (wp-content) was not found in this zip file."
-msgstr "圧縮されたフォルダにコンテントフォルダー (wp-content) がありませんでした。"
+msgstr "このzipファイル内にWordpressのコンテントフォルダー (wp-content) が見付かりません。"
 
 #: src/restorer.php:1113
 msgid "This version of UpdraftPlus does not know how to handle this type of foreign backup"
@@ -4965,7 +4965,7 @@ msgstr "認証に失敗しました (認証情報 credentials をご確認くだ
 #: src/includes/class-commands.php:789, src/methods/updraftvault.php:630,
 #: src/udaddons/options.php:229
 msgid "An unknown error occurred when trying to connect to UpdraftPlus.Com"
-msgstr "UpdraftPlus.com への接続中にエラーが発生しました。"
+msgstr "UpdraftPlus.com への接続中に不明なエラーが発生しました。"
 
 #: src/admin.php:845, src/central/bootstrap.php:565
 msgid "Create"
@@ -5187,7 +5187,7 @@ msgstr ""
 
 #: src/options.php:208
 msgid "WordPress Multisite is supported, with extra features, by UpdraftPlus Premium, or the Multisite add-on."
-msgstr "UpdraftPlus Premium もしくは マルチサイトアドオンの追加機能で WordPress マルチサイトをサポートしています。"
+msgstr "WordPress マルチサイトをサポートは、UpdraftPlus Premium または マルチサイトアドオンによる追加機能です。"
 
 #: src/options.php:208
 msgid "This is a WordPress multi-site (a.k.a. network) installation."
@@ -6234,7 +6234,7 @@ msgstr "UpdraftPlus・デバッグ・モードがオンになっています。�
 
 #: src/admin.php:1167
 msgid "Notice"
-msgstr "注意"
+msgstr "通知"
 
 #: src/backup.php:1061
 msgid "Errors encountered:"
@@ -6439,7 +6439,7 @@ msgstr "失敗：私たちは、そのディレクトリにファイルを配置
 #: src/admin.php:3500, src/admin.php:3510, src/methods/addon-base-v2.php:313,
 #: src/methods/stream-base.php:356
 msgid "Failed"
-msgstr "失敗しました"
+msgstr "失敗"
 
 #: src/addons/webdav.php:169
 msgid "WebDAV URL"
@@ -6628,7 +6628,7 @@ msgstr "%sのアップロード：マルチパートアップロードのため�
 
 #: src/methods/email.php:92
 msgid "Note:"
-msgstr "備考:"
+msgstr "注:"
 
 #: src/methods/email.php:45
 msgid "WordPress Backup"
@@ -6833,7 +6833,7 @@ msgstr "%s のサポートはアドオンで利用可能になります"
 #: src/methods/addon-not-yet-present.php:68,
 #: src/methods/addon-not-yet-present.php:75
 msgid "You do not have the UpdraftPlus %s add-on installed - get it from %s"
-msgstr "UpdraftPlus %s アドオンがインストールされていません。 - %sから取得する"
+msgstr "UpdraftPlus %s アドオンがインストールされていません。 - %sから取得できます"
 
 #: src/includes/Dropbox2/OAuth/Consumer/ConsumerAbstract.php:126,
 #: src/includes/Dropbox2/OAuth/Consumer/ConsumerAbstract.php:127
@@ -6853,7 +6853,7 @@ msgstr "テーブル接頭辞を変更した : それによって変更された
 
 #: src/addons/migrator.php:1317, src/restorer.php:2784
 msgid "the database query being run was:"
-msgstr "実行したデータベすクエリー :"
+msgstr "実行したデータベースクエリー :"
 
 #: src/restorer.php:2454
 msgid "will restore as:"
@@ -6998,7 +6998,7 @@ msgstr "サーバーの PHP に必要なモジュール(%s) がありません�
 
 #: src/templates/wp-admin/settings/form-contents.php:373
 msgid "Save Changes"
-msgstr "変更の保存"
+msgstr "変更を保存"
 
 #: src/templates/wp-admin/settings/form-contents.php:345
 msgid "Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect."
@@ -7100,7 +7100,7 @@ msgstr "データベース暗号化フレーズ"
 #: src/admin.php:2935, src/templates/wp-admin/settings/form-contents.php:255,
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:44
 msgid "Email"
-msgstr "メールアドレス"
+msgstr "メール"
 
 #: src/templates/wp-admin/settings/form-contents.php:147
 msgid "The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org."
@@ -7506,7 +7506,7 @@ msgstr "UpdraftPlus 設定に戻る"
 #: src/templates/wp-admin/settings/existing-backups-table.php:19,
 #: src/templates/wp-admin/settings/existing-backups-table.php:139
 msgid "Actions"
-msgstr "アクション"
+msgstr "操作"
 
 #: src/admin.php:2409
 msgid "Bad filename format - this does not look like an encrypted database file created by UpdraftPlus"
@@ -7674,7 +7674,7 @@ msgstr "その他"
 
 #: src/addons/multisite.php:500, src/class-updraftplus.php:1781
 msgid "Uploads"
-msgstr "アップロードファイル"
+msgstr "アップロード"
 
 #: src/class-updraftplus.php:1780
 msgid "Themes"

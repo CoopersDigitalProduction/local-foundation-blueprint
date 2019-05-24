@@ -276,18 +276,53 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 		return 'pong';
 	}
 	
+	/**
+	 * This function is called via ajax and will update the autobackup notice dismiss time
+	 *
+	 * @return array - an empty array
+	 */
 	public function dismissautobackup() {
 		UpdraftPlus_Options::update_updraft_option('updraftplus_dismissedautobackup', time() + 84*86400);
 		return array();
 	}
-	
+
+	/**
+	 * This function is called via ajax and will update the general notice dismiss time
+	 *
+	 * @return array - an empty array
+	 */
 	public function dismiss_notice() {
 		UpdraftPlus_Options::update_updraft_option('dismissed_general_notices_until', time() + 84*86400);
 		return array();
 	}
-	
+
+	/**
+	 * This function is called via ajax and will update the season notice dismiss time
+	 *
+	 * @return array - an empty array
+	 */
 	public function dismiss_season() {
 		UpdraftPlus_Options::update_updraft_option('dismissed_season_notices_until', time() + 366*86400);
+		return array();
+	}
+
+	/**
+	 * This function is called via ajax and will update the clone php notice dismiss time
+	 *
+	 * @return array - an empty array
+	 */
+	public function dismiss_clone_php_notice() {
+		UpdraftPlus_Options::update_updraft_option('dismissed_clone_php_notices_until', time() + 180 * 86400);
+		return array();
+	}
+
+	/**
+	 * This function is called via ajax and will update the WooCommerce clone notice dismiss time
+	 *
+	 * @return array - an empty array
+	 */
+	public function dismiss_clone_wc_notice() {
+		UpdraftPlus_Options::update_updraft_option('dismissed_clone_wc_notices_until', time() + 90 * 86400);
 		return array();
 	}
 	

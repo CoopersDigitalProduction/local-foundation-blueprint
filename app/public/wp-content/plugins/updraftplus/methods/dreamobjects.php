@@ -134,7 +134,7 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 		$opts['dreamobjects_endpoints'] = $this->dreamobjects_endpoints;
 		return $opts;
 	}
-
+	
 	public function credentials_test($posted_settings) {
 		$this->credentials_test_engine($this->get_config(), $posted_settings);
 	}

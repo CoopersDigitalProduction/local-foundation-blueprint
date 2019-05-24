@@ -6,16 +6,28 @@
  */
 
 /**
- * Class WPSEO_Link_Reindex_Post_Endpoint
+ * Class WPSEO_Link_Reindex_Post_Endpoint.
  */
 class WPSEO_Link_Reindex_Post_Endpoint {
 
+	/**
+	 * @var string
+	 */
 	const REST_NAMESPACE = 'yoast/v1';
+
+	/**
+	 * @var string
+	 */
 	const ENDPOINT_QUERY = 'reindex_posts';
 
+	/**
+	 * @var string
+	 */
 	const CAPABILITY_RETRIEVE = 'edit_posts';
 
-	/** @var WPSEO_Link_Reindex_Post_Service */
+	/**
+	 * @var WPSEO_Link_Reindex_Post_Service
+	 */
 	protected $service;
 
 	/**

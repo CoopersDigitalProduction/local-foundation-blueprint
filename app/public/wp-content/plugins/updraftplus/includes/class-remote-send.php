@@ -8,6 +8,9 @@ abstract class UpdraftPlus_RemoteSend {
 
 	protected $php_events = array();
 
+	/**
+	 * Class constructor
+	 */
 	public function __construct() {
 		add_action('updraft_migrate_newdestination', array($this, 'updraft_migrate_newdestination'));
 		add_action('updraft_remote_ping_test', array($this, 'updraft_remote_ping_test'));
@@ -19,6 +22,9 @@ abstract class UpdraftPlus_RemoteSend {
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
 	}
 
+	/**
+	 * Runs upon the WP action plugins_loaded; sets up UDRPC listeners for site-to-site migration
+	 */
 	public function plugins_loaded() {
 
 		global $updraftplus;
@@ -36,9 +42,15 @@ abstract class UpdraftPlus_RemoteSend {
 			foreach ($our_keys as $name_hash => $key) {
 				if (!is_array($key)) return;
 				$ud_rpc = $updraftplus->get_udrpc($name_hash.'.migrator.updraftplus.com');
-				$ud_rpc->set_message_format(1);
+				if (!empty($key['sender_public'])) {
+					$ud_rpc->set_message_format(2);
+					$ud_rpc->set_key_local($key['key']);
+					$ud_rpc->set_key_remote($key['sender_public']);
+				} else {
+					$ud_rpc->set_message_format(1);
+					$ud_rpc->set_key_local($key['key']);
+				}
 				$this->receivers[$name_hash] = $ud_rpc;
-				$ud_rpc->set_key_local($key['key']);
 				// Create listener (which causes WP actions to be fired when messages are received)
 				$ud_rpc->activate_replay_protection();
 				$ud_rpc->create_listener();
@@ -46,9 +58,37 @@ abstract class UpdraftPlus_RemoteSend {
 			add_filter('udrpc_command_send_chunk', array($this, 'udrpc_command_send_chunk'), 10, 3);
 			add_filter('udrpc_command_get_file_status', array($this, 'udrpc_command_get_file_status'), 10, 3);
 			add_filter('udrpc_command_upload_complete', array($this, 'udrpc_command_upload_complete'), 10, 3);
+			add_filter('udrpc_action', array($this, 'udrpc_action'), 10, 4);
 		}
 	}
 
+	/**
+	 * This function will return a response to the remote site on any action
+	 *
+	 * @param string $response		 - a string response
+	 * @param string $command		 - the incoming command
+	 * @param array  $data			 - an array of response data
+	 * @param string $name_indicator - a string to identify the request
+	 *
+	 * @return array                 - the array response
+	 */
+	public function udrpc_action($response, $command, $data, $name_indicator) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+
+		if (is_array($data) && isset($data['sender_public'])) {
+			// Do we already know the sender's public key?
+			$our_keys = UpdraftPlus_Options::get_updraft_option('updraft_migrator_localkeys');
+			if (is_array($our_keys) && preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches) && !empty($our_keys[$matches[1]]) && empty($our_keys[$matches[1]]['sender_public'])) {
+				// N.B. When the sender sends a public key, that indicates that *all* future communications will use it
+				$our_keys[$matches[1]]['sender_public'] = $data['sender_public'];
+				UpdraftPlus_Options::update_updraft_option('updraft_migrator_localkeys', $our_keys);
+				if (!is_array($response['data'])) $response['data'] = array();
+				$response['data']['got_public'] = 1;
+			}
+		}
+	
+		return $response;
+	}
+	
 	protected function initialise_listener_error_handling($hash) {
 		global $updraftplus;
 		$updraftplus->error_reporting_stop_when_logged = true;
@@ -212,7 +252,7 @@ abstract class UpdraftPlus_RemoteSend {
 	public function udrpc_command_upload_complete($response, $data, $name_indicator) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		if (!preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches)) return $response;
 		
-		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
+		if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
 			$job_id = (is_array($data) && !empty($data['job_id'])) ? $data['job_id'] : null;
 			do_action('updraftplus_temporary_clone_ready_for_restore', $job_id);
 		}
@@ -239,7 +279,8 @@ abstract class UpdraftPlus_RemoteSend {
 			array_push($initial_jobdata, 'remotesend_info', $remotesites[$site_id]);
 
 			// Reduce to 100MB if it was above. Since the user isn't expected to directly manipulate these zip files, the potentially higher number of zip files doesn't matter.
-			if ($split_every > 100) array_push($initial_jobdata, 'split_every', 100);
+			$split_every_key = array_search('split_every', $initial_jobdata) + 1;
+			if ($split_every > 100) $initial_jobdata[$split_every_key] = 100;
 
 		}
 
@@ -255,16 +296,33 @@ abstract class UpdraftPlus_RemoteSend {
 
 	public function updraft_remote_ping_test($data) {
 
-		global $updraftplus;
-
 		if (!isset($data['id']) || !is_numeric($data['id']) || empty($data['url'])) die;
 
+		$remote_indicator = $data['id'];
+
+		$ping_result = $this->do_ping_test($remote_indicator, $data['url']);
+		
+		die(json_encode($ping_result));
+		
+	}
+	
+	/**
+	 * Do an RPC ping test
+	 *
+	 * @param String $remote_indicator
+	 * @param String $url
+	 *
+	 * @return Array - results
+	 */
+	public function do_ping_test($remote_indicator, $url) {
+	
+		global $updraftplus;
+	
 		$remotesites = UpdraftPlus_Options::get_updraft_option('updraft_remotesites');
 		if (!is_array($remotesites)) $remotesites = array();
 
-		if (empty($remotesites[$data['id']]) || $data['url'] != $remotesites[$data['id']]['url'] || empty($remotesites[$data['id']]['key']) || empty($remotesites[$data['id']]['name_indicator'])) {
-			echo json_encode(array('e' => 1, 'r' => __('Error:', 'updraftplus').' '.__('site not found', 'updraftplus')));
-			die();
+		if (empty($remotesites[$remote_indicator]) || $url != $remotesites[$remote_indicator]['url'] || empty($remotesites[$remote_indicator]['key']) || empty($remotesites[$remote_indicator]['name_indicator'])) {
+			return array('e' => 1, 'r' => __('Error:', 'updraftplus').' '.__('site not found', 'updraftplus'));
 		}
 
 		try {
@@ -274,17 +332,37 @@ abstract class UpdraftPlus_RemoteSend {
 			$this->php_events = array();
 			add_filter('updraftplus_logline', array($this, 'updraftplus_logline'), 10, 4);
 		
-			$opts = $remotesites[$data['id']];
-		
+			$opts = $remotesites[$remote_indicator];
 			$ud_rpc = $updraftplus->get_udrpc($opts['name_indicator']);
-			$ud_rpc->set_message_format(1);
-			$ud_rpc->set_key_local($opts['key']);
-			$ud_rpc->set_destination_url($data['url']);
+			$send_data = null;
+			
+			if (!empty($opts['format_support']) && 2 == $opts['format_support']) {
+				if (empty($opts['remote_got_public'])) {
+					// Can't upgrade to format 2 until we know the other end has our public key
+					$use_format = 1;
+					$send_data = array('sender_public' => $opts['local_public']);
+				} else {
+					$use_format = 2;
+				}
+			} else {
+				$use_format = 1;
+			}
+			
+			$ud_rpc->set_message_format($use_format);
+			
+			if (2 == $use_format) {
+				$ud_rpc->set_key_remote($opts['key']);
+				$ud_rpc->set_key_local($opts['local_private']);
+			} else {
+				$ud_rpc->set_key_local($opts['key']);
+			}
+			
+			$ud_rpc->set_destination_url($url);
 			$ud_rpc->activate_replay_protection();
 			
 			do_action('updraftplus_remotesend_udrpc_object_obtained', $ud_rpc, $opts);
-			
-			$response = $ud_rpc->send_message('ping');
+
+			$response = $ud_rpc->send_message('ping', $send_data);
 
 			restore_error_handler();
 			
@@ -300,18 +378,21 @@ abstract class UpdraftPlus_RemoteSend {
 				$err_data = $response;
 				$err_code = 'no_pong';
 
+			} elseif (!empty($response['data']['got_public'])) {
+				$remotesites[$remote_indicator]['remote_got_public'] = 1;
+				UpdraftPlus_Options::update_updraft_option('updraft_remotesites', $remotesites);
 			}
 
 			if (isset($err_msg)) {
 
 				$res = array('e' => 1, 'r' => $err_msg);
 
-				if ($this->url_looks_internal($data['url'])) {
-					$res['moreinfo'] = '<p>'.sprintf(__('The site URL you are sending to (%s) looks like a local development website. If you are sending from an external network, it is likely that a firewall will be blocking this.', 'updraftplus'), htmlspecialchars($data['url'])).'</p>';
+				if ($this->url_looks_internal($url)) {
+					$res['moreinfo'] = '<p>'.sprintf(__('The site URL you are sending to (%s) looks like a local development website. If you are sending from an external network, it is likely that a firewall will be blocking this.', 'updraftplus'), htmlspecialchars($url)).'</p>';
 				}
 
 				// We got several support requests from people who didn't seem to be aware of other methods
-				$msg_try_other_method = '<p>'.__('If sending directly from site to site does not work for you, then there are three other methods - please try one of these instead.', 'updraftplus').'<a href="https://updraftplus.com/faqs/how-do-i-migrate-to-a-new-site-location/#importing" target="_blank">'.__('For longer help, including screenshots, follow this link.', 'updraftplus').'</a></p>';
+				$msg_try_other_method = '<p>'.__('If sending directly from site to site does not work for you, then there are three other methods - please try one of these instead.', 'updraftplus').' <a href="https://updraftplus.com/faqs/how-do-i-migrate-to-a-new-site-location/#importing" target="_blank">'.__('For longer help, including screenshots, follow this link.', 'updraftplus').'</a></p>';
 
 				$res['moreinfo'] = isset($res['moreinfo']) ? $res['moreinfo'].$msg_try_other_method : $msg_try_other_method;
 
@@ -320,13 +401,12 @@ abstract class UpdraftPlus_RemoteSend {
 				
 				if (!empty($this->php_events)) $res['php_events'] = $this->php_events;
 				
-				echo json_encode($res);
-				die;
+				return $res;
 			}
 
 			$ret = '<p>'.__('Testing connection...', 'updraftplus').' '.__('OK', 'updraftplus').'</p>';
 
-			global $updraftplus, $updraftplus_admin;
+			global $updraftplus_admin;
 
 			$ret .= '<input type="checkbox" checked="checked" id="remotesend_backupnow_db"> <label for="remotesend_backupnow_db">'.__("Database", 'updraftplus').'</label><br>';
 			$ret .= $updraftplus_admin->files_selector_widgetry('remotesend_', false, false);
@@ -357,11 +437,10 @@ abstract class UpdraftPlus_RemoteSend {
 			$ret .= apply_filters('updraft_backupnow_modal_afteroptions', '', 'remotesend_');
 			$ret .= '<button class="button-primary" style="height:30px; font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_go_backup();">'.__('Send', 'updraftplus').'</button>';
 
-			echo json_encode(array('success' => 1, 'r' => $ret));
+			return array('success' => 1, 'r' => $ret);
 		} catch (Exception $e) {
-			echo json_encode(array('e' => 1, 'r' => __('Error:', 'updraftplus').' '.$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')'));
+			return array('e' => 1, 'r' => __('Error:', 'updraftplus').' '.$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 		}
-		die;
 	}
 
 	/**
@@ -462,7 +541,12 @@ abstract class UpdraftPlus_RemoteSend {
 		if (empty($data['key'])) {
 			$ret['e'] = sprintf(__("Failure: No %s was given.", 'updraftplus'), __('key', 'updraftplus'));
 		} else {
-			$ud_rpc = $updraftplus->get_udrpc();
+		
+			// The indicator isn't really needed - we won't be receiving on it
+			$our_indicator = md5(network_site_url()).'.migrator.updraftplus.com';
+			$ud_rpc = $updraftplus->get_udrpc($our_indicator);
+			
+			$ud_rpc->set_can_generate(true);
 
 			// A bundle has these keys: key, name_indicator, url
 			$decode_bundle = $ud_rpc->decode_portable_bundle($data['key'], 'base64_with_count');
@@ -493,13 +577,22 @@ abstract class UpdraftPlus_RemoteSend {
 						if (!is_array($rsite)) continue;
 						if ($rsite['url'] == $decode_bundle['url']) unset($remotesites[$k]);
 					}
-					$remotesites[] = $decode_bundle;
-					UpdraftPlus_Options::update_updraft_option('updraft_remotesites', $remotesites);
 
-					$ret['selector'] = $this->get_remotesites_selector($remotesites);
+					if (false == $ud_rpc->generate_new_keypair()) {
+						$ret['e'] = __('Error:', 'updraftplus').' An error occurred when attempting to generate a new key-pair';
+					} else {
+					
+						$decode_bundle['local_private'] = $ud_rpc->get_key_local();
+						$decode_bundle['local_public'] = $ud_rpc->get_key_remote();
+					
+						$remotesites[] = $decode_bundle;
+						UpdraftPlus_Options::update_updraft_option('updraft_remotesites', $remotesites);
 
-					// Return the new HTML widget to the front end
-					$ret['r'] = __('The key was successfully added.', 'updraftplus').' '.__('It is for sending backups to the following site: ', 'updraftplus').htmlspecialchars($decode_bundle['url']);
+						$ret['selector'] = $this->get_remotesites_selector($remotesites);
+
+						// Return the new HTML widget to the front end
+						$ret['r'] = __('The key was successfully added.', 'updraftplus').' '.__('It is for sending backups to the following site: ', 'updraftplus').htmlspecialchars($decode_bundle['url']);
+					}
 
 				}
 			}

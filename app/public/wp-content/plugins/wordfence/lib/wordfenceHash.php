@@ -157,7 +157,7 @@ class wordfenceHash {
 			$this->alertedOnUnknownWordPressVersion = true;
 			$added = $this->engine->addIssue(
 				'coreUnknown',
-				2,
+				wfIssues::SEVERITY_MEDIUM,
 				'coreUnknown' . $wp_version,
 				'coreUnknown' . $wp_version,
 				'Unknown WordPress core version: ' . $wp_version,
@@ -251,8 +251,8 @@ class wordfenceHash {
 					$md5 = $malwareList[$i][1];
 					$name = $malwareList[$i][2];
 					$added = $this->engine->addIssue(
-						'file', 
-						1, 
+						'file',
+						wfIssues::SEVERITY_CRITICAL,
 						$this->path . $file, 
 						$md5,
 						'This file is suspected malware: ' . $file,
@@ -478,7 +478,7 @@ class wordfenceHash {
 							if ($fileContents && (!preg_match('/<\?' . 'php[\r\n\s\t]*\/\/[\r\n\s\t]*Silence is golden\.[\r\n\s\t]*(?:\?>)?[\r\n\s\t]*$/s', $fileContents))) {
 								$this->engine->addPendingIssue(
 									'knownfile',
-									1,
+									wfIssues::SEVERITY_HIGH,
 									'coreModified' . $file,
 									'coreModified' . $file . $md5,
 									'WordPress core file modified: ' . $file,
@@ -514,7 +514,7 @@ class wordfenceHash {
 								$cKey = $this->knownFiles['plugins'][$file][2];
 								$this->engine->addPendingIssue(
 									'knownfile',
-									2,
+									wfIssues::SEVERITY_MEDIUM,
 									'modifiedplugin' . $file,
 									'modifiedplugin' . $file . $md5,
 									'Modified plugin file: ' . $file,
@@ -554,7 +554,7 @@ class wordfenceHash {
 								$cKey = $this->knownFiles['themes'][$file][2];
 								$this->engine->addPendingIssue(
 									'knownfile',
-									2,
+									wfIssues::SEVERITY_MEDIUM,
 									'modifiedtheme' . $file,
 									'modifiedtheme' . $file . $md5,
 									'Modified theme file: ' . $file,
@@ -584,7 +584,7 @@ class wordfenceHash {
 							if ($this->isPreviousCoreFile($shac)) {
 								$added = $this->engine->addIssue(
 									'knownfile',
-									2,
+									wfIssues::SEVERITY_LOW,
 									'coreUnknown' . $file,
 									'coreUnknown' . $file . $md5,
 									sprintf(__('Old WordPress core file not removed during update: %s', 'wordfence'), $file),
@@ -601,7 +601,7 @@ class wordfenceHash {
 							else {
 								$added = $this->engine->addIssue(
 									'knownfile',
-									2,
+									wfIssues::SEVERITY_HIGH,
 									'coreUnknown' . $file,
 									'coreUnknown' . $file . $md5,
 									'Unknown file in WordPress core: ' . $file,

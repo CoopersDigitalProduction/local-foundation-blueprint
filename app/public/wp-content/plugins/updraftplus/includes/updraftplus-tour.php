@@ -72,13 +72,20 @@ class UpdraftPlus_Tour {
 		if (!in_array($hook, $pages)) return;
 		if (!UpdraftPlus_Options::user_can_manage()) return;
 
-		global $updraftplus, $updraftplus_addons2;
+		global $updraftplus, $updraftplus_addons2, $updraftplus_checkout_embed;
+
+		$checkout_embed_5gb_attribute = '';
+		if ($updraftplus_checkout_embed) {
+			$checkout_embed_5gb_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
+		}
+
 		$script_suffix = $updraftplus->use_unminified_scripts() ? '' : '.min';
 		wp_enqueue_script('updraftplus-tether-js', trailingslashit(UPDRAFTPLUS_URL).'includes/tether/tether'.$script_suffix.'.js', $updraftplus->version, true);
 		wp_enqueue_script('updraftplus-shepherd-js', trailingslashit(UPDRAFTPLUS_URL).'includes/tether-shepherd/shepherd'.$script_suffix.'.js', array('updraftplus-tether-js'), $updraftplus->version, true);
 		wp_enqueue_style('updraftplus-shepherd-css', trailingslashit(UPDRAFTPLUS_URL).'css/tether-shepherd/shepherd-theme-arrows-plain-buttons'.$script_suffix.'.css', false, $updraftplus->version);
 		wp_enqueue_style('updraftplus-tour-css', trailingslashit(UPDRAFTPLUS_URL).'css/updraftplus-tour'.$script_suffix.'.css', false, $updraftplus->version);
 		wp_register_script('updraftplus-tour-js', trailingslashit(UPDRAFTPLUS_URL).'js/tour.js', array('updraftplus-tether-js'), $updraftplus->version, true);
+		
 		$tour_data = array(
 			'nonce' => wp_create_nonce('updraftplus-credentialtest-nonce'),
 			'show_tab_on_load' => '#updraft-navtab-status',
@@ -124,6 +131,7 @@ class UpdraftPlus_Tour {
 					.'<h3>'.__('Try UpdraftVault!').'</h3>'
 					.__("UpdraftVault is our remote storage which works seamlessly with UpdraftPlus.", 'updraftplus')
 					.' <a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/updraftvault/').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
+					.'<p><a href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_5')).'" target="_blank" '.$checkout_embed_5gb_attribute.' class="button button-primary">'.__('Try UpdraftVault for 1 month for only $1!', 'updraftplus').'</a></p>'
 					.'</div>'
 			),
 			'settings_more' => array(
@@ -161,11 +169,26 @@ class UpdraftPlus_Tour {
 			)
 		);
 
-		if (isset($_REQUEST['tab']) && 'addons' === $_REQUEST['tab']) {
-			$tour_data['show_tab_on_load'] = '#updraft-navtab-addons';
+		if (isset($_REQUEST['tab'])) {
+			$tour_data['show_tab_on_load'] = '#updraft-navtab-'.esc_attr($_REQUEST['tab']);
 		}
 
+		// Change the data for premium users
 		if ($updraftplus_addons2 && method_exists($updraftplus_addons2, 'connection_status')) {
+
+			$tour_data['settings_remote_storage'] = array(
+				'title' => __("Remote storage", 'updraftplus'),
+				'text' => __("Now select a remote storage destination to protect against server-wide threats. If not, your backups remain on the same server as your site.", 'updraftplus')
+					.'<div class="ud-notice">'
+					.'<h3>'.__('Try UpdraftVault!').'</h3>'
+					.__("UpdraftVault is our remote storage which works seamlessly with UpdraftPlus.", 'updraftplus')
+					.' <a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/updraftvault/').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
+					.'<br>'
+					.__("If you have a valid Premium license, you get 1GB of storage included.", 'updraftplus')
+					.' <a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-vault-storage-5-gb/').'" target="_blank" '.$checkout_embed_5gb_attribute.'>'.__('Otherwise, you can try UpdraftVault for 1 month for only $1!', 'updraftplus').'</a>'
+					.'</div>'
+			);
+
 			if ($updraftplus_addons2->connection_status() && !is_wp_error($updraftplus_addons2->connection_status())) {
 				$tour_data['premium'] = array(
 					'title' => 'UpdraftPlus Premium',

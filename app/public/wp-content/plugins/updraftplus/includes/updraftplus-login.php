@@ -36,7 +36,6 @@ abstract class UpdraftPlus_Login {
 	 */
 	protected function send_remote_request($data, $action) {
 		global $updraftplus;
-
 		$result = wp_remote_post($updraftplus->get_url('mothership').'/?udm_action='.$action,
 			array(
 				'timeout' => 20,

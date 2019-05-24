@@ -116,9 +116,9 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 			if (is_wp_error($ftp)) {
 				$updraftplus->log_wp_error($ftp);
 			} else {
-				$updraftplus->log("FTP Failure: we did not successfully log in with those credentials.");
+				$this->log("Failure: we did not successfully log in with those credentials.");
 			}
-			$updraftplus->log(sprintf(__("%s login failure", 'updraftplus'), 'FTP'), 'error');
+			$this->log(__("login failure", 'updraftplus'), 'error');
 			return false;
 		}
 
@@ -129,7 +129,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 		$ftp_remote_path = trailingslashit($opts['path']);
 		foreach ($backup_array as $file) {
 			$fullpath = $updraft_dir.$file;
-			$updraftplus->log("FTP upload attempt: $file -> ftp://".$opts['user']."@".$opts['host']."/${ftp_remote_path}${file}");
+			$this->log("upload attempt: $file -> ftp://".$opts['user']."@".$opts['host']."/${ftp_remote_path}${file}");
 			$timer_start = microtime(true);
 			$size_k = round(filesize($fullpath)/1024, 1);
 			// Note :Setting $resume to true unnecessarily is not meant to be a problem. Only ever (Feb 2014) seen one weird FTP server where calling SIZE on a non-existent file did create a problem. So, this code just helps that case. (the check for non-empty upload_status[p] is being cautious.
@@ -141,11 +141,11 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 			}
 
 			if ($ftp->put($fullpath, $ftp_remote_path.$file, FTP_BINARY, $resume, $updraftplus)) {
-				$updraftplus->log("FTP upload attempt successful (".$size_k."KB in ".(round(microtime(true)-$timer_start, 2)).'s)');
+				$this->log("upload attempt successful (".$size_k."KB in ".(round(microtime(true)-$timer_start, 2)).'s)');
 				$updraftplus->uploaded_file($file);
 			} else {
-				$updraftplus->log("ERROR: FTP upload failed");
-				$updraftplus->log(sprintf(__("%s upload failed", 'updraftplus'), 'FTP'), 'error');
+				$this->log("ERROR: FTP upload failed");
+				$this->log(__("upload failed", 'updraftplus'), 'error');
 			}
 		}
 
@@ -233,7 +233,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 
 			if (is_wp_error($ftp) || !$ftp->connect()) {
 				if (is_wp_error($ftp)) $updraftplus->log_wp_error($ftp);
-				$updraftplus->log("FTP Failure: we did not successfully log in with those credentials (host=".$opts['host'].").");
+				$this->log("Failure: we did not successfully log in with those credentials (host=".$opts['host'].").");
 				return false;
 			}
 
@@ -244,9 +244,9 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 		$ret = true;
 		foreach ($files as $file) {
 			if (@$ftp->delete($ftp_remote_path.$file)) {
-				$updraftplus->log("FTP delete: succeeded (${ftp_remote_path}${file})");
+				$this->log("delete: succeeded (${ftp_remote_path}${file})");
 			} else {
-				$updraftplus->log("FTP delete: failed (${ftp_remote_path}${file})");
+				$this->log("delete: failed (${ftp_remote_path}${file})");
 				$ret = false;
 			}
 		}
@@ -269,11 +269,16 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 			$updraftplus->get_job_option('updraft_ssl_useservercerts'),
 			$opts['passive']
 		);
-		if (is_wp_error($ftp)) return $ftp;
+
+		if (is_wp_error($ftp)) {
+			$this->log('Failure to get FTP object: '.$ftp->get_error_code().': '.$ftp->get_error_message());
+			$this->log($ftp->get_error_message().' ('.$ftp->get_error_code().')', 'error');
+			return false;
+		}
 
 		if (!$ftp->connect()) {
-			$updraftplus->log("FTP Failure: we did not successfully log in with those credentials.");
-			$updraftplus->log(sprintf(__("%s login failure", 'updraftplus'), 'FTP'), 'error');
+			$this->log('Failure: we did not successfully log in with those credentials.');
+			$this->log(__('login failure', 'updraftplus'), 'error');
 			return false;
 		}
 
@@ -285,7 +290,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 		$resume = false;
 		if (file_exists($fullpath)) {
 			$resume = true;
-			$updraftplus->log("File already exists locally; will resume: size: ".filesize($fullpath));
+			$this->log("File already exists locally; will resume: size: ".filesize($fullpath));
 		}
 
 		return $ftp->get($fullpath, $ftp_remote_path.$file, FTP_BINARY, $resume, $updraftplus);
@@ -441,5 +446,17 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 			}
 		}
 
+	}
+
+	/**
+	 * Check whether options have been set up by the user, or not
+	 *
+	 * @param Array $opts - the potential options
+	 *
+	 * @return Boolean
+	 */
+	public function options_exist($opts) {
+		if (is_array($opts) && !empty($opts['host']) && isset($opts['user']) && '' != $opts['user']) return true;
+		return false;
 	}
 }

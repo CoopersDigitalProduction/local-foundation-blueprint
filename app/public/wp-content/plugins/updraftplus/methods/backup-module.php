@@ -271,6 +271,8 @@ abstract class UpdraftPlus_BackupModule {
 
 	/**
 	 * Supplies the list of keys for options to be saved in the backup job.
+	 *
+	 * @return Array
 	 */
 	public function get_credentials() {
 		$keys = array('updraft_ssl_disableverify', 'updraft_ssl_nossl', 'updraft_ssl_useservercerts');
@@ -341,7 +343,7 @@ abstract class UpdraftPlus_BackupModule {
 
 		$id = $this->get_id();
 
-		return $methods[$id];
+		return isset($methods[$id]) ? $methods[$id] : $id;
 	}
 
 	/**
@@ -645,7 +647,7 @@ abstract class UpdraftPlus_BackupModule {
 
 		$prefix = $this->get_storage_label();
 
-		$updraftplus->log("$prefix: $line", $level = 'notice', $uniq_id = false, $skip_dblog = false);
+		$updraftplus->log("$prefix: $line", $level, $uniq_id = false, $skip_dblog = false);
 	}
 
 	/**

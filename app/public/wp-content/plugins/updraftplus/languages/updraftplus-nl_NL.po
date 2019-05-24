@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-11-01 21:10:10+0000\n"
+"PO-Revision-Date: 2019-03-13 10:19:32+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,29 +13,29 @@ msgstr ""
 
 #: src/admin.php:5374
 msgid "Clone region:"
-msgstr ""
+msgstr "Kloon regio"
 
 #: src/udaddons/updraftplus-addons.php:268,
 #: src/udaddons/updraftplus-addons.php:280
 msgid "go here"
-msgstr ""
+msgstr "Ga verder"
 
 #: src/udaddons/updraftplus-addons.php:268,
 #: src/udaddons/updraftplus-addons.php:280
 msgid "If you have already renewed, then you need to allocate a licence to this site - %s"
-msgstr ""
+msgstr "Als uw licentie reeds vernieuwd is, moet u deze toewijzen aan deze site - %s"
 
 #: src/addons/onedrive.php:864
 msgid "Authentication"
-msgstr ""
+msgstr "Authenticatie"
 
 #: src/admin.php:926
 msgid "You must select at least one remote storage destination to upload this backup set to."
-msgstr ""
+msgstr "U moet minstens 1 externe opslagbestemming kiezen om deze backup set naar op te laden."
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Read more about Easy Updates Manager"
-msgstr ""
+msgstr "Lees meer over Easy Updates Manager"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:68
 msgid "You can find out more about clone keys here."
@@ -161,365 +161,365 @@ msgstr "Selecteer een bestand/map die u wilt uitsluiten"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:15
 msgid "All files beginning with given characters"
-msgstr ""
+msgstr "Alle bestanden die beginnen met de opgegeven karakters"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:12,
 #: src/templates/wp-admin/settings/exclude-modal.php:44,
 #: src/templates/wp-admin/settings/exclude-modal.php:46
 msgid "All files with this extension"
-msgstr ""
+msgstr "Alle bestanden met deze extensie"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:9,
 #: src/templates/wp-admin/settings/exclude-modal.php:22
 msgid "File/directory"
-msgstr ""
+msgstr "Bestand/map"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:6
 msgid "Select a way to exclude files or directories from the backup"
-msgstr ""
+msgstr "Kies een manier om bestanden of mappen uit te sluiten van de backup"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:2
 msgid "Exclude files/directories"
-msgstr ""
+msgstr "Bestanden/mappen uitsluiten"
 
 #: src/includes/updraftclone/temporary-clone-status.php:422
 msgid "To read FAQs/documentation about UpdraftClone, go here."
-msgstr ""
+msgstr "Klik hier voor de FAQs/handleidingen over UpdraftClone."
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "your UpdraftPlus.com account"
-msgstr ""
+msgstr "uw UpdraftPlus.com account"
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "You can check the progress here or in %s"
-msgstr ""
+msgstr "U kan de voortgang hier volgen of %s"
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "Your UpdraftClone is still setting up."
-msgstr ""
+msgstr "Uw UpdraftClone is nog bezig met installeren."
 
 #: src/includes/updraftclone/temporary-clone-status.php:378
 msgid "%s archives remain"
-msgstr ""
+msgstr "%s resterende archieven."
 
 #: src/includes/updraftclone/temporary-clone-status.php:378
 msgid "The site data has all been received, and its import has begun."
-msgstr ""
+msgstr "De sitegegevens zijn ontvangen en de import is gestart."
 
 #: src/includes/updraftclone/temporary-clone-status.php:373
 msgid "The sending of the site data has begun. So far %s data archives totalling %s have been received"
-msgstr ""
+msgstr "De sitegegevens worden nu verzonden. %s van %s archieven ontvangen."
 
 #: src/includes/updraftclone/temporary-clone-status.php:369
 msgid "WordPress installed; now awaiting the site data to be sent."
-msgstr ""
+msgstr "Wordpress is geïnstalleerd; wachten op ontvangst van sitegegevens."
 
 #: src/includes/updraftclone/temporary-clone-status.php:94
 msgid "Clone ready"
-msgstr ""
+msgstr "Kloon is klaar"
 
 #: src/includes/updraftclone/temporary-clone-status.php:86
 msgid "Site data has been deployed"
-msgstr ""
+msgstr "Sitegegevens zijn uitgerold"
 
 #: src/includes/updraftclone/temporary-clone-status.php:84,
 #: src/includes/updraftclone/temporary-clone-status.php:347
 msgid "Deploying site data"
-msgstr ""
+msgstr "Uitrollen sitegegevens"
 
 #: src/includes/updraftclone/temporary-clone-status.php:75
 msgid "Site data received"
-msgstr ""
+msgstr "Sitegegevens ontvangen"
 
 #: src/includes/updraftclone/temporary-clone-status.php:73,
 #: src/includes/updraftclone/temporary-clone-status.php:344
 msgid "Receiving site data"
-msgstr ""
+msgstr "Ontvangen van sitegegevens"
 
 #: src/includes/updraftclone/temporary-clone-status.php:66,
 #: src/includes/updraftclone/temporary-clone-status.php:341
 msgid "WordPress installed"
-msgstr ""
+msgstr "Wordpress is geïnstalleerd"
 
 #: src/admin.php:5428
 msgid "Your clone has started, network information is not yet available but will be displayed here and at your updraftplus.com account once it is ready."
-msgstr ""
+msgstr "Kloon is gestart, netwerkinformatie is nog niet beschikbaar maar zal hier getoond worden en in uw updraftplus.com account wanneer klaar."
 
 #: src/admin.php:3828
 msgid "Exclude these from"
-msgstr ""
+msgstr "Sluit deze uit van"
 
 #: src/admin.php:952
 msgid "The exclusion rule which you are trying to add already exists"
-msgstr ""
+msgstr "Deze uitsluitingsregel die uw probeert toe te voegen bestaat al"
 
 #: src/admin.php:951
 msgid "Please enter a valid file name prefix"
-msgstr ""
+msgstr "Gelieve een geldige bestandsnaam prefix op te geven"
 
 #: src/admin.php:950
 msgid "Please enter characters that begin the filename which you would like to exclude"
-msgstr ""
+msgstr "Gelieve de eerste karakters op te geven van de bestandsnaam die u wenst uit te sluiten"
 
 #: src/admin.php:949
 msgid "Please enter a valid file extension"
-msgstr ""
+msgstr "Gelieve een geldige bestandsextensie op te geven"
 
 #: src/admin.php:948
 msgid "Please enter a file extension, like zip"
-msgstr ""
+msgstr "Gelieve een bestandsextensie op te geven, bijv. zip"
 
 #: src/admin.php:947
 msgid "Please select a file/folder which you would like to exclude"
-msgstr ""
+msgstr "Gelieve een bestand/map te selecteren die u wenst uit te sluiten"
 
 #: src/admin.php:946
 msgid "Are you sure you want to remove this exclusion rule?"
-msgstr ""
+msgstr "Weet u zeker dat u deze uitsluitingsregel wilt verwijderen?"
 
 #: src/templates/wp-admin/advanced/site-info.php:104
 msgid "log results to console"
-msgstr ""
+msgstr "log resultaten naar de console"
 
 #: src/includes/updraftclone/temporary-clone-dash-notice.php:42
 msgid "Each time your clone renews it costs 1 token, which lasts for 1 week. You can shut this clone down at the following link:"
-msgstr ""
+msgstr "Elke keer uw kloon vernieuwt kost dit 1 token, geldig voor 1 week. U kan deze kloon uitzetten via volgende link: "
 
 #: src/templates/wp-admin/settings/temporary-clone.php:41
 msgid "To create a temporary clone you need credit in your account."
-msgstr ""
+msgstr "Om een tijdelijke kloon aan te maken heb je extra krediet nodig in je account"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "Read FAQs here."
-msgstr ""
+msgstr "Lees hier de FAQ"
 
 #: src/methods/dropbox.php:305, src/methods/dropbox.php:321
 msgid "failed to upload file to %s (see log file for more)"
-msgstr ""
+msgstr "opladen van bestand naar %s is mislukt (controller log voor meer details)"
 
 #: src/admin.php:5424
 msgid "Dashboard:"
-msgstr ""
+msgstr "Dashboard:"
 
 #: src/admin.php:5423
 msgid "Front page:"
-msgstr ""
+msgstr "Voorpagina:"
 
 #: src/admin.php:5422
 msgid "Your clone has started and will be available at the following URLs once it is ready."
-msgstr ""
+msgstr "Uw kloon is gestart en zal beschikbaar zijn op volgende URL zodra voltooid."
 
 #: src/includes/class-commands.php:906
 msgid "manage"
-msgstr ""
+msgstr "beheer"
 
 #: src/includes/class-commands.php:906
 msgid "Current clones"
-msgstr ""
+msgstr "Huidige klonen"
 
 #: src/class-updraftplus.php:2992
 msgid "Your clone will now deploy this data to re-create your site."
-msgstr ""
+msgstr "Uw kloon zal nu de data uitrollen om uw site opnieuw aan te maken."
 
 #: src/admin.php:943
 msgid "The clone has been provisioned, and its data has been sent to it. Once the clone has finished deploying it, you will receive an email."
-msgstr ""
+msgstr "De kloon is geprovisioneerd en de data is verstuurd. Van zodra de kloon klaar is met uitrollen zal u een e-mail ontvangen."
 
 #: src/addons/migrator.php:1745
 msgid "Site key"
-msgstr ""
+msgstr "Site sleutel"
 
 #: src/addons/migrator.php:1736
 msgid "Add a site"
-msgstr ""
+msgstr "Site toevoegen"
 
 #: src/addons/migrator.php:229, src/addons/migrator.php:1731,
 #: src/addons/migrator.php:1752
 msgid "back"
-msgstr ""
+msgstr "terug"
 
 #: src/addons/migrator.php:195
 msgid "Read this article to see step-by-step how it's done."
-msgstr ""
+msgstr "Lees dit artikel voor een stap-voor-stap handleiding."
 
 #: src/addons/migrator.php:189,
 #: src/templates/wp-admin/settings/migrator-no-migrator.php:6
 msgid "Migrate (create a copy of a site on hosting you control)"
-msgstr ""
+msgstr "Migreer (maak een kopie van een site op een host in uw beheer)"
 
 #: src/includes/updraftclone/temporary-clone-dash-notice.php:42
 msgid "Manage your clones"
-msgstr ""
+msgstr "Beheer uw klonen"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:158
 msgid "Use ctrl / cmd + press to select several items"
-msgstr ""
+msgstr "Gebruik ctrl/cmd om meerdere items te selecteren"
 
 #: src/methods/dreamobjects.php:20
 msgid "Closing 1st October 2018"
-msgstr ""
+msgstr "Wordt afgesloten op 1 oktober 2018"
 
 #: src/includes/updraftclone/temporary-clone-dash-notice.php:41
 msgid "Your clone will renew on:"
-msgstr ""
+msgstr "Uw kloon zal vernieuwen op: "
 
 #: src/includes/updraftclone/temporary-clone-dash-notice.php:32
 msgid "Unable to get renew date"
-msgstr ""
+msgstr "Kan geen vernieuwingsdatum verkrijgen"
 
 #: src/admin.php:906
 msgid "The backup was aborted"
-msgstr ""
+msgstr "De backup werd afgebroken"
 
 #: src/addons/onedrive.php:1197
 msgid "OneDrive Germany"
-msgstr ""
+msgstr "Onedrive Duitsland"
 
 #: src/addons/onedrive.php:1196
 msgid "OneDrive International"
-msgstr ""
+msgstr "Onedrive Internationaal"
 
 #: src/addons/onedrive.php:1193
 msgid "Account type"
-msgstr ""
+msgstr "Account type"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:56,
 #: src/templates/wp-admin/settings/temporary-clone.php:76
 msgid "I accept the UpdraftClone terms and conditions"
-msgstr ""
+msgstr "Ik aanvaard de UpdraftClone algemene voorwaarden"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:56
 msgid "Not got an account? Get one by buying some tokens here."
-msgstr ""
+msgstr "Geen account? Krijg een account door hier tokens aan te kopen."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:22,
 #: src/templates/wp-admin/settings/temporary-clone.php:41,
 #: src/templates/wp-admin/settings/temporary-clone.php:54
 msgid "You can buy UpdraftClone tokens from our shop, here."
-msgstr ""
+msgstr "UpdraftClone tokens kunnen aangekocht worden in onze shop."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:54
 msgid "To create a temporary clone you need: 1) credit in your account and 2) to connect to your account, below."
-msgstr ""
+msgstr "Om een tijdelijke kloon te maken moet u: 1) krediet hebben op uw account en 2) uw account koppelen hieronder."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:32
 msgid "If you want, test upgrading to a different PHP or WP version."
-msgstr ""
+msgstr "Indien gewenst kan u het bijwerken naar een andere PHP of WP versie testen."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:32
 msgid "Flexible"
-msgstr ""
+msgstr "Flexibel"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:31
 msgid "Takes just the time needed to create a backup and send it."
-msgstr ""
+msgstr "Enkel de tijd nodig voor het maken van een backup en deze te versturen."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:31
 msgid "Fast"
-msgstr ""
+msgstr "Snel"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:30
 msgid "One VPS (Virtual Private Server) per clone, shared with nobody."
-msgstr ""
+msgstr "1 VPS (Virtual Private Server) per kloon, met niemand gedeeld."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:30
 msgid "Secure"
-msgstr ""
+msgstr "Veilig"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:29
 msgid "Runs on capacity from a leading cloud computing provider."
-msgstr ""
+msgstr "Draait op de capaciteit van een toonaangevende Cloud Computing provider."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:29
 msgid "Reliable"
-msgstr ""
+msgstr "Betrouwbaar"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Press the buttons... UpdraftClone does the work."
-msgstr ""
+msgstr "Druk op de knoppen... UpdraftClone doet de rest."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Easy"
-msgstr ""
+msgstr "Eenvoudig"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "A temporary clone is an instant copy of this website, running on our servers. Rather than test things on your live site, you can UpdraftClone it, and then throw away your clone when done."
-msgstr ""
+msgstr "Een tijdelijke kloon is een onmiddellijke kopie van deze website, op uw eigen servers. In plaats van zaken te testen op uw live omgeving, kan u deze UpdraftClonen, en vervolgens verwijderen wanneer klaar."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:10,
 #: src/templates/wp-admin/settings/temporary-clone.php:39
 msgid "Create a temporary clone on our servers (UpdraftClone)"
-msgstr ""
+msgstr "Maak een tijdelijke kloon aan op onze servers (UpdraftClone)"
 
 #: src/templates/wp-admin/settings/tab-addons.php:23
 msgid "WooCommerce plugins"
-msgstr ""
+msgstr "WooCommerce plugins"
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:13
 msgid "Reset tour"
-msgstr ""
+msgstr "Rondleiding herstarten"
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:12
 msgid "Press this button to take a tour of the plugin."
-msgstr ""
+msgstr "Klik hier om een rondleiding te krijgen van de plugin."
 
 #: src/includes/updraftplus-tour.php:232
 msgid "Take Tour"
-msgstr ""
+msgstr "Rondleiding"
 
 #: src/includes/updraftplus-tour.php:182
 msgid "Log in here to enable all the features you have access to."
-msgstr ""
+msgstr "Meldt u hier aan om alle functies waar u toegang tot hebt in te schakelen."
 
 #: src/includes/updraftplus-tour.php:181
 msgid "Connect to updraftplus.com"
-msgstr ""
+msgstr "Verbind met updraftplus.com"
 
 #: src/includes/updraftplus-tour.php:172
 msgid "Thank you for taking the tour. You are now all set to use UpdraftPlus!"
-msgstr ""
+msgstr "Bedankt voor het volgen van de rondleiding. U bent nu klaar om te starten met UpdraftPlus!"
 
 #: src/includes/updraftplus-tour.php:160
 msgctxt "Translators: UpdraftVault is a product name and should not be translated."
 msgid "To get started with UpdraftVault, select one of the options below:"
-msgstr ""
+msgstr "Om te starten met UpdraftVault, kies één van onderstaande opties:"
 
 #: src/includes/updraftplus-tour.php:156,
 #: src/includes/updraftplus-tour.php:174, src/includes/updraftplus-tour.php:185
 msgid "Finish"
-msgstr ""
+msgstr "Voltooien"
 
 #: src/includes/updraftplus-tour.php:153
 msgid "UpdraftPlus Premium has many more exciting features!"
-msgstr ""
+msgstr "UpdraftPlus Premiuim heeft nog veel meer interessante functies!"
 
 #: src/includes/updraftplus-tour.php:152
 msgid "UpdraftPlus Premium and addons"
-msgstr ""
+msgstr "UpdraftPlus Premium en add-ons"
 
 #: src/includes/updraftplus-tour.php:150, src/includes/updraftplus-tour.php:179
 msgid "Thank you for taking the tour."
-msgstr ""
+msgstr "Bedankt voor het volgen van de rondleiding."
 
 #: src/includes/updraftplus-tour.php:145
 msgid "Do you have a few more WordPress sites you want to backup? If yes you can save hours by controlling all your backups in one place from UpdraftCentral."
-msgstr ""
+msgstr "Hebt u nog meer WordPress sites die u wilt backuppen? Indien ja, dan kan je veel tijd uitsparen door al uw backups te beheren vanop één plaats in UpdraftCentral."
 
 #: src/includes/updraftplus-tour.php:144
 msgid "Control all your backups in one place"
-msgstr ""
+msgstr "Beheer al uw backups vanop één plaats"
 
 #: src/includes/updraftplus-tour.php:139
 msgid "Congratulations, your settings have successfully been saved."
-msgstr ""
+msgstr "Proficiat, uw instellingen zijn bewaard."
 
 #: src/includes/updraftplus-tour.php:135
 msgid "Press here to save your settings."
-msgstr ""
+msgstr "Klik hier om uw instellingen op te slaan."
 
 #: src/includes/updraftplus-tour.php:134, src/includes/updraftplus-tour.php:138
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: src/includes/updraftplus-tour.php:131
 msgid "Look through the other settings here, making any changes you’d like."
@@ -527,37 +527,37 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:130
 msgid "More settings"
-msgstr ""
+msgstr "Meer instellingen"
 
 #: src/includes/updraftplus-tour.php:126,
 #: src/includes/updraftplus-tour.php:153,
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "Find out more here."
-msgstr ""
+msgstr "Lees hier meer."
 
 #: src/includes/updraftplus-tour.php:125
 msgid "UpdraftVault is our remote storage which works seamlessly with UpdraftPlus."
-msgstr ""
+msgstr "UpdraftVault is onze externe opslag die naadloos integreert met UpdraftPlus."
 
 #: src/includes/updraftplus-tour.php:122
 msgid "Now select a remote storage destination to protect against server-wide threats. If not, your backups remain on the same server as your site."
-msgstr ""
+msgstr "Kies nu een externe opslaglocatie om uw data te beveiligen server bedreigingen. Indien u dit niet doet, blijven uw backups op dezelfde server staan als uw site."
 
 #: src/includes/updraftplus-tour.php:118
 msgid "Choose the schedule that you want your backups to run on."
-msgstr ""
+msgstr "Kies de tijdsplanning waarop u uw backups wilt laten lopen."
 
 #: src/includes/updraftplus-tour.php:117
 msgid "Choose your backup schedule"
-msgstr ""
+msgstr "Kies uw backup planning"
 
 #: src/includes/updraftplus-tour.php:113
 msgid "Congratulations! Your first backup is running."
-msgstr ""
+msgstr "Proficiat! Uw eerste backup is bezig."
 
 #: src/includes/updraftplus-tour.php:109, src/includes/updraftplus-tour.php:114
 msgid "Go to settings"
-msgstr ""
+msgstr "Ga naar instellingen"
 
 #: src/includes/updraftplus-tour.php:108, src/includes/updraftplus-tour.php:113
 msgctxt "Translators: %s is a bold tag."
@@ -2841,7 +2841,7 @@ msgstr "Je moet opslaan en autoriseren voordat je de instellingen kunt testen."
 
 #: src/addons/googlecloud.php:541
 msgid "Have not yet obtained an access token from Google - you need to authorize or re-authorize your connection to Google Cloud."
-msgstr ""
+msgstr "Er is nog geen toegangs-token van Google ontvangen - je moet de verbinding met 'Google Cloud' autoriseren of opnieuw autoriseren."
 
 #: src/addons/googlecloud.php:257, src/addons/googlecloud.php:332,
 #: src/addons/googlecloud.php:897, src/addons/googlecloud.php:947
@@ -3258,7 +3258,7 @@ msgstr "Aanmaken..."
 
 #: src/addons/migrator.php:1753
 msgid "Receive a backup from a remote site"
-msgstr ""
+msgstr "Ontvang een backup van een externe site"
 
 #: src/addons/migrator.php:1745
 msgid "Paste key here"
@@ -3274,7 +3274,7 @@ msgstr "Voer de sleutel van een site hieronder in om die site als verzendadres t
 
 #: src/addons/migrator.php:1732
 msgid "Send a backup to another site"
-msgstr ""
+msgstr "Verzend een backup naar een andere site"
 
 #: src/admin.php:874, src/includes/class-remote-send.php:358,
 #: src/includes/class-remote-send.php:520
@@ -3406,15 +3406,15 @@ msgstr "Maak de OneDrive-inloggegevens aan in de OneDrine-ontwikkelaarsconsole."
 
 #: src/addons/onedrive.php:1133
 msgid "You must add the following as the authorized redirect URI in your OneDrive console (under \"API Settings\") when asked"
-msgstr ""
+msgstr "Je moet het volgende toevoegen als doorstuur-URI in de OneDrive-console (onder \"API-settings\"), als dat gevraagd wordt"
 
 #: src/addons/azure.php:593
 msgid "Microsoft Azure is not compatible with sites hosted on a localhost or 127.0.0.1 URL - their developer console forbids these (current URL is: %s)."
-msgstr ""
+msgstr "Microsoft Azure is niet compatibel met sites die gehost worden op een localhost of een 127.0.0.1 URL - hun ontwikkelaarsconsole verbiedt dit (huidige URL is: %s)."
 
 #: src/addons/onedrive.php:1096, src/addons/onedrive.php:1098
 msgid "authorization failed:"
-msgstr ""
+msgstr "Autorisatie mislukt:"
 
 #: src/addons/onedrive.php:939, src/addons/onedrive.php:1177,
 #: src/addons/onedrive.php:1181
@@ -3581,7 +3581,7 @@ msgstr "Gebruik deze add-on om een nieuwe IAM-subgebruiker aan te maken en een t
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:12
 msgid "For personal support, the ability to copy sites, more storage destinations, encrypted backups for security, multiple backup destinations, better reporting, no adverts and plenty more, take a look at the premium version of UpdraftPlus - the world's most popular backup plugin."
-msgstr ""
+msgstr "Voor persoonlijke ondersteuning, de mogelijkheid om sites te kopiëren, meer opslagbestemmingen, versleutelde backups, meervoudige backup opslagbestemmingen, betere rapportering, geen advertenties en nog veel meer, kijk naar de premium versie van UpdraftPlus, 's werelds meest populaire backup plugin."
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:29
 msgid "UpdraftPlus news, high-quality training materials for WordPress developers and site-owners, and general WordPress news. You can de-subscribe at any time."
@@ -3614,7 +3614,7 @@ msgstr "Gratis tweetraps veiligheidsplugin"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:32
 msgid "More quality plugins"
-msgstr ""
+msgstr "Meer kwaliteitsplugins"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:13
 msgid "Go to the shop."
@@ -3732,7 +3732,7 @@ msgstr "Blokkeerinstellingen veranderen"
 
 #: src/addons/morefiles.php:258
 msgid "Any other file/directory on your server that you wish to backup"
-msgstr ""
+msgstr "Elk ander bestand/map op de server die u wilt backuppen"
 
 #: src/admin.php:2611
 msgid "For even more features and personal support, check out "
@@ -4031,7 +4031,7 @@ msgstr "Ondersteunde backup-plugins: %s"
 
 #: src/addons/importer.php:78
 msgid "Was this a backup created by a different backup plugin? If so, then you might first need to rename it so that it can be recognized - please follow this link."
-msgstr ""
+msgstr "Is deze backup gemaakt door een andere backup-plugin? Als dat zo is, moet u de backup wellicht eerst hernoemen voordat hij herkend wordt - zie deze link."
 
 #: src/templates/wp-admin/advanced/site-info.php:44
 msgid "Memory limit"
@@ -4258,7 +4258,7 @@ msgstr "Dit zorgt ervoor dat ook foutopsporings-uitvoer van andere plugins zicht
 
 #: src/templates/wp-admin/settings/form-contents.php:233
 msgid "Backup more databases"
-msgstr ""
+msgstr "Meer databases backuppen"
 
 #: src/templates/wp-admin/settings/form-contents.php:192
 msgid "First, enter the decryption key"
@@ -4625,7 +4625,7 @@ msgstr "Sla alle meldingen op in de systeem-log (meestal willen alleen serverbeh
 
 #: src/addons/morefiles.php:538
 msgid "No backup of location: there was nothing found to back up"
-msgstr ""
+msgstr "Geen backup van deze locatie: er is niets te gevonden om te backuppen"
 
 #: src/addons/moredatabase.php:236, src/addons/morefiles.php:297,
 #: src/addons/morefiles.php:318
@@ -5098,7 +5098,7 @@ msgstr "%s logo"
 
 #: src/methods/dropbox.php:286
 msgid "did not return the expected response - check your log file for more details"
-msgstr ""
+msgstr "gaf niet het verwachte resultaat - kijk de logbestanden na voor meer details."
 
 #: src/methods/s3.php:312
 msgid "The required %s PHP module is not installed - ask your web hosting company to enable it"
@@ -5132,7 +5132,7 @@ msgstr "Wees je ervan bewust dat e-mailservers meestal een limiet hebben; meesta
 
 #: src/addons/reporting.php:527, src/admin.php:793
 msgid "When the Email storage method is enabled, also send the backup"
-msgstr ""
+msgstr "Als de e-mail-opslagemethode geactiveerd is, verstuur dan ook de backup"
 
 #: src/addons/reporting.php:182, src/backup.php:1138
 msgid "Latest status:"
@@ -5181,6 +5181,8 @@ msgstr "(Dit is van toepassing op alle WordPress-backupplugins, tenzij ze explic
 #: src/options.php:208
 msgid "Without upgrading, UpdraftPlus allows <strong>every</strong> blog admin who can modify plugin settings to backup (and hence access the data, including passwords, from) and restore (including with customized modifications, e.g. changed passwords) <strong>the entire network</strong>."
 msgstr ""
+"Zonder UpdraftPlus te upgraden kan <strong>elke</strong> blogbeheerder die de plugin-instellingen kan aanpassen een backup maken (inclusief toegang tot alle data en wachtwoorden) en terugzetten \n"
+" (inclusief aanpassingen zoals bijv. gewijzigde wachtwoorden) van het <strong>het gehele netwerk</strong>."
 
 #: src/options.php:208
 msgid "WordPress Multisite is supported, with extra features, by UpdraftPlus Premium, or the Multisite add-on."
@@ -5937,7 +5939,7 @@ msgstr "Sommige bestanden worden nog gedownloadet of verwerkt - even geduld."
 
 #: src/class-updraftplus.php:3945, src/class-updraftplus.php:3965
 msgid "This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work."
-msgstr ""
+msgstr "Deze backupset is afkomstig van een andere site (%s) - dit is geen terugzet-actie maar een migratie. Je hebt de Migrator add-on nodig om dit te kunnen uitvoeren."
 
 #: src/addons/fixtime.php:571
 msgid "The time zone used is that from your WordPress settings, in Settings -> General."
@@ -6081,7 +6083,7 @@ msgstr "Controleer de schrijfrechten: het maken en openen van een nieuwe directo
 
 #: src/addons/sftp.php:37
 msgid "Some servers advertise encrypted FTP as available, but then time-out (after a long time) when you attempt to use it. If you find this happening, then go into the \"Expert Options\" (below) and turn off SSL there."
-msgstr ""
+msgstr "Sommige servers claimen dat versleutelde FTP beschikbaar is, maar geven (na lange tijd) een time-out als je het probeert te gebruiken. Als dit optreedt, ga dan naar 'Expert-opties\" (onderaan) en schakel daar SSL uit."
 
 #: src/methods/s3.php:859
 msgid "Your web server's PHP installation does not included a required module (%s). Please contact your web hosting provider's support and ask for them to enable it."
@@ -6158,7 +6160,7 @@ msgstr "Wil je de site migreren of dupliceren/klonen? "
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:161
 msgid "Please allow time for the communications with the remote storage to complete."
-msgstr ""
+msgstr "Gelieve even te wachten terwijl de communicatie met de externe opslag afgerond wordt."
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:23
 msgid "Also delete from remote storage"
@@ -6399,7 +6401,7 @@ msgstr "Geen backup gemaakt van de directories %s: er is niets gevonden om te ba
 
 #: src/addons/morefiles.php:282
 msgid "Be careful what you select - if you select / then it really will try to create a zip containing your entire webserver."
-msgstr ""
+msgstr "Wees voorzichtig met wat u selecteert - als u dit selecteert, wordt er geprobeerd een zip-bestand aan te maken met daarin uw complete webserver."
 
 #: src/addons/morefiles.php:280
 msgid "If you are not sure what this option is for, then you will not want it, and should turn it off."
@@ -6505,7 +6507,7 @@ msgstr "is daar een add-on voor."
 
 #: src/methods/dropbox.php:603, src/methods/dropbox.php:605
 msgid "If you backup several sites into the same Dropbox and want to organize with sub-folders, then "
-msgstr ""
+msgstr "Als u meerdere sites in dezelfde Dropbox wilt opslaan en deze wilt indelen in submappen, dan "
 
 #: src/methods/dropbox.php:603, src/methods/dropbox.php:605
 msgid "Backups are saved in"

@@ -30,4 +30,9 @@ function google_api_php_client_autoload_updraftplus($className)
   }
 }
 
-spl_autoload_register('google_api_php_client_autoload_updraftplus');
+if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
+	// Use the 'prepend' parameter; if other tools have registered autoloaders for incompatible versions of the Google SDK, ours should still get loaded first (since we only register our autoloader late, immediately before using it).
+	spl_autoload_register('google_api_php_client_autoload_updraftplus', true, true);
+} else {
+	spl_autoload_register('google_api_php_client_autoload_updraftplus');
+}

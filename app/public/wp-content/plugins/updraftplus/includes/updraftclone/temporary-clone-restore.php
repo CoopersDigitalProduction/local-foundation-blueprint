@@ -24,6 +24,8 @@ class UpdraftPlus_Temporary_Clone_Restore {
 
 		$state_file = trailingslashit($updraftplus->backups_dir_location()). 'ready_for_restore';
 		
+		error_log("UpdraftPlus_Temporary_Clone_Restore::clone_ready_for_restore($job_id): touching flag file");
+		
 		if ($job_id) {
 			file_put_contents($state_file, $job_id);
 		} else {

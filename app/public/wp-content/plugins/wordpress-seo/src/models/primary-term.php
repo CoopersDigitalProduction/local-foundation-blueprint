@@ -5,9 +5,9 @@
  * @package Yoast\YoastSEO\Models
  */
 
-namespace Yoast\YoastSEO\Models;
+namespace Yoast\WP\Free\Models;
 
-use Yoast\YoastSEO\Yoast_Model;
+use Yoast\WP\Free\Yoast_Model;
 
 /**
  * Primary Term model definition.
@@ -17,13 +17,13 @@ use Yoast\YoastSEO\Yoast_Model;
  * @property int    $term_id  Term ID.
  * @property string $taxonomy Taxonomy.
  *
- * @property string  $created_at
- * @property string  $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Primary_Term extends Yoast_Model {
 
 	/**
-	 * Retrieves an indexable by a post id and taxonomy.
+	 * Retrieves an indexable by a post ID and taxonomy.
 	 *
 	 * @param int    $post_id     The post the indexable is based upon.
 	 * @param string $taxonomy    The taxonomy the indexable belongs to.
@@ -32,7 +32,7 @@ class Primary_Term extends Yoast_Model {
 	 * @return bool|Indexable Instance of indexable.
 	 */
 	public static function find_by_postid_and_taxonomy( $post_id, $taxonomy, $auto_create = true ) {
-		/** @var \Yoast\YoastSEO\Models\Primary_Term $indexable */
+		/** @var \Yoast\WP\Free\Models\Primary_Term $indexable */
 		$indexable = Yoast_Model::of_type( 'Primary_Term' )
 			->where( 'post_id', $post_id )
 			->where( 'taxonomy', $taxonomy )

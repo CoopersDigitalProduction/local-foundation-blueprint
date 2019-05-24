@@ -890,6 +890,24 @@ class wfUtils {
 		return false;
 	}
 
+	public static function getAllServerVariableIPs()
+	{
+		$variables = array('REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_X_REAL_IP', 'HTTP_X_FORWARDED_FOR');
+		$ips = array();
+
+		foreach ($variables as $variable) {
+			$ip = isset($_SERVER[$variable]) ? $_SERVER[$variable] : false;
+
+			if ($ip && strpos($ip, ',') !== false) {
+				$ips[$variable] = preg_replace('/[\s,]/', '', explode(',', $ip));
+			} else {
+				$ips[$variable] = $ip;
+			}
+		}
+
+		return $ips;
+	}
+
 	public static function getIPAndServerVariable($howGet = null, $trustedProxies = null) {
 		$connectionIP = array_key_exists('REMOTE_ADDR', $_SERVER) ? array($_SERVER['REMOTE_ADDR'], 'REMOTE_ADDR') : array('127.0.0.1', 'REMOTE_ADDR');
 
@@ -1204,6 +1222,9 @@ class wfUtils {
 
 		wfConfig::set('wf_scanRunning', '');
 		wfIssues::updateScanStillRunning(false);
+		if (wfCentral::isConnected()) {
+			wfCentral::updateScanStatus();
+		}
 	}
 	public static function getIPGeo($IP){ //Works with int or dotted
 

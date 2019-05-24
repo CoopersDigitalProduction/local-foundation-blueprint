@@ -79,7 +79,12 @@ class Cdn_Core {
 			$file = $this->normalize_attachment_file( $file );
 
 			$local_file = $upload_info['basedir'] . '/' . $file;
-			$remote_file = ltrim( $upload_info['baseurlpath'] . $file, '/' );
+
+			$parsed = parse_url( rtrim( $upload_info['baseurl'], '/' ) .
+				'/' . $file );
+			$local_uri = $parsed['path'];
+			$remote_uri = $this->uri_to_cdn_uri( $local_uri );
+			$remote_file = ltrim( $remote_uri, '/' );
 
 			$files[] = $this->build_file_descriptor( $local_file, $remote_file );
 		}
@@ -266,7 +271,7 @@ class Cdn_Core {
 
 		$return = $cdn->purge( $files, $results );
 
-		if ( !$return && $queue_failed ) {
+		if ( !$return ) {
 			foreach ( $results as $result ) {
 				if ( $result['result'] != W3TC_CDN_RESULT_OK ) {
 					$this->queue_add( $result['local_path'], $result['remote_path'], W3TC_CDN_COMMAND_PURGE, $result['error'] );
@@ -584,6 +589,24 @@ class Cdn_Core {
 				);
 				break;
 
+				case 'stackpath2':
+					$state = Dispatcher::config_state();
+
+					$engine_config = array(
+						'client_id' => $c->get_string( 'cdn.stackpath2.client_id' ),
+						'client_secret' => $c->get_string( 'cdn.stackpath2.client_secret' ),
+						'stack_id' => $c->get_string( 'cdn.stackpath2.stack_id' ),
+						'site_root_domain' => $c->get_string( 'cdn.stackpath2.site_root_domain' ),
+						'domain' => $c->get_array( 'cdn.stackpath2.domain' ),
+						'ssl' => $c->get_string( 'cdn.stackpath2.ssl' ),
+						'access_token' => $state->get_string( 'cdn.stackpath2.access_token' ),
+						'on_new_access_token' => array(
+							$this,
+							'on_stackpath2_new_access_token'
+						)
+					);
+					break;
+
 			}
 
 			$engine_config = array_merge( $engine_config, array(
@@ -628,6 +651,12 @@ class Cdn_Core {
 	public function on_rackspace_cf_new_access_state( $access_state ) {
 		$state = Dispatcher::config_state();
 		$state->set( 'cdn.rackspace_cf.access_state', $access_state );
+		$state->save();
+	}
+
+	public function on_stackpath2_new_access_token( $access_token ) {
+		$state = Dispatcher::config_state();
+		$state->set( 'cdn.stackpath2.access_token', $access_token );
 		$state->save();
 	}
 
@@ -689,8 +718,11 @@ class Cdn_Core {
 			!Util_Environment::is_wpmu_subdomain() &&
 			Util_Environment::is_using_master_config() &&
 			Cdn_Util::is_engine_push( $engine ) ) {
-			// in common config files are uploaded for network home url
+			// in common config mode files are uploaded for network home url
 			// so mirror will not contain /subblog/ path in uri
+			//
+			// since upload process is not blog-specific and
+			// wp-content/plugins/../*.jpg files are common
 			$home = trim( home_url( '', 'relative' ), '/' ) . '/';
 			$network_home = trim( network_home_url( '', 'relative' ), '/' ) . '/';
 

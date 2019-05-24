@@ -83,7 +83,7 @@ class UpdraftPlus_Job_Scheduler {
 				if (!isset($response['status']) || 'success' != $response['status']) {
 					$updraftplus->log("UpdraftClone backup check-in failed.");
 				} else {
-					$updraftplus->log("UpdraftClone backup check-in made succfessfully.");
+					$updraftplus->log("UpdraftClone backup check-in made successfully.");
 				}
 			}
 		}
@@ -92,7 +92,7 @@ class UpdraftPlus_Job_Scheduler {
 		if (file_exists($updraft_dir.'/deleteflag-'.$updraftplus->nonce.'.txt')) {
 			$updraftplus->log("User request for abort: backup job will be immediately halted");
 			@unlink($updraft_dir.'/deleteflag-'.$updraftplus->nonce.'.txt');
-			$updraftplus->backup_finish($updraftplus->current_resumption + 1, true, true, $updraftplus->current_resumption, true);
+			$updraftplus->backup_finish(true, true, true);
 			die;
 		}
 		
