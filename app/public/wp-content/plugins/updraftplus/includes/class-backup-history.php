@@ -744,11 +744,6 @@ class UpdraftPlus_Backup_History {
 	/**
 	 * This function will look through the backup history and return the nonce of the latest backup that can be used for an incremental backup (this will exclude full backups sent to another site, e.g. for a migration or clone)
 	 *
-	 * @return String - the backup nonce of a full backup or an empty string if none are found
-	 */
-	/**
-	 * This function will look through the backup history and return the nonce of the latest backup that can be used for an incremental backup (this will exclude full backups sent to another site, e.g. for a migration or clone)
-	 *
 	 * @param array $entities - an array of file entities that are included in this job
 	 *
 	 * @return String         - the backup nonce of a full backup or an empty string if none are found

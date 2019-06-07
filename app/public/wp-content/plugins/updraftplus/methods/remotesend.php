@@ -4,7 +4,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 
 if (!class_exists('UpdraftPlus_RemoteStorage_Addons_Base_v2')) require_once(UPDRAFTPLUS_DIR.'/methods/addon-base-v2.php');
 
-class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStorage_Addons_Base_v2 {
+class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addons_Base_v2 {
 
 	private $default_chunk_size;
 
@@ -18,10 +18,6 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 	 * Class constructor
 	 */
 	public function __construct() {
-
-		add_filter('updraftplus_clone_remotesend_options', array($this, 'updraftplus_clone_remotesend_options'), 10, 1);
-		add_action('updraftplus_remotesend_upload_complete', array($this, 'upload_complete'));
-
 		// 3rd parameter: chunking? 4th: Test button?
 		parent::__construct('remotesend', 'Remote send', false, false);
 	}
@@ -47,6 +43,13 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 
 		global $updraftplus;
 		$opts = $this->options;
+		
+		static $registered_completion_event = false;
+		if (!$registered_completion_event) {
+			// This is here, instead of the constructor, to make sure that, if multiple objects are insantiated, then only the one actually used for uploading gets involved in the upload_complete event
+			$registered_completion_event = true;
+			add_action('updraftplus_remotesend_upload_complete', array($this, 'upload_complete'));
+		}
 		
 		try {
 			$storage = $this->bootstrap();
@@ -329,6 +332,15 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 		set_transient($this->remote_sent_defchunk_transient, $new_chunk_size, 86400*120);
 	}
 
+	/**
+	 * Send a message to the remote site
+	 *
+	 * @param String	 $message - the message identifier
+	 * @param Array|Null $data	  - the data to send with the message
+	 * @param Integer	 $timeout - timeout in waiting for a response
+	 *
+	 * @return Array|WP_Error - results, or an error
+	 */
 	private function send_message($message, $data = null, $timeout = 30) {
 		$storage = $this->get_storage();
 		
@@ -413,7 +425,7 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 	public function get_opts() {
 		global $updraftplus;
 		$opts = $updraftplus->jobdata_get('remotesend_info');
-		$opts = apply_filters('updraftplus_clone_remotesend_options', $opts);
+		$opts = $this->clone_remotesend_options($opts);
 		if (true === $this->try_format_upgrade && is_array($opts)) $opts['remote_got_public'] = 1;
 		return is_array($opts) ? $opts : array();
 	}
@@ -425,7 +437,7 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 	 *
 	 * @return Array - an array of options
 	 */
-	public function updraftplus_clone_remotesend_options($opts) {
+	public function clone_remotesend_options($opts) {
 	
 		// Don't call self::log() - this then requests options (to get the label), causing an infinite loop.
 	
@@ -490,14 +502,3 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 
 	// do_listfiles(), do_download(), do_delete() : the absence of any method here means that the parent will correctly throw an error
 }
-
-class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_Addons_RemoteStorage_remotesend {
-	/**
-	 * Class constructor
-	 */
-	public function __construct() {
-		parent::__construct('remotesend', 'Remote send', '5.2.4');
-	}
-}
-
-$updraftplus_addons_remotesend = new UpdraftPlus_Addons_RemoteStorage_remotesend;

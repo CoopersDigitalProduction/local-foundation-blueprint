@@ -1439,25 +1439,26 @@ function updraft_downloader(base, backup_timestamp, what, whicharea, set_content
 /**
  * Parse JSON string, including automatically detecting unwanted extra input and skipping it
  *
- * @param {string} json_mix_str - JSON string which need to parse and convert to object
+ * @param {string}  json_mix_str - JSON string which need to parse and convert to object
+ * @param {boolean} analyse		 - if true, then the return format will contain information on the parsing, and parsing will skip attempting to JSON.parse() the entire string (will begin with trying to locate the actual JSON)
  *
  * @throws SyntaxError|String (including passing on what JSON.parse may throw) if a parsing error occurs.
  *
- * @returns Mixed parsed JSON object. Will only return if parsing is successful (otherwise, will throw)
+ * @returns Mixed parsed JSON object. Will only return if parsing is successful (otherwise, will throw). If analyse is true, then will rather return an object with properties (mixed)parsed, (integer)json_start_pos and (integer)json_end_pos
  */
-function ud_parse_json(json_mix_str) {
+function ud_parse_json(json_mix_str, analyse) {
 
-	// Here taking first and last char in variable, because these are used more than once in this function
-	var first_char = json_mix_str.charAt(0);
-	var last_char = json_mix_str.charAt(json_mix_str.length - 1);
+	analyse = ('undefined' === typeof analyse) ? false : true;
 	
 	// Just try it - i.e. the 'default' case where things work (which can include extra whitespace/line-feeds, and simple strings, etc.).
-	try {
-		var result = JSON.parse(json_mix_str);
-		return result;
-	} catch (e) {
-		console.log('UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse based upon first/last curly brackets');
-		console.log(json_mix_str);
+	if (!analyse) {
+		try {
+			var result = JSON.parse(json_mix_str);
+			return result;
+		} catch (e) {
+			console.log('UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse based upon first/last curly brackets');
+			console.log(json_mix_str);
+		}
 	}
 
 	var json_start_pos = json_mix_str.indexOf('{');
@@ -1468,8 +1469,8 @@ function ud_parse_json(json_mix_str) {
 		var json_str = json_mix_str.slice(json_start_pos, json_last_pos + 1);
 		try {
 			var parsed = JSON.parse(json_str);
-			console.log('UpdraftPlus: JSON re-parse successful');
-			return parsed;
+			if (!analyse) { console.log('UpdraftPlus: JSON re-parse successful'); }
+			return analyse ? { parsed: parsed, json_start_pos: json_start_pos, json_last_pos: json_last_pos } : parsed;
 		} catch (e) {
 			console.log('UpdraftPlus: Exception when trying to parse JSON (2) - will attempt to fix/re-parse based upon bracket counting');
 			 
@@ -1500,7 +1501,7 @@ function ud_parse_json(json_mix_str) {
 			try {
 				var parsed = JSON.parse(json_mix_str.substring(json_start_pos, cursor));
 				console.log('UpdraftPlus: JSON re-parse successful');
-				return parsed;
+				return analyse ? { parsed: parsed, json_start_pos: json_start_pos, json_last_pos: cursor } : parsed;
 			} catch (e) {
 				// Throw it again, so that our function works just like JSON.parse() in its behaviour.
 				throw e;
@@ -2120,7 +2121,16 @@ jQuery(document).ready(function($) {
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage3').show();
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage3').html(response.html);
 					jQuery('#updraft_clone_progress .updraftplus_spinner.spinner').addClass('visible');
-					temporary_clone_boot_backup(clone_id, secret_token, response.url, response.key);
+					
+					var backup_nonce = 'current';
+					var backup_timestamp = 'current';
+					var clone_backup_select_length = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_backup_options').length;
+					var clone_backup_select = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_backup_options').find('option:selected');
+					if (0 !== clone_backup_select_length && 'undefined' !== typeof clone_backup_select) {
+						backup_nonce = clone_backup_select.data('nonce');
+						backup_timestamp = clone_backup_select.data('timestamp');
+					}
+					temporary_clone_boot_backup(clone_id, secret_token, response.url, response.key, backup_nonce, backup_timestamp);
 				}
 			} catch (err) {
 				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraft_migrate_createclone').prop('disabled', false);
@@ -2294,12 +2304,21 @@ jQuery(document).ready(function($) {
 					if ('no_key_found' === data.code) {
 						this.stage = 'create_key';
 					}
-
-					$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').html(data.message).show();
-					$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').find('a').attr('target', '_blank');
-					console.log(data);
-					updraftplus_com_login.hide_loader();
-					return;
+					
+					// Continue with UpdraftPlus account even if the user has used all UpdraftCentral licences
+					if ('no_licences_available' === data.code) {
+						$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').html(updraftlion.login_udc_no_licences_short).show();
+						data.status = 'authenticated';
+						container.find('input[name="_wp_http_referer"]').val(function(index, val) {
+							return val + '&udc_connect=0';
+						});
+					} else {
+						$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').html(data.message).show();
+						$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').find('a').attr('target', '_blank');
+						console.log(data);
+						updraftplus_com_login.hide_loader();
+						return;
+					}
 				}
 
 				if (data.hasOwnProperty('tfa_enabled') && true == data.tfa_enabled) {
@@ -2405,12 +2424,14 @@ jQuery(document).ready(function($) {
 	/**
 	 * This function will send an AJAX request to the backend to start a clone backup job
 	 *
-	 * @param {string} clone_id     - the clone id
-	 * @param {string} secret_token - the clone secret
-	 * @param {string} clone_url    - the clone url
-	 * @param {string} key          - the migration key
+	 * @param {string} clone_id         - the clone id
+	 * @param {string} secret_token     - the clone secret
+	 * @param {string} clone_url        - the clone url
+	 * @param {string} key              - the migration key
+	 * @param {string} backup_nonce     - the nonce for the backup we want to use or 'current' for a fresh backup
+	 * @param {string} backup_timestamp - the timestamp for the backup we want to use or 'current' for a fresh backup
 	 */
-	function temporary_clone_boot_backup(clone_id, secret_token, clone_url, key) {
+	function temporary_clone_boot_backup(clone_id, secret_token, clone_url, key, backup_nonce, backup_timestamp) {
 		
 		var params = {
 			updraftplus_clone_backup: 1,
@@ -2423,7 +2444,9 @@ jQuery(document).ready(function($) {
 			clone_id: clone_id,
 			secret_token: secret_token,
 			clone_url: clone_url,
-			key: key
+			key: key,
+			backup_nonce: backup_nonce,
+			backup_timestamp: backup_timestamp,
 		};
 
 		updraft_activejobslist_backupnownonce_only = 1;
@@ -4743,7 +4766,7 @@ jQuery(document).ready(function($) {
 		var form = $(modal).find('#updraftcentral_cloud_form');
 		var email = form.find('input#email').val();
 		var password = form.find('input#password').val();
-		var email_format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		var email_format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
 
 		$(modal).find('.updraftcentral_cloud_notices').html('').removeClass('updraftcentral_cloud_error updraftcentral_cloud_info');
 

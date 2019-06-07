@@ -59,7 +59,7 @@ if (!class_exists('UpdraftPlus_Remote_Communications')) :
 class UpdraftPlus_Remote_Communications {
 
 	// Version numbers relate to versions of this PHP library only (i.e. it's not a protocol support number, and version numbers of other compatible libraries (e.g. JavaScript) are not comparable)
-	public $version = '1.4.18';
+	public $version = '1.4.19';
 
 	private $key_name_indicator;
 
@@ -172,6 +172,7 @@ class UpdraftPlus_Remote_Communications {
 			// phpseclib 1.x uses deprecated PHP4-style constructors
 			$this->no_deprecation_warnings_on_php7();
 			if (is_a($updraftplus, 'UpdraftPlus')) {
+				// Since May 2019, the second parameter is unused; but, since we don't know the version, we send it.
 				$ensure_phpseclib = $updraftplus->ensure_phpseclib(array('Crypt_Rijndael', 'Crypt_RSA', 'Crypt_Hash'), array('Crypt/Rijndael', 'Crypt/RSA', 'Crypt/Hash'));
 				if (is_wp_error($ensure_phpseclib)) return $ensure_phpseclib;
 			} elseif (defined('UPDRAFTPLUS_DIR') && file_exists(UPDRAFTPLUS_DIR.'/vendor/phpseclib/phpseclib/phpseclib')) {

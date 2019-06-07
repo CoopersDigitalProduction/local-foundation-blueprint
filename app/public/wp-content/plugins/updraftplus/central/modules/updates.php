@@ -505,6 +505,7 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 				$all_items = get_plugins();
 				break;
 			case 'theme':
+				$this->_frontend_include('theme.php');
 				if (function_exists('wp_get_themes')) {
 					$themes = wp_get_themes();
 					if (!empty($themes)) {
@@ -656,10 +657,7 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 	public function get_updates($options) {
 
 		// Forcing Elegant Themes (Divi) updates component to load if it exist.
-		if (function_exists('et_register_updates_component')) {
-			et_register_updates_component();
-		}
-
+		if (function_exists('et_register_updates_component')) et_register_updates_component();
 
 		if (!current_user_can('update_plugins') && !current_user_can('update_themes') && !current_user_can('update_core')) return $this->_generic_error_response('updates_permission_denied');
 
@@ -729,8 +727,11 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 					// versions greater than the currently installed version.
 					if (version_compare($update->Version, $update->update['new_version'], '>=')) continue;
 					
+					$name = $update->Name;
+					$theme_name = !empty($name) ? $name : $update->update['theme'];
+
 					$theme_updates[] = array(
-						'name' => $update->Name,
+						'name' => $theme_name,
 						'theme_uri' => $update->ThemeURI,
 						'version' => $update->Version,
 						'description' => $update->Description,

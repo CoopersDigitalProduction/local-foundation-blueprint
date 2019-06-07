@@ -284,24 +284,24 @@ class UpdraftPlus {
 	/**
 	 * Ensure that the indicated phpseclib classes are available
 	 *
-	 * @param String|Array $classes		- a class, or list of classes
-	 * @param String|Array $class_paths - paths to include
+	 * @param String|Array $classes - a class, or list of classes. There used to be a second parameter with paths to include; but this is now inferred from $classes; and there's no backwards compatibility problem because sending more parameters than are used is acceptable in PHP.
 	 *
 	 * @return Boolean|WP_Error
 	 */
-	public function ensure_phpseclib($classes = array(), $class_paths = array()) {
+	public function ensure_phpseclib($classes = array()) {
 
+		$classes = (array) $classes;
+	
 		$this->no_deprecation_warnings_on_php7();
 
-		if (!empty($classes)) {
-			$any_missing = false;
-			if (is_string($classes)) $classes = array($classes);
-			foreach ($classes as $cl) {
-				if (!class_exists($cl)) $any_missing = true;
-			}
-			if (!$any_missing) return true;
+		$any_missing = false;
+		
+		foreach ($classes as $cl) {
+			if (!class_exists($cl)) $any_missing = true;
 		}
 
+		if (!$any_missing) return true;
+		
 		$ret = true;
 		
 		// From phpseclib/phpseclib/phpseclib/bootstrap.php - we nullify it there, but log here instead
@@ -315,13 +315,11 @@ class UpdraftPlus {
 			}
 		}
 		
-		if (!empty($class_paths)) {
-			$phpseclib_dir = UPDRAFTPLUS_DIR.'/vendor/phpseclib/phpseclib/phpseclib';
-			if (false === strpos(get_include_path(), $phpseclib_dir)) set_include_path(get_include_path().PATH_SEPARATOR.$phpseclib_dir);
-			if (is_string($class_paths)) $class_paths = array($class_paths);
-			foreach ($class_paths as $cp) {
-				include_once($phpseclib_dir.'/'.$cp.'.php');
-			}
+		$phpseclib_dir = UPDRAFTPLUS_DIR.'/vendor/phpseclib/phpseclib/phpseclib';
+		if (false === strpos(get_include_path(), $phpseclib_dir)) set_include_path(get_include_path().PATH_SEPARATOR.$phpseclib_dir);
+		foreach ($classes as $cl) {
+			$path = str_replace('_', '/', $cl);
+			if (!class_exists($cl)) include_once($phpseclib_dir.'/'.$path.'.php');
 		}
 		
 		return $ret;
@@ -922,7 +920,7 @@ class UpdraftPlus {
 	 * The uniq_id field is also used with PHP event detection - it is set then to 'php_event' - which is useful for anything hooking the action to detect
 	 *
 	 * @param  string  $line 	   the log line
-	 * @param  string  $level      the log level: notice, warning, error. If suffixed with a hypen and a destination, then the default destination is changed too.
+	 * @param  string  $level      the log level: notice, warning, error. If suffixed with a hyphen and a destination, then the default destination is changed too.
 	 * @param  boolean $uniq_id    each of these will only be logged once
 	 * @param  boolean $skip_dblog if true, then do not write to the database
 	 * @return null
@@ -1033,6 +1031,17 @@ class UpdraftPlus {
 		}
 		// Returns false so that callers can return with false more efficiently if they wish
 		return false;
+	}
+
+	/**
+	 * This function will construct the restore information log line using the passed in parameters and then log the line using $this->log();
+	 *
+	 * @param array $restore_information - an array of restore information
+	 *
+	 * @return void
+	 */
+	public function log_restore_update($restore_information) {
+		$this->log("RINFO:".json_encode($restore_information), 'notice-progress');
 	}
 
 	/**
@@ -1927,7 +1936,7 @@ class UpdraftPlus {
 
 		if (0 == $resumption_no) {
 			$label = $this->jobdata_get('label');
-			if ($label) $resumption_extralog = ", label=$label";
+			if ($label) $resumption_extralog = apply_filters('updraftplus_autobackup_extralog', ", label=$label");
 		} else {
 			$this->nonce = $bnonce;
 			$file_nonce = $this->jobdata_get('file_nonce');
@@ -1969,21 +1978,11 @@ class UpdraftPlus {
 				if (isset($time_passed[$i])) $last_successful_resumption = $i;
 			}
 			
-			$fail_on_resume = $this->jobdata_get('fail_on_resume');
-
 			if (isset($time_passed[$prev_resumption])) {
+				// N.B. A check-in occurred; we haven't yet tested if it was useful
 				$resumption_extralog = ", previous check-in=".round($time_passed[$prev_resumption], 1)."s";
-				if ($fail_on_resume) $this->jobdata_delete('fail_on_resume');
-			} else {
-				$this->no_checkin_last_time = true;
-				if ($fail_on_resume == $this->current_resumption) {
-					$this->log('The backup is being aborted for a repeated failure to progress.', 'updraftplus');
-					$this->log(__('The backup is being aborted for a repeated failure to progress.', 'updraftplus'), 'error');
-					$this->backup_finish(true, true);
-					die;
-				}
 			}
-
+			
 			// This is just a simple test to catch restorations of old backup sets where the backup includes a resumption of the backup job
 			if ($time_now - $this->backup_time > 172800 && true == apply_filters('updraftplus_check_obsolete_backup', true, $time_now, $this)) {
 			
@@ -2000,9 +1999,12 @@ class UpdraftPlus {
 						}
 					}
 				}
-			
-				$this->log("This backup task (".$this->nonce.") is either complete or began over 2 days ago: ending ($time_now, ".$this->backup_time.") (existing jobdata keys: ".implode(', ', array_keys($this->jobdata)).")");
-				die;
+
+				// If we are doing a local upload then we do not want to abort the backup as it's possible they are uploading a backup that is older than two days
+				if (empty($this->jobdata['local_upload'])) {
+					$this->log("This backup task (" . $this->nonce . ") is either complete or began over 2 days ago: ending ($time_now, " . $this->backup_time . ") (existing jobdata keys: " . implode(', ', array_keys($this->jobdata)) . ")");
+					die;
+				}
 			}
 
 		}
@@ -2025,7 +2027,7 @@ class UpdraftPlus {
 		$updraft_dir = $this->backups_dir_location();
 
 		$time_ago = time()-$btime;
-
+		
 		$this->log("Backup run: resumption=$resumption_no, nonce=$bnonce, file_nonce=".$this->file_nonce." begun at=$btime (${time_ago}s ago), job type=$job_type".$resumption_extralog);
 
 		// This works round a bizarre bug seen in one WP install, where delete_transient and wp_clear_scheduled_hook both took no effect, and upon 'resumption' the entire backup would repeat.
@@ -2094,17 +2096,37 @@ class UpdraftPlus {
 				$schedule_resumption = true;
 			}
 		} else {
+		
 			// We're in over-time - we only reschedule if something useful happened last time (used to be that we waited for it to happen this time - but that meant that temporary errors, e.g. Google 400s on uploads, scuppered it all - we'd do better to have another chance
 			$useful_checkin = $this->jobdata_get('useful_checkin');
 			$last_resumption = $resumption_no-1;
-
+			$fail_on_resume = $this->jobdata_get('fail_on_resume');
+			
 			if (empty($useful_checkin) || $useful_checkin < $last_resumption) {
-				$this->log(sprintf('The current run is resumption number %d, and there was nothing useful done on the last run (last useful run: %s) - will not schedule a further attempt until we see something useful happening this time', $resumption_no, $useful_checkin));
-				// Internally, we do actually schedule a resumption; but only in order to be able to nicely handle and log the failure, which otherwise may not be logged
-				$this->jobdata_set('fail_on_resume', $next_resumption);
-				$schedule_resumption = 1;
+				if (empty($fail_on_resume)) {
+					$this->log(sprintf('The current run is resumption number %d, and there was nothing useful done on the last run (last useful run: %s) - will not schedule a further attempt until we see something useful happening this time', $resumption_no, $useful_checkin));
+					// Internally, we do actually schedule a resumption; but only in order to be able to nicely handle and log the failure, which otherwise may not be logged
+					$this->jobdata_set('fail_on_resume', $next_resumption);
+					$schedule_resumption = 1;
+				}
 			} else {
+				// Something useful happened last time
+				if (!empty($fail_on_resume)) {
+					$this->jobdata_delete('fail_on_resume');
+					$fail_on_resume = false;
+				}
 				$schedule_resumption = true;
+			}
+			
+			if (!isset($time_passed[$prev_resumption])) {
+				$this->no_checkin_last_time = true;
+			}
+			
+			if (!empty($fail_on_resume) && $fail_on_resume == $this->current_resumption) {
+				$this->log('The backup is being aborted for a repeated failure to progress.', 'updraftplus');
+				$this->log(__('The backup is being aborted for a repeated failure to progress.', 'updraftplus'), 'error');
+				$this->backup_finish(true, true);
+				die;
 			}
 		}
 
@@ -2485,9 +2507,17 @@ class UpdraftPlus {
 			$options['clone_id'] = $request['clone_id'];
 			$options['secret_token'] = $request['secret_token'];
 		}
-
+		
 		if (isset($request['clone_url'])) $options['clone_url'] = $request['clone_url'];
 		if (isset($request['key'])) $options['key'] = $request['key'];
+		if (isset($request['backup_nonce']) && isset($request['backup_timestamp'])) {
+			if ('current' != $request['backup_nonce'] && 'current' != $request['backup_timestamp']) {
+				$options['use_nonce'] = $request['backup_nonce'];
+				$options['use_timestamp'] = $request['backup_timestamp'];
+			} else {
+				$options['clone_backup'] = 'current';
+			}
+		}
 
 		return $options;
 	}
@@ -2502,7 +2532,6 @@ class UpdraftPlus {
 	 * @return array               - the modified jobdata
 	 */
 	public function updraftplus_clone_backup_jobdata($jobdata, $options, $split_every) {
-		global $updraftplus;
 
 		if (!is_array($jobdata)) return $jobdata;
 
@@ -2532,6 +2561,37 @@ class UpdraftPlus {
 		$jobdata[] = $options['key'];
 		$jobdata[] = 'remotesend_info';
 		$jobdata[] = array('url' => $options['clone_url']);
+
+		// if clone_backup is set and is 'current' then theres nothing more that needs to be done, otherwise we need to tweak some more jobdata to skip to the upload stage and use the specified clone backup
+		if (isset($options['clone_backup']) && 'current' == $options['clone_backup']) return $jobdata;
+
+		global $updraftplus_admin;
+
+		add_filter('updraftplus_get_backup_file_basename_from_time', array($updraftplus_admin, 'upload_local_backup_name'), 10, 3);
+
+		$backup_history = UpdraftPlus_Backup_History::get_history();
+		$backup = $backup_history[$options['use_timestamp']];
+
+		$jobstatus_key = array_search('jobstatus', $jobdata) + 1;
+		$backup_time_key = array_search('backup_time', $jobdata) + 1;
+		$backup_database_key = array_search('backup_database', $jobdata) + 1;
+		$backup_files_key = array_search('backup_files', $jobdata) + 1;
+
+		$db_backups = $jobdata[$backup_database_key];
+		$db_backup_info = $this->update_database_jobdata($db_backups, $backup);
+		$skip_entities = array('more', 'wpcore');
+		$file_backups = $this->update_files_jobdata($backup, $skip_entities);
+
+		$jobdata[$jobstatus_key] = 'clouduploading';
+		$jobdata[$backup_time_key] = $options['use_timestamp'];
+		$jobdata[$backup_files_key] = 'finished';
+		$jobdata[] = 'backup_files_array';
+		$jobdata[] = $file_backups;
+		$jobdata[] = 'blog_name';
+		$jobdata[] = $db_backup_info['blog_name'];
+		$jobdata[$backup_database_key] = $db_backup_info['db_backups'];
+		$jobdata[] = 'local_upload';
+		$jobdata[] = true;
 
 		return $jobdata;
 	}
@@ -2583,6 +2643,29 @@ class UpdraftPlus {
 		$backup_database_info['db_backups'] = $db_backups;
 
 		return $backup_database_info;
+	}
+
+	/**
+	 * This function will update the files backup jobdata by constructing the backup entities and their sizes from the backup
+	 *
+	 * @param array $backup        - the backup array
+	 * @param array $skip_entities - an array of entities to skip
+	 *
+	 * @return array - the files backup array
+	 */
+	public function update_files_jobdata($backup, $skip_entities = array()) {
+
+		$file_backups = array();
+		$backupable_entities = $this->get_backupable_file_entities(true);
+
+		// We need to construct the expected files array here, this gets added to the jobdata much later in the backup process but we need this before we start
+		foreach ($backupable_entities as $entity => $path) {
+			if (in_array($entity, $skip_entities)) continue;
+			if (isset($backup[$entity])) $file_backups[$entity] = $backup[$entity];
+			if (isset($backup[$entity . '-size'])) $file_backups[$entity . '-size'] = $backup[$entity . '-size'];
+		}
+
+		return $file_backups;
 	}
 
 	public function backup_files() {

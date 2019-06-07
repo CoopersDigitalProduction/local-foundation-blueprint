@@ -442,14 +442,18 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 		
 		// Gets all themes available.
 		$themes = wp_get_themes();
+		$current_theme_slug = basename(get_stylesheet_directory());
 
 		// Loops around each theme available.
-		foreach ($themes as $key => $value) {
+		foreach ($themes as $slug => $value) {
+			$name = $value->get('Name');
+			$theme_name = !empty($name) ? $name : $slug;
+
 			// If the theme name matches that of the specified name, it will gather details.
-			if ($value->Name === $theme) {
+			if ($theme_name === $theme) {
 				$info['installed'] = true;
-				$info['active'] = (wp_get_theme()->get('Name') === $value->Name) ? true : false;
-				$info['slug'] = $value->get_stylesheet();
+				$info['active'] = ($slug === $current_theme_slug) ? true : false;
+				$info['slug'] = $slug;
 				$info['data'] = $value;
 				break;
 			}
@@ -483,21 +487,30 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 
 		// Get all themes
 		$themes = wp_get_themes();
+		$current_theme_slug = basename(get_stylesheet_directory());
 
 		foreach ($themes as $slug => $value) {
+			$name = $value->get('Name');
+			$theme_name = !empty($name) ? $name : $slug;
+
 			$theme = new stdClass();
-			$theme->name = $value->Name;
-			$theme->description = $value->Description;
+			$theme->name = $theme_name;
+			$theme->description = $value->get('Description');
 			$theme->slug = $slug;
-			$theme->version = $value->Version;
-			$theme->author = $value->Author;
-			$theme->status = (wp_get_theme()->get('Name') === $value->Name) ? 'active' : 'inactive';
-			$theme->child_theme = ($slug !== $value->Template) ? true : false;
+			$theme->version = $value->get('Version');
+			$theme->author = $value->get('Author');
+			$theme->status = ($slug === $current_theme_slug) ? 'active' : 'inactive';
+
+			$template = $value->get('Template');
+			$theme->child_theme = !empty($template) ? true : false;
 			$theme->website = $website;
 			$theme->multisite = is_multisite();
 
 			if ($theme->child_theme) {
-				$theme->parent = wp_get_theme($value->Template)->get('Name');
+				$parent_theme = wp_get_theme($template);
+				$parent_name = $parent_theme->get('Name');
+
+				$theme->parent = !empty($parent_name) ? $parent_name : $parent_theme->get_stylesheet();
 			}
 
 			if (!empty($theme_updates[$slug])) {

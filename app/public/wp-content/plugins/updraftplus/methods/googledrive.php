@@ -10,7 +10,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 	private $client;
 
-	private $ids_from_paths;
+	private $ids_from_paths = array();
 
 	private $client_id;
 
@@ -81,77 +81,86 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		);
 	}
 
+	/**
+	 * Get the Google folder ID for the root of the drive
+	 *
+	 * @return String|Integer
+	 */
 	private function root_id() {
-		
-		$storage = $this->get_storage();
-
-		if (empty($this->root_id)) $this->root_id = $storage->about->get()->getRootFolderId();
+		if (empty($this->root_id)) $this->root_id = $this->get_storage()->about->get()->getRootFolderId();
 		return $this->root_id;
 	}
 
 	/**
 	 * Get folder id from path
 	 *
-	 * @param String  $path        folder path
+	 * @param String  $path		   folder path
+	 * @param Boolean $one_only	   if false, then will be returned as a list (Google Drive allows multiple entities with the same name)
 	 * @param Integer $retry_count how many times to retry upon a network failure
-	 * @return String|Integer internal id of the Google Drive folder
+	 *
+	 * @return Array|String|Integer|Boolean internal id of the Google Drive folder (or list of them if $one_only was false), or false upon failure
 	 */
-	public function id_from_path($path, $retry_count = 3) {
+	public function id_from_path($path, $one_only = true, $retry_count = 3) {
 		global $updraftplus;
 
 		$storage = $this->get_storage();
 
 		try {
+
 			while ('/' == substr($path, 0, 1)) {
 				$path = substr($path, 1);
 			}
 
-			$cache_key = (empty($path)) ? '/' : $path;
-			if (!empty($this->ids_from_paths) && isset($this->ids_from_paths[$cache_key])) return $this->ids_from_paths[$cache_key];
+			$cache_key = empty($path) ? '/' : ($one_only ? $path : 'multi:'.$path);
+			if (isset($this->ids_from_paths[$cache_key])) return $this->ids_from_paths[$cache_key];
 
-			$current_parent = $this->root_id();
+			$current_parent_id = $this->root_id();
 			$current_path = '/';
 
 			if (!empty($path)) {
-				foreach (explode('/', $path) as $element) {
-					$found = false;
-					$sub_items = $this->get_subitems($current_parent, 'dir', $element);
+				$nodes = explode('/', $path);
+				foreach ($nodes as $i => $element) {
+					$found = array();
+					$sub_items = $this->get_subitems($current_parent_id, 'dir', $element);
 
 					foreach ($sub_items as $item) {
 						try {
 							if ($item->getTitle() == $element) {
-								$found = true;
 								$current_path .= $element.'/';
-								$current_parent = $item->getId();
-								break;
+								$current_parent_id = $item->getId();
+								$found[$current_parent_id] = strtotime($item->getCreatedDate());
 							}
 						} catch (Exception $e) {
 							$this->log("id_from_path: exception: ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 						}
 					}
-
-					if (!$found) {
+					
+					if (count($found) > 1) {
+						asort($found);
+						reset($found);
+						$current_parent_id = key($found);
+					} elseif (empty($found)) {
 						$ref = new Google_Service_Drive_ParentReference;
-						$ref->setId($current_parent);
+						$ref->setId($current_parent_id);
 						$dir = new Google_Service_Drive_DriveFile();
 						$dir->setMimeType('application/vnd.google-apps.folder');
 						$dir->setParents(array($ref));
 						$dir->setTitle($element);
-						$this->log("creating path: ".$current_path.$element);
+						$this->log('creating path: '.$current_path.$element);
 						$dir = $storage->files->insert(
 							$dir,
 							array('mimeType' => 'application/vnd.google-apps.folder')
 						);
 						$current_path .= $element.'/';
-						$current_parent = $dir->getId();
+						$current_parent_id = $dir->getId();
 					}
 				}
 			}
 
 			if (empty($this->ids_from_paths)) $this->ids_from_paths = array();
-			$this->ids_from_paths[$cache_key] = $current_parent;
+			$this->ids_from_paths[$cache_key] = ($one_only || empty($found) || 1 == count($found)) ? $current_parent_id : $found;
 
-			return $current_parent;
+			return $this->ids_from_paths[$cache_key];
 
 		} catch (Exception $e) {
 			$msg = $e->getMessage();
@@ -168,28 +177,36 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 			if ($retry_count > 0) {
 				$delay_in_seconds = defined('UPDRAFTPLUS_GOOGLE_DRIVE_GET_FOLDER_ID_SECOND_RETRY_DELAY') ? UPDRAFTPLUS_GOOGLE_DRIVE_GET_FOLDER_ID_SECOND_RETRY_DELAY : 5-$retry_count;
 				sleep($delay_in_seconds);
-				return $this->id_from_path($path, $retry_count);
+				return $this->id_from_path($path, $one_only, $retry_count);
 			}
 			return false;
 		}
 	}
 
-	private function get_parent_id($opts) {
+	/**
+	 * Get the Google Drive internal ID
+	 *
+	 * @param Array	  $opts		- storage instance options
+	 * @param Boolean $one_only - whether to potentially return them all if there is more than one
+	 *
+	 * @return String|Array
+	 */
+	private function get_parent_id($opts, $one_only = true) {
 
 		$storage = $this->get_storage();
 
-		$filtered = apply_filters('updraftplus_googledrive_parent_id', false, $opts, $storage, $this);
+		$filtered = apply_filters('updraftplus_googledrive_parent_id', false, $opts, $storage, $this, $one_only);
 		if (!empty($filtered)) return $filtered;
 		if (isset($opts['parentid'])) {
 			if (empty($opts['parentid'])) {
 				return $this->root_id();
 			} else {
-				$parent = (is_array($opts['parentid'])) ? $opts['parentid']['id'] : $opts['parentid'];
+				$parent = is_array($opts['parentid']) ? $opts['parentid']['id'] : $opts['parentid'];
 			}
 		} else {
-			$parent = $this->id_from_path('UpdraftPlus');
+			$parent = $this->id_from_path('UpdraftPlus', $one_only);
 		}
-		return (empty($parent)) ? $this->root_id() : $parent;
+		return empty($parent) ? $this->root_id() : $parent;
 	}
 
 	public function listfiles($match = 'backup_') {
@@ -494,7 +511,16 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		$opts = $this->get_options();
 
 		try {
-			$parent_id = $this->get_parent_id($opts);
+			$parent_ids = $this->get_parent_id($opts, false);
+			if (is_array($parent_ids)) {
+				reset($parent_ids);
+				$parent_id = key($parent_ids);
+				if (count($parent_ids) > 1) {
+					$this->log('there appears to be more than one folder: '.implode(', ', array_keys($parent_ids)));
+				}
+			} else {
+				$parent_id = $parent_ids;
+			}
 		} catch (Exception $e) {
 			$this->log("upload: failed to access parent folder: ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 			$this->log(sprintf(__('Failed to upload to %s', 'updraftplus'), __('Google Drive', 'updraftplus')).': '.__('failed to access parent folder', 'updraftplus').' ('.$e->getMessage().')', 'error');
@@ -838,7 +864,8 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 	 * @param  string $parent_id This is the Parent ID
 	 * @param  string $type 	 This is the type of file or directory but by default it is set to 'any' unless specified
 	 * @param  string $match 	 This will specify which match is used for the SQL but by default it is set to 'backup_' unless specified
-	 * @return array
+	 *
+	 * @return array - list of Google_Service_Drive_DriveFile items
 	 */
 	private function get_subitems($parent_id, $type = 'any', $match = 'backup_') {
 

@@ -59,7 +59,7 @@ class UpdraftPlus_Filesystem_Functions {
 	 */
 	public static function ensure_wp_filesystem_set_up_for_restore($url_parameters = array()) {
 	
-		global $wp_filesystem;
+		global $wp_filesystem, $updraftplus;
 
 		$build_url = UpdraftPlus_Options::admin_page().'?page=updraftplus&action=updraft_restore';
 		
@@ -67,12 +67,14 @@ class UpdraftPlus_Filesystem_Functions {
 			$build_url .= '&'.$k.'='.$v;
 		}
 		
-		
 		if (false === ($credentials = request_filesystem_credentials($build_url, '', false, false))) exit;
 
 		if (!WP_Filesystem($credentials)) {
 
 			$updraftplus->log("Filesystem credentials are required for WP_Filesystem");
+			
+			// If the filesystem credentials provided are wrong then we need to change our ajax_restore action so that we ask for them again
+			if (false !== strpos($build_url, 'updraftplus_ajax_restore=do_ajax_restore')) $build_url = str_replace('updraftplus_ajax_restore=do_ajax_restore', 'updraftplus_ajax_restore=continue_ajax_restore', $build_url);
 			
 			request_filesystem_credentials($build_url, '', true, false);
 			

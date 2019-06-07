@@ -24,7 +24,7 @@ foreach ($default_options as $k => $v) {
 			<div>
 				<select class="updraft_interval" name="updraft_interval">
 				<?php
-				$intervals = $updraftplus_admin->get_intervals();
+				$intervals = $updraftplus_admin->get_intervals('files');
 				$selected_interval = UpdraftPlus_Options::get_updraft_option('updraft_interval', 'manual');
 				foreach ($intervals as $cronsched => $descrip) {
 					echo "<option value=\"$cronsched\" ";
@@ -61,6 +61,7 @@ foreach ($default_options as $k => $v) {
 		<div>
 			<select class="updraft_interval_database" name="updraft_interval_database">
 			<?php
+			$intervals = $updraftplus_admin->get_intervals('db');
 			$selected_interval_db = UpdraftPlus_Options::get_updraft_option('updraft_interval_database', UpdraftPlus_Options::get_updraft_option('updraft_interval'));
 			foreach ($intervals as $cronsched => $descrip) {
 				echo "<option value=\"$cronsched\" ";

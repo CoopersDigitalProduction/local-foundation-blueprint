@@ -2,8 +2,8 @@
 Contributors: fredericktownes
 Tags: seo, cache, caching, compression, maxcdn, nginx, varnish, redis, new relic, aws, amazon web services, s3, cloudfront, rackspace, cloudflare, azure, apache
 Requires at least: 3.2
-Tested up to: 5.1
-Stable tag: 0.9.7.4
+Tested up to: 5.2
+Stable tag: 0.9.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -269,6 +269,14 @@ It's quite difficult to recall all of the innovators that have shared their thou
 Please reach out to all of these people and support their projects if you're so inclined.
 
 == Changelog ==
+
+= 0.9.7.5 =
+* Updated AWS library
+* Added support of set_sql_mode by dbcluster
+* Improved support for webserver running on non-default port with disk-enhanced
+* Improved menu icons
+* Fixed php warning when remote service cannot be loaded
+* Fixed php warnings on support page
 
 = 0.9.7.4 =
 * Fixed PHP warning when Redis integration not configured correctly
@@ -565,6 +573,9 @@ Please reach out to all of these people and support their projects if you're so 
 
 
 == Upgrade Notice ==
+
+= 0.9.7.5 =
+Users running Cloudflare CDN may experience issues beginning June 6th. Please upgrade to W3 Total Cache 0.9.7.5 for the latest Cloudflare patches.
 
 = 0.9.5.3 =
 Thanks for using W3 Total Cache! This release includes compatibility fixes that have been reported. In addition, numerous other improvements are now yours!

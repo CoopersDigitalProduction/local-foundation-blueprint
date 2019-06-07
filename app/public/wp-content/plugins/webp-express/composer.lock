@@ -1,0 +1,286 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "b5e5a83c346324652e5f6cb8edf61e11",
+    "packages": [
+        {
+            "name": "rosell-dk/dom-util-for-webp",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rosell-dk/dom-util-for-webp.git",
+                "reference": "c9cebf304553695fb6f7cf5634da51172e8e4aba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rosell-dk/dom-util-for-webp/zipball/c9cebf304553695fb6f7cf5634da51172e8e4aba",
+                "reference": "c9cebf304553695fb6f7cf5634da51172e8e4aba",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.11",
+                "phpunit/phpunit": "5.7.27",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "extra": {
+                "scripts-descriptions": {
+                    "ci": "Run tests before CI",
+                    "phpcs": "Checks coding styles (PSR2) of file/dir, which you must supply. To check all, supply 'src'",
+                    "phpcbf": "Fix coding styles (PSR2) of file/dir, which you must supply. To fix all, supply 'src'",
+                    "cs-fix-all": "Fix the coding style of all the source files, to comply with the PSR-2 coding standard",
+                    "cs-fix": "Fix the coding style of a PHP file or directory, which you must specify.",
+                    "test": "Launches the preconfigured PHPUnit"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DOMUtilForWebP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bjørn Rosell",
+                    "homepage": "https://www.bitwise-it.dk/contact",
+                    "role": "Project Author"
+                }
+            ],
+            "description": "Replace image URLs found in HTML",
+            "keywords": [
+                "Webp",
+                "html",
+                "images",
+                "replace"
+            ],
+            "time": "2019-03-07T09:15:07+00:00"
+        },
+        {
+            "name": "rosell-dk/webp-convert",
+            "version": "1.3.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rosell-dk/webp-convert.git",
+                "reference": "3680c278f08748054b4ab3ea7855be8984f008aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rosell-dk/webp-convert/zipball/3680c278f08748054b4ab3ea7855be8984f008aa",
+                "reference": "3680c278f08748054b4ab3ea7855be8984f008aa",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.11",
+                "phpunit/phpunit": "5.7.27",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "extra": {
+                "scripts-descriptions": {
+                    "ci": "Run tests before CI",
+                    "phpcs": "Checks coding styles (PSR2) of file/dir, which you must supply. To check all, supply 'src'",
+                    "phpcbf": "Fix coding styles (PSR2) of file/dir, which you must supply. To fix all, supply 'src'",
+                    "cs-fix-all": "Fix the coding style of all the source files, to comply with the PSR-2 coding standard",
+                    "cs-fix": "Fix the coding style of a PHP file or directory, which you must specify.",
+                    "test": "Launches the preconfigured PHPUnit"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WebPConvert\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "WebPConvert\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "ci": [
+                    "@build",
+                    "@test",
+                    "@phpcs-all",
+                    "@composer validate --no-check-all --strict"
+                ],
+                "build": [
+                    "@build-wod",
+                    "@build-require-all"
+                ],
+                "cs-fix-all": [
+                    "php-cs-fixer fix src"
+                ],
+                "cs-fix": [
+                    "php-cs-fixer fix"
+                ],
+                "cs-dry": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "test": [
+                    "phpunit"
+                ],
+                "phpcs": [
+                    "phpcs --standard=PSR2"
+                ],
+                "phpcs-all": [
+                    "phpcs --standard=PSR2 src"
+                ],
+                "phpcbf": [
+                    "phpcbf --standard=PSR2"
+                ],
+                "build-wod": [
+                    "php build-scripts/build-webp-on-demand.php"
+                ],
+                "build-require-all": [
+                    "php build-scripts/generate-require-all.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bjørn Rosell",
+                    "homepage": "https://www.bitwise-it.dk/contact",
+                    "role": "Project Author"
+                },
+                {
+                    "name": "Martin Folkers",
+                    "homepage": "https://twobrain.io",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Convert JPEG & PNG to WebP with PHP",
+            "keywords": [
+                "cwebp",
+                "gd",
+                "image conversion",
+                "images",
+                "imagick",
+                "jpg",
+                "jpg2webp",
+                "png",
+                "png2webp",
+                "webp"
+            ],
+            "support": {
+                "source": "https://github.com/rosell-dk/webp-convert/tree/1.3.9",
+                "issues": "https://github.com/rosell-dk/webp-convert/issues"
+            },
+            "time": "2019-03-21T07:34:21+00:00"
+        },
+        {
+            "name": "rosell-dk/webp-convert-cloud-service",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rosell-dk/webp-convert-cloud-service.git",
+                "reference": "e250d49f4cb0fd0c07becbfa0abb7a1a31d03e37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rosell-dk/webp-convert-cloud-service/zipball/e250d49f4cb0fd0c07becbfa0abb7a1a31d03e37",
+                "reference": "e250d49f4cb0fd0c07becbfa0abb7a1a31d03e37",
+                "shasum": ""
+            },
+            "require": {
+                "rosell-dk/webp-convert": "^1.2.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.11",
+                "phpunit/phpunit": "5.7.27",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "extra": {
+                "scripts-descriptions": {
+                    "ci": "Run tests before CI",
+                    "phpcs": "Checks coding styles (PSR2) of file/dir, which you must supply. To check all, supply 'src'",
+                    "phpcbf": "Fix coding styles (PSR2) of file/dir, which you must supply. To fix all, supply 'src'",
+                    "cs-fix-all": "Fix the coding style of all the source files, to comply with the PSR-2 coding standard",
+                    "cs-fix": "Fix the coding style of a PHP file or directory, which you must specify.",
+                    "test": "Launches the preconfigured PHPUnit"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WebPConvertCloudService\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "WebPConvertCloudService\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "ci": [
+                    "@test",
+                    "@phpcs-all",
+                    "@composer validate --no-check-all --strict"
+                ],
+                "cs-fix-all": [
+                    "php-cs-fixer fix src"
+                ],
+                "cs-fix": [
+                    "php-cs-fixer fix"
+                ],
+                "cs-dry": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "test": [
+                    "phpunit tests/"
+                ],
+                "phpcs": [
+                    "phpcs --standard=PSR2"
+                ],
+                "phpcs-all": [
+                    "phpcs --standard=PSR2 src"
+                ],
+                "phpcbf": [
+                    "phpcbf --standard=PSR2"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bjørn Rosell",
+                    "homepage": "https://www.bitwise-it.dk/contact",
+                    "role": "Project Author"
+                }
+            ],
+            "description": "Cloud service for converting JPEG & PNG to WebP",
+            "keywords": [
+                "cwebp",
+                "gd",
+                "image conversion",
+                "images",
+                "imagick",
+                "jpg",
+                "jpg2webp",
+                "png",
+                "png2webp",
+                "webp"
+            ],
+            "support": {
+                "source": "https://github.com/rosell-dk/webp-convert-cloud-service/tree/1.0.0",
+                "issues": "https://github.com/rosell-dk/webp-convert-cloud-service/issues"
+            },
+            "time": "2018-11-09T11:17:43+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

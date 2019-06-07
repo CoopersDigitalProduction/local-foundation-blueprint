@@ -140,7 +140,7 @@ abstract class Dropbox_ConsumerAbstract
 		*/
 	    
 		global $updraftplus;
-		if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random', 'Crypt/Random');
+		if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random');
 
 		$CSRF = base64_encode(crypt_random_string(16));
         $this->storage->set($CSRF,'CSRF');

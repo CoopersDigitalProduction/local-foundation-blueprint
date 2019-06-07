@@ -36,6 +36,10 @@ class Generic_Plugin {
 				$this,
 				'admin_bar_menu'
 			), 150 );
+		add_action( 'admin_bar_init', array(
+				$this,
+				'admin_bar_init'
+			) );
 
 		if ( isset( $_REQUEST['w3tc_theme'] ) && isset( $_SERVER['HTTP_USER_AGENT'] ) &&
 			stristr( $_SERVER['HTTP_USER_AGENT'], W3TC_POWERED_BY ) !== false ) {
@@ -233,6 +237,27 @@ class Generic_Plugin {
 		}
 	}
 
+	public function admin_bar_init() {
+		$font_base = plugins_url( 'pub/fonts/w3tc', W3TC_FILE );
+		$css = "
+			@font-face {
+				font-family: 'w3tc';
+			src: url('$font_base.eot');
+			src: url('$font_base.eot?#iefix') format('embedded-opentype'),
+				 url('$font_base.woff') format('woff'),
+				 url('$font_base.ttf') format('truetype'),
+				 url('$font_base.svg#w3tc') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
+		.w3tc-icon:before{
+			content:'\\0041'; top: 2px;
+			font-family: 'w3tc';
+		}";
+
+		wp_add_inline_style( 'admin-bar', $css);
+	}
+
 	/**
 	 * Admin bar menu
 	 *
@@ -259,12 +284,10 @@ class Generic_Plugin {
 
 			$menu_items['00010.generic'] = array(
 				'id' => 'w3tc',
-				'title' =>
-				'<img src="' .
-				plugins_url( 'pub/img/w3tc-sprite-admin-bar.png', W3TC_FILE ) .
-				'" style="vertical-align:middle; margin-right:5px; width: 29px; height: 29px" />' .
-				__( 'Performance', 'w3-total-cache' ) .
-				$menu_postfix,
+				'title' => sprintf(
+					'<span class="w3tc-icon ab-icon"></span><span class="ab-label">%s</span>' .
+					$menu_postfix,
+					__( 'Performance', 'w3-total-cache' ) ),
 				'href' => network_admin_url( 'admin.php?page=w3tc_dashboard' )
 			);
 
@@ -366,13 +389,13 @@ class Generic_Plugin {
 			'?action=w3tc_monitoring_score&' . md5( $_SERVER['REQUEST_URI'] );
 
 ?>
-        <script type= "text/javascript">
-        var w3tc_monitoring_score = document.createElement('script');
-        w3tc_monitoring_score.type = 'text/javascript';
-        w3tc_monitoring_score.src = '<?php echo $url ?>';
-        document.getElementsByTagName('HEAD')[0].appendChild(w3tc_monitoring_score);
-        </script>
-        <?php
+		<script type= "text/javascript">
+		var w3tc_monitoring_score = document.createElement('script');
+		w3tc_monitoring_score.type = 'text/javascript';
+		w3tc_monitoring_score.src = '<?php echo $url ?>';
+		document.getElementsByTagName('HEAD')[0].appendChild(w3tc_monitoring_score);
+		</script>
+		<?php
 	}
 
 	/**
@@ -501,25 +524,25 @@ class Generic_Plugin {
 				if ( Util_Environment::is_preview_mode() )
 					$buffer .= "\r\n<!-- W3 Total Cache used in preview mode -->";
 
-                $strings = array();
+				$strings = array();
 
-                if ( $this->_config->get_string( 'common.support' ) == '' &&
-                    !$this->_config->get_boolean( 'common.tweeted' ) ) {
-                    $strings[] = 'Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/';
-                	$strings[] = '';
-                }
+				if ( $this->_config->get_string( 'common.support' ) == '' &&
+					!$this->_config->get_boolean( 'common.tweeted' ) ) {
+					$strings[] = 'Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/';
+					$strings[] = '';
+				}
 
-                $strings = apply_filters( 'w3tc_footer_comment', $strings );
+				$strings = apply_filters( 'w3tc_footer_comment', $strings );
 
-                if ( count( $strings ) ) {
-                	$strings[] = '';
-                	$strings[] = sprintf( "Served from: %s @ %s by W3 Total Cache",
-                            Util_Content::escape_comment( $host ), $date );
+				if ( count( $strings ) ) {
+					$strings[] = '';
+					$strings[] = sprintf( "Served from: %s @ %s by W3 Total Cache",
+							Util_Content::escape_comment( $host ), $date );
 
-                    $buffer .= "\r\n<!--\r\n" .
-                    	Util_Content::escape_comment( implode( "\r\n", $strings ) ) .
-                    	"\r\n-->";
-                }
+					$buffer .= "\r\n<!--\r\n" .
+						Util_Content::escape_comment( implode( "\r\n", $strings ) ) .
+						"\r\n-->";
+				}
 			}
 
 			$buffer = Util_Bus::do_ob_callbacks(
@@ -635,12 +658,12 @@ class Generic_Plugin {
 
 	function popup_script() {
 ?>
-        <script type="text/javascript">
-            function w3tc_popupadmin_bar(url) {
-                return window.open(url, '', 'width=800,height=600,status=no,toolbar=no,menubar=no,scrollbars=yes');
-            }
-        </script>
-            <?php
+		<script type="text/javascript">
+			function w3tc_popupadmin_bar(url) {
+				return window.open(url, '', 'width=800,height=600,status=no,toolbar=no,menubar=no,scrollbars=yes');
+			}
+		</script>
+			<?php
 	}
 
 	private function is_debugging() {
