@@ -1,6 +1,0 @@
-.php_cs.cache
-composer.lock
-composer.phar
-config.yaml
-/vendor
-/conversions
