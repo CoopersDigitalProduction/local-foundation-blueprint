@@ -35,8 +35,6 @@ Ao executar estes comandos, o front-end em HTML poderá ser visualizado no naveg
 Ao executar `foundation watch` ou `foundation build` na pasta do front-end, os arquivos da pasta **foundation/src/assets** são copiados automaticamente para a pasta do tema em **app/public/wp-content/themes/[custom_theme]/assets**.
 
 ### Plugins Gulp adicionais
-Para melhorar nosso fluxo e performance dos projetos, foram adicionados dois plugins no Gulp:
-- gulp-htmlmin
 - gulp-webp (para mais informações sobre o uso de WEBP: [Essential Image Optimization](https://images.guide))
 
 **Ambos só são executados com a task _build_**, ou seja, os HTMLs e imagens WEBP serão geradas quando executado o comando `foundation watch` pela primeira vez ou executado `foundation build`.
