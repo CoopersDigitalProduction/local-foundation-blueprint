@@ -107,7 +107,7 @@ app/public/wp-content/*
 !app/public/wp-content/themes/
 
 #ignore Foundation's assets
-app/public/wp-content/themes/custom_theme/assets
+app/public/wp-content/themes/[custom_theme]/assets
 
 # ignore these plugins
 app/public/wp-content/plugins/hello.php
