@@ -14,8 +14,7 @@ import webpack2      from 'webpack';
 import named         from 'vinyl-named';
 import uncss         from 'uncss';
 import autoprefixer  from 'autoprefixer';
-import htmlmin       from 'gulp-htmlmin';
-import webp          from 'gulp-webp';
+import webp from 'gulp-webp';
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -24,7 +23,7 @@ const $ = plugins();
 const PRODUCTION = !!(yargs.argv.production);
 
 // Load settings from settings.yml
-const { COMPATIBILITY, PORT, UNCSS_OPTIONS, PATHS } = loadConfig();
+const { PORT, UNCSS_OPTIONS, PATHS } = loadConfig();
 
 function loadConfig() {
   let ymlFile = fs.readFileSync('config.yml', 'utf8');
@@ -34,7 +33,7 @@ function loadConfig() {
 // Build the "dist" folder by running all of the below tasks
 // Sass must be run later so UnCSS can search for used classes in the others assets.
 gulp.task('build',
-  gulp.series(clean, cleanWP, gulp.parallel(pages, javascript, images, copy, copyWP), imageToWebp, sass, styleGuide, minifyHTML));
+ gulp.series(clean, cleanWP, gulp.parallel(pages, javascript, images, copy, copyWP), imageToWebp, sass, styleGuide));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -46,10 +45,10 @@ function clean(done) {
   rimraf(PATHS.dist, done);
 }
 
+  // Custom function: clearing assets inside custom WP theme
   function cleanWP(done) {
     rimraf(PATHS.wp + '/assets', done);  // cleaning custom theme's folder
-}
-
+  }
 // Copy files out of the assets folder
 // This task skips over the "img", "js", and "scss" folders, which are parsed separately
 function copy() {
@@ -57,6 +56,7 @@ function copy() {
     .pipe(gulp.dest(PATHS.dist + '/assets'));
 }
 
+  // Custom function: copying assets to custom WP theme
   function copyWP() {
     return gulp.src(PATHS.assets)
       .pipe(gulp.dest(PATHS.wp + '/assets'));  // copying to the custom theme's folder
@@ -95,7 +95,7 @@ function sass() {
 
   const postCssPlugins = [
     // Autoprefixer
-    autoprefixer({ browsers: COMPATIBILITY }),
+    autoprefixer(),
 
     // UnCSS - Uncomment to remove unused styles in production
     // PRODUCTION && uncss.postcssPlugin(UNCSS_OPTIONS),
@@ -111,7 +111,7 @@ function sass() {
     .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
     .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
     .pipe(gulp.dest(PATHS.dist + '/assets/css'))
-    .pipe(gulp.dest(PATHS.wp + '/assets/css')) // copying to the custom theme's folder
+    .pipe(gulp.dest(PATHS.wp + '/assets/css')) // copies compiled files to theme's assets
     .pipe(browser.reload({ stream: true }));
 }
 
@@ -141,14 +141,14 @@ function javascript() {
     .pipe(named())
     .pipe($.sourcemaps.init())
     .pipe(webpackStream(webpackConfig, webpack2))
-    .pipe($.if(PRODUCTION, $.uglify()
+    .pipe($.if(PRODUCTION, $.terser()
       .on('error', e => { console.log(e); })
     ))
     .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
     .pipe(gulp.dest(PATHS.dist + '/assets/js'))
-    .pipe(gulp.dest(PATHS.wp + '/assets/js')); // copying to the custom theme's folder
+    .pipe(gulp.dest(PATHS.wp + '/assets/js')); // copies compiled files to theme's assets
 }
-  
+
 // Copy images to the "dist" folder
 // In production, the images are compressed
 function images() {
@@ -157,29 +157,20 @@ function images() {
       $.imagemin.jpegtran({ progressive: true }),
     ])))
     .pipe(gulp.dest(PATHS.dist + '/assets/img'))
-    .pipe(gulp.dest(PATHS.wp + '/assets/img')); // copying to the custom theme's folder
+    .pipe(gulp.dest(PATHS.wp + '/assets/img')); // copies files to theme's assets
 }
 
-function imageToWebp() {
-  return gulp.src('src/assets/img/**/*.{jpg,png}')
-    .pipe(webp({
-      quality: 85
-    }))
-    .pipe(gulp.dest(PATHS.dist + '/assets/img'))
-    .pipe(gulp.dest(PATHS.wp + '/assets/img'));
-}
+  // Custom function: copying converted images to custom WP theme
+  function imageToWebp() {
+    return gulp.src('src/assets/img/**/*.{jpg,png}')
+      .pipe(webp({
+        quality: 85
+      }))
+      .pipe(gulp.dest(PATHS.dist + '/assets/img'))
+      .pipe(gulp.dest(PATHS.wp + '/assets/img'));
+  }
 
-// Minify HTML
-function minifyHTML() {
-  return gulp.src('dist/*.html')
-    .pipe(htmlmin({
-      collapseWhitespace: true,
-      processScripts: ['application/ld+json']
-    }))
-    .pipe(gulp.dest('dist'));
-};
-
-// Start a server with BrowserSync to preview the site in
+  // Start a server with BrowserSync to preview the site in
 function server(done) {
   browser.init({
     server: PATHS.dist, port: PORT
