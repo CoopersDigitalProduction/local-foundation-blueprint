@@ -29,6 +29,16 @@ npm install
 foundation watch
 ```
 
+**Observação**: Se você estiver utilizando o Windows, podem ser necessários alguns passos adicionais. Primeiro, remova a pasta `node_modules` que está dentro da pasta foundation. Em seguida, ao invés de executar diretamente o `npm install`, você precisará seguir os seguintes passos.
+
+```bash
+npm install --global windows-build-tools
+npm install
+foundation watch
+```
+
+Pode ser necessário remover também o arquivo package-lock.json.
+
 Ao executar estes comandos, o front-end em HTML poderá ser visualizado no navegador e os assets serão copiados para o tema do WordPress.
 
 ### Workflow
