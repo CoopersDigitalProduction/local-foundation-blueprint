@@ -1,0 +1,219 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the wp-migrate-db-pro-multisite-tools package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-migrate-db-pro-multisite-tools\n"
+"Report-Msgid-Bugs-To: nom@deliciousbrains.com\n"
+"POT-Creation-Date: 2019-04-24 12:18-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: class/cli/wpmdbpro-multisite-tools-cli.php:53
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:97
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:100
+msgid ""
+"The installation must be a Multisite network to make use of the export "
+"subsite option"
+msgstr ""
+
+#: class/cli/wpmdbpro-multisite-tools-cli.php:56
+#: class/cli/wpmdbpro-multisite-tools-cli.php:62
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:100
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:106
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:103
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:109
+msgid ""
+"A valid Blog ID or Subsite URL must be supplied to make use of the subsite "
+"option"
+msgstr ""
+
+#: class/cli/wpmdbpro-multisite-tools-cli.php:76
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:120
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:123
+msgid "A new table name prefix may only be specified for subsite exports."
+msgstr ""
+
+#: class/cli/wpmdbpro-multisite-tools-cli.php:79
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:123
+#: src/wp-migrate-db-pro-multisite-tools/class/CliCommand/MultisiteToolsAddonCli.php:126
+msgid "A valid prefix must be supplied to make use of the prefix option"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:262
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:348
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:345
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:349
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:354
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:341
+msgid "Migration failed"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:263
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:349
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:346
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:350
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:355
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:342
+msgid "Please select a subsite."
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:264
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:350
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:347
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:351
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:356
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:343
+msgid "Please enter a new table prefix."
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:265
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:351
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:348
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:352
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:357
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:344
+msgid ""
+"Please only enter letters, numbers or underscores for the new table prefix."
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:266
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:352
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:349
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:353
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:358
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:345
+msgid "Export a subsite as a single site install"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:267
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:353
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:350
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:354
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:359
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:346
+msgid "Pull into a specific subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:268
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:354
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:351
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:355
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:360
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:347
+msgid "Pull from a specific subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:269
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:355
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:352
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:356
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:361
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:348
+msgid "Push a specific subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:270
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:356
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:353
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:357
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:362
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:349
+msgid "Push to a specific subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:271
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:357
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:354
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:358
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:363
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:350
+msgid "Run a find/replace on a specific subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:272
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:358
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:355
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:359
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:364
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:351
+msgid "Select a subsite"
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:821
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:913
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:903
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:914
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:919
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:899
+msgid "Expected local subsite \"short_basedir\" missing from `state_data`."
+msgstr ""
+
+#: class/wpmdbpro-multisite-tools.php:827
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:919
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:909
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:920
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:925
+#: src/wp-migrate-db-pro-multisite-tools/class/MultisiteToolsAddon.php:905
+msgid "Expected remote subsite \"short_basedir\" missing from `state_data`."
+msgstr ""
+
+#: template/migrate.php:54
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:52
+msgid "New Table Name Prefix"
+msgstr ""
+
+#: template/migrate.php:56
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:54
+msgid "New Prefix"
+msgstr ""
+
+#: template/migrate.php:63
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:61
+msgid "Addon Missing"
+msgstr ""
+
+#: template/migrate.php:63
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:61
+msgid ""
+"The Multisite Tools addon is inactive on the <strong>remote site</strong>. "
+"Please install and activate it to enable subsite migrations."
+msgstr ""
+
+#: template/migrate.php:67
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:65
+msgid "Version Mismatch"
+msgstr ""
+
+#: template/migrate.php:67
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:65
+#, php-format
+msgid ""
+"We have detected you have version <span class=\"mst-remote-version\"></span> "
+"of WP Migrate DB Pro Multisite Tools at <span class=\"mst-remote-location"
+"\"></span> but are using %1$s here. Please go to the <a href=\"%2$s"
+"\">Plugins page</a> on both installs and check for updates."
+msgstr ""
+
+#: template/migrate.php:71
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:69
+msgid "Different Table Prefixes"
+msgstr ""
+
+#: template/migrate.php:71
+#: src/wp-migrate-db-pro-multisite-tools/template/migrate.php:69
+#, php-format
+msgid ""
+"We have detected you have table prefix \"<span class=\"mst-remote-prefix\"></"
+"span>\" at <span class=\"mst-remote-location\"></span> but have \"%1$s\" "
+"here. Multisite Tools currently only supports migrating subsites between "
+"sites with the same base table prefix."
+msgstr ""
