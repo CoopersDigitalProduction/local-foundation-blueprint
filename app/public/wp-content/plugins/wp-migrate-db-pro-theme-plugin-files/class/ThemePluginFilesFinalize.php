@@ -6,13 +6,16 @@ use DeliciousBrains\WPMDB\Common\Error\ErrorLog;
 use DeliciousBrains\WPMDB\Common\Filesystem\Filesystem;
 use DeliciousBrains\WPMDB\Common\FormData\FormData;
 use DeliciousBrains\WPMDB\Common\Http\Http;
+use DeliciousBrains\WPMDB\Common\MigrationPersistence\Persistence;
 use DeliciousBrains\WPMDB\Common\MigrationState\MigrationStateManager;
 use DeliciousBrains\WPMDB\Common\MigrationState\StateDataContainer;
 use DeliciousBrains\WPMDB\Container;
 use DeliciousBrains\WPMDB\Pro\Queue\Manager;
 use DeliciousBrains\WPMDB\Pro\Transfers\Files\Chunker;
+use DeliciousBrains\WPMDB\Pro\Transfers\Files\PluginHelper;
 use DeliciousBrains\WPMDB\Pro\Transfers\Files\Util;
 use DeliciousBrains\WPMDB\Pro\Transfers\Receiver;
+use DeliciousBrains\WPMDB\WPMDBDI;
 
 class ThemePluginFilesFinalize
 {
@@ -49,6 +52,10 @@ class ThemePluginFilesFinalize
      * @var MigrationStateManager
      */
     private $migration_state_manager;
+    /**
+     * @var PluginHelper
+     */
+    private $plugin_helper;
 
     public function __construct(
         FormData $form_data,
@@ -58,7 +65,8 @@ class ThemePluginFilesFinalize
         Http $http,
         StateDataContainer $state_data_container,
         Manager $manager,
-        MigrationStateManager $migration_state_manager
+        MigrationStateManager $migration_state_manager,
+        PluginHelper $plugin_helper
     ) {
         $this->form_data               = $form_data;
         $this->filesystem              = $filesystem;
@@ -68,11 +76,16 @@ class ThemePluginFilesFinalize
         $this->state_data_container    = $state_data_container;
         $this->manager                 = $manager;
         $this->migration_state_manager = $migration_state_manager;
+        $this->plugin_helper           = $plugin_helper;
     }
 
     public function maybe_finalize_tp_migration()
     {
-        $state_data = Container::getInstance()->get('state_data_container')->state_data;
+        // @todo - revisit
+        $form_data = $this->form_data->getCurrentMigrationData();
+        $intent    = $form_data['intent'];
+
+        $state_data = $intent === 'push' ? Persistence::getRemoteStateData() : Persistence::getStateData();
 
         if (!isset($state_data['stage'])) {
             return false;
@@ -83,29 +96,44 @@ class ThemePluginFilesFinalize
         }
 
         // Check that the number of files transferred is correct, throws exception
-        $this->verify_file_transfer();
-        $form_data = $this->form_data->parse_migration_form_data($state_data['form_data']);
+        $this->verify_file_transfer($state_data);
 
-        if (!isset($form_data['migrate_themes']) && !isset($form_data['migrate_plugins'])) {
+        $form_data = Persistence::getMigrationOptions();
+
+        $current_migration = $form_data['current_migration'];
+
+        if (!in_array('theme_files', $current_migration['stages']) && !in_array('plugin_files', $current_migration['stages'])) {
             return;
         }
 
         $files_to_migrate = array(
-            'themes'  => (isset($form_data['migrate_themes'], $form_data['select_themes']) && is_array($form_data['select_themes'])) ? $form_data['select_themes'] : array(),
-            'plugins' => (isset($form_data['migrate_plugins'], $form_data['select_plugins']) && is_array($form_data['select_plugins'])) ? $form_data['select_plugins'] : array(),
+            'themes'  => isset($current_migration['stages'], $state_data['theme_folders']) && in_array('theme_files', $current_migration['stages']) ? $state_data['theme_folders'] : [],
+            'plugins' => isset($current_migration['stages'], $state_data['plugin_folders']) && in_array('plugin_files', $current_migration['stages']) ? $state_data['plugin_folders'] : [],
         );
+        $migration_id     = $intent === 'push' ? $state_data['remote_state_id'] : $state_data['migration_state_id'];
 
         foreach ($files_to_migrate as $stage => $folder) {
             $dest_path = trailingslashit(('plugins' === $stage) ? WP_PLUGIN_DIR : WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'themes');
             $tmp_path  = Receiver::get_temp_dir() . $stage . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
             foreach ($folder as $file_folder) {
-                $folder_name = basename(str_replace('\\', '/', $file_folder));
+                if ($stage === 'plugins') {
+                    $folder_name = basename(str_replace('\\', '/', $file_folder));
+                } else { //Themes
+                    $manifest    = $this->transfer_helpers->load_manifest($stage, $migration_id);
+                    $folder_name = $this->transfer_helpers->get_folder_name($file_folder, $dest_path, $tmp_path, $manifest['manifest']);
+
+                    if (!$folder_name) {
+                        return $this->http->end_ajax(new \WP_Error('wpmdb_no_folder_name', sprintf(__('Unable to determine folder name for theme %s'), $folder)));
+                    }
+                }
+
                 $dest_folder = $dest_path . $folder_name;
                 $tmp_source  = $tmp_path . $folder_name;
-                $return      = $this->move_folder_into_place($tmp_source, $dest_folder, $stage);
+
+                $return = $this->move_folder_into_place($tmp_source, $dest_folder, $stage);
 
                 if (is_wp_error($return)) {
-                    $this->transfer_helpers->ajax_error($return->get_error_message());
+                    return $this->transfer_helpers->ajax_error($return->get_error_message());
                 }
             }
         }
@@ -129,7 +157,6 @@ class ThemePluginFilesFinalize
         if (!$fs->file_exists($source)) {
             $message = sprintf(__('Temporary file not found when finalizing Theme & Plugin Files migration: %s ', 'wp-migrate-db-pro-theme-plugin-files'), $source);
             $this->error_log->log_error($message);
-            error_log($message);
 
             return new \WP_Error('wpmdbpro_theme_plugin_files_error', $message);
         }
@@ -167,29 +194,35 @@ class ThemePluginFilesFinalize
         return true;
     }
 
+    /**
+     * Runs on local site
+     */
     public function cleanup_transfer_migration()
     {
-        $this->manager->drop_tables();
+        $stages = $this->form_data->getMigrationStages();
 
-        $this->remove_tmp_files();
+        if (!$stages) {
+            return;
+        }
+
+        if (!empty(array_intersect(['theme_files', 'plugin_files'], $stages))) {
+            $this->plugin_helper->cleanup_transfer_migration('themes');
+        }
     }
 
-    public function remove_tmp_files()
+    /**
+     * Runs on remote site, on `wpmdb_respond_to_push_cancellation` hook
+     */
+    public function remove_tmp_files_remote()
     {
-        $this->transfer_helpers->remove_tmp_folder('themes');
-        $this->transfer_helpers->remove_tmp_folder('plugins');
+        $stages = $this->form_data->getMigrationStages();
 
-        $this->remove_chunk_file();
-    }
-
-    public function remove_chunk_file()
-    {
-        $state_data = $this->state_data_container->getData();
-        if (isset($state_data['migration_state_id'])) {
-            $chunk_file = Chunker::get_chunk_path($state_data['migration_state_id']);
-            if ($this->filesystem->file_exists($chunk_file)) {
-                $this->filesystem->unlink($chunk_file);
-            }
+        if (!$stages) {
+            return;
+        }
+        // Only run if no media files stage
+        if (!empty(array_intersect(['theme_files', 'plugin_files'], $stages))) {
+            $this->plugin_helper->remove_tmp_files('themes', 'remote');
         }
     }
 
@@ -200,22 +233,20 @@ class ThemePluginFilesFinalize
      * @return bool
      * @throws \Exception
      */
-    public function verify_file_transfer()
+    public function verify_file_transfer($state_data)
     {
-        $state_data = Container::getInstance()->get('state_data_container')->state_data;
-
         if (isset($state_data['stage']) && !in_array($state_data['stage'], array('themes', 'plugins'))) {
             return false;
         }
 
         $stages    = array();
-        $form_data = $this->form_data->getFormData();
+        $form_data = $this->form_data->getCurrentMigrationData();
 
-        if (isset($form_data['migrate_themes']) && '1' === $form_data['migrate_themes']) {
+        if (isset($form_data['stages']) && in_array('theme_files', $form_data['stages'])) {
             $stages[] = 'themes';
         }
 
-        if (isset($form_data['migrate_plugins']) && '1' === $form_data['migrate_plugins']) {
+        if (isset($form_data['stages']) && in_array('plugin_files', $form_data['stages'])) {
             $stages[] = 'plugins';
         }
 
@@ -238,7 +269,7 @@ class ThemePluginFilesFinalize
                 // Throws exception
                 $this->transfer_helpers->check_manifest($queue_info['manifest'], $stage);
             } catch (\Exception $e) {
-                $this->http->end_ajax(json_encode(array('wpmdb_error' => 1, 'body' => $e->getMessage())));
+                return $this->http->end_ajax(json_encode(array('wpmdb_error' => 1, 'body' => $e->getMessage())));
             }
         }
     }

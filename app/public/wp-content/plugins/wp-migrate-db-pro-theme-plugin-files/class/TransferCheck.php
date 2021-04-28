@@ -41,10 +41,12 @@ class TransferCheck {
 	 * @return null
 	 */
 	public function transfer_check( $state_data ) {
-		$message   = null;
-		$form_data = $this->form_data->parse_migration_form_data( $state_data['form_data'] );
+	    $message   = null;
 
-		if ( ! isset( $form_data['migrate_themes'] ) && ! isset( $form_data['migrate_plugins'] ) ) {
+		// ***+=== @TODO - revisit usage of parse_migration_form_data
+		$form_data = $this->form_data->parse_and_save_migration_form_data($state_data['form_data'] );
+
+        if (!in_array('theme_files', $form_data['current_migration']['stages']) && !in_array('plugin_files', $form_data['current_migration']['stages'])) {
 			return;
 		}
 

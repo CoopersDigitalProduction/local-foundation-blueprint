@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-migrate-db-pro-theme-plugin-files\n"
 "Report-Msgid-Bugs-To: nom@deliciousbrains.com\n"
-"POT-Creation-Date: 2021-02-03 09:08-0500\n"
+"POT-Creation-Date: 2021-04-27 16:54-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,183 +17,105 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:5
-msgid "Theme Files"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:12
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:30
-msgid "Select All"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:14
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:32
-msgid "Deselect All"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:16
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:34
-msgid "Invert Selection"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:23
-msgid "Plugin Files"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:40
-msgid "Exclude Files"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:44
-msgid ""
-"Skip transferring files matching the following (use <a href=\"https://"
-"deliciousbrains.com/wp-migrate-db-pro/doc/ignored-files/\" target=\"_blank"
-"\">.gitignore syntax</a>)"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:54
-msgid "Addon Missing"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:54
-msgid ""
-"The Theme & Plugin Files addon is inactive on the <strong>remote site</"
-"strong>. Please install and activate it to enable Theme & Plugin Files "
-"migration."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:58
-msgid "Version Mismatch"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:58
-#, php-format
-msgid ""
-"We have detected you have version <span class=\"themes-plugins-remote-version"
-"\"></span> of WP Migrate DB Pro Theme & Plugin Files at <span class=\"themes-"
-"plugins-remote-location\"></span> but are using %1$s here. Please go to the "
-"<a href=\"%2$s\">Plugins page</a> on both installs and check for updates."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:190
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:174
 msgid "Themes"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:191
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:175
 msgid "Plugins"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:192
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:176
 msgid "Theme & Plugin Files"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:193
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:177
 msgid "(active)"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:194
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:178
 msgid "Please select themes for migration."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:195
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:179
 msgid "Please select plugins for migration."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:196
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:180
 msgid "remote"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:197
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:181
 msgid "local"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:198
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:182
 msgid "Failed to transfer file."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:199
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:183
 msgid "Theme & Plugin Files Transfer Error"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:200
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:184
 msgid "Loading transfer queue"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:201
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:185
 msgid "Transferring: "
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:127
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:130
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:186
+msgid "Uploading files"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:187
+msgid "Downloading files"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:126
+#, php-format
+msgid "Unable to determine folder name for theme %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:158
 #, php-format
 msgid ""
 "Temporary file not found when finalizing Theme & Plugin Files migration: %s "
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:136
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:139
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:166
 #, php-format
 msgid ""
 "Unable to overwrite destination file when finalizing Theme & Plugin Files "
 "migration: %s"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:152
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:155
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:182
 #, php-format
 msgid ""
 "Unable to move file into place when finalizing Theme & Plugin Files "
 "migration. Source: %s | Destination: %s"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:223
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:230
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:261
 #, php-format
 msgid "Unable to verify file migration, %s does not exist."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:115
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:170
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:171
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:168
 msgid "Error: empty folder list supplied."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:125
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:184
 msgid "Invalid folder list supplied (invalid array)"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:277
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:278
-#, php-format
-msgid "Unable to save local queue status - %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:172
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:173
-msgid "No files returned from the remote server."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:251
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:252
-msgid "Saving queue status to remote failed."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:263
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:264
-#, php-format
-msgid "Unable to save remote queue status - %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:295
-#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:296
-msgid "Failed to respond to payload post."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:56
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:58
 msgid "A problem occurred starting the Theme & Plugin files migration."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:71
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:73
 msgid ""
 "Unfortunately it looks like we can't migrate your theme or plugin files. "
 "However, running a migration without theme and plugin files should work. "
@@ -201,6 +123,24 @@ msgid ""
 "and try your migration again."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:73
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:75
 msgid "More Details »"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/Cli/ThemePluginFilesCli.php:267
+#, php-format
+msgid "Theme not found on source server: %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/Cli/ThemePluginFilesCli.php:322
+#, php-format
+msgid "Plugin not found on source server: %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/Cli/ThemePluginFilesCli.php:377
+msgid "Initiating themes migration..."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/Cli/ThemePluginFilesCli.php:381
+msgid "Initiating plugins migration..."
 msgstr ""
