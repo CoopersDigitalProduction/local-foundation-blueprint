@@ -100,11 +100,11 @@ Thumbs.db
 # ignore everything in the "wp-content" directory, except:
 # "mu-plugins" directory
 # "plugins" directory
-# "themes" directory
+# "[custom_theme]" directory
 app/public/wp-content/*
 !app/public/wp-content/mu-plugins/
 !app/public/wp-content/plugins/
-!app/public/wp-content/themes/
+!app/public/wp-content/themes/[custom_theme]/
 
 #ignore Foundation's assets
 app/public/wp-content/themes/[custom_theme]/assets
@@ -112,9 +112,6 @@ app/public/wp-content/themes/[custom_theme]/assets
 # ignore these plugins
 app/public/wp-content/plugins/hello.php
 app/public/wp-content/plugins/contact-form-7-mailchimp-extension/logs/log.txt
-
-# ignore specific themes
-app/public/wp-content/themes/twenty*/
 
 # ignore node/grunt dependency directories
 node_modules/
